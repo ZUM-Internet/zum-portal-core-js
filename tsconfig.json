@@ -9,13 +9,11 @@
         "moduleResolution": "node",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
+        "declaration": true,
         "allowJs": true
     },
     "include": [
-        "backend/**/*.ts"
-    ],
-    "exclude": [
-        "frontend/**",
-        "domain/**"
+        "backend/**/*",
+        "frontend/**/*"
     ]
 }

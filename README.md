@@ -5,6 +5,13 @@ Express-Core Project
 1. (node-schedule)[https://github.com/node-schedule/node-schedule], (node-cache)[https://github.com/node-cache/node-cache] 등의 라이브러리를 이용하여
 포털 개발팀에서 자주 사용되는 패턴을 간단하게 사용하는 것을 목표로 한다.
 
+### 접근방법
+1. 줌인터넷 넥서스 로그인
+  npm login --registry=http://ci-portal.zuminternet.com/nexus/repository/zum-portal-core-js/
+  아이디/비밀번호는 팀 문서 확인
+2. 배포
+  npm publish
+
 ### 기본 설정
 #### 백엔드  
 1. resources/application.yml  
