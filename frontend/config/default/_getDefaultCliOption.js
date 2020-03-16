@@ -1,3 +1,4 @@
+require('@vue/cli-plugin-typescript');
 const path = require('path');
 const page = require(path.resolve(process.env.INIT_CWD, './frontend') + '/vue.page'); // 페이지 리스트
 const webpack = require('webpack');
@@ -50,9 +51,11 @@ module.exports = function getDefaultCliOption() {
       config.module.rule('ts')
           .use('ts-loader').loader('ts-loader')
           .tap((options) => {
-            options.appendTsSuffixTo = [/\.ts\.vue$/];
-            options.appendTsxSuffixTo = [/\.tsx\.vue$/];
-            options.transpileOnly = true;
+            if (options) {
+              options.appendTsSuffixTo = [/\.ts\.vue$/];
+              options.appendTsxSuffixTo = [/\.tsx\.vue$/];
+              options.transpileOnly = true;
+            }
             return options;
           });
 
