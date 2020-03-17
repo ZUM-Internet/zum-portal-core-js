@@ -9,7 +9,8 @@
   },
   "files": [
     "backend/**",
-    "frontend/**"
+    "frontend/**",
+    "banner.js"
   ],
   "repository": {
     "type": "git",
