@@ -23,13 +23,18 @@ export default abstract class BaseAppContainer {
 
   /**
    * Express App 컨테이너
-   * @param initMiddleWares 라우트 등록 전 설정할 미들웨어
+   * @param options 생성 옵션
+   * initMiddleWares 라우트 등록 전 설정할 미들웨어
+   * dirname 백엔드 폴더
    */
-  protected constructor(initMiddleWares?: Array<RequestHandler>) {
-    const dirname = path.join(process.env.INIT_CWD, './backend');
+  protected constructor(options?: {
+                                    initMiddleWares?: Array<RequestHandler>
+                                    dirname?: string
+                                  }) {
+    const dirname = path.join(process.env.INIT_CWD, options?.dirname || './backend');
 
     // 파라미터로 입력된 초기 미들웨어 등록
-    initMiddleWares?.forEach(app.use);
+    options?.initMiddleWares?.forEach(app.use);
 
     // 템플릿 및 에셋 디렉토리 등록
     BaseAppContainer.templateAndAssets(dirname);

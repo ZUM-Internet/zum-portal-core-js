@@ -4,6 +4,7 @@ import {container, singleton} from "tsyringe";
 import {ZumDecoratorType} from "./ZumDecoratorType";
 import logger from "../util/Logger";
 import {_getYmlToken} from "./Yml";
+import {isRegisteredToken} from "../util/TokenCheck";
 
 /**
  * 컨트롤러 데코레이터
@@ -11,11 +12,6 @@ import {_getYmlToken} from "./Yml";
  * @constructor
  */
 export function Controller(ControllerOption: ControllerOption = {path: '/'}) {
-
-  // @ts-ignore
-  // public path 획득
-  const publicPath = container.resolve(_getYmlToken('application'))?.publicPath || '';
-
   return function (constructor) {
     Reflect.defineMetadata(ZumDecoratorType.Component, constructor.name, constructor);
     Reflect.defineMetadata(ZumDecoratorType.Controller, constructor.name, constructor);
@@ -26,6 +22,10 @@ export function Controller(ControllerOption: ControllerOption = {path: '/'}) {
 
     // 컨트롤러 객체 획득
     const instance = container.resolve(constructor);
+
+    // application.yml의 public path 획득
+    // @ts-ignore
+    const publicPath = container.resolve(_getYmlToken('application'))?.publicPath || '';
 
     // 메소드명 획득, 메소드의 메타 데이터를 이용하여 라우팅
     for (let methodName of Object.getOwnPropertyNames(constructor.prototype)) {

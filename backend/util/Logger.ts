@@ -1,13 +1,11 @@
 import * as winston from "winston";
-import {Yml} from "../decorator/Yml";
 import {container, singleton} from "tsyringe";
 
 @singleton()
 export class LoggerClass {
   public winstonLogger;
 
-  constructor(@Yml('application') private application?) {
-
+  constructor() {
     // ISOString에 타임존을 적용하기 위한 오프셋
     const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
 

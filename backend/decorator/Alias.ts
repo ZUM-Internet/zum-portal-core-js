@@ -1,7 +1,8 @@
-import {inject, injectable, singleton} from "tsyringe";
+import {container, inject, injectable, singleton} from "tsyringe";
 import InjectionToken from "tsyringe/dist/typings/providers/injection-token";
 import {Component} from "./Component";
 import logger from "../util/Logger";
+import {isRegisteredToken} from "../util/TokenCheck";
 
 export function Singleton(){
   return function (constructor) {
@@ -16,10 +17,10 @@ export function Injectable(){
 }
 
 export function Inject(injectionToken: InjectionToken) {
-  try {
+  if (isRegisteredToken(injectionToken)) {
     return inject(injectionToken);
-  } catch (e) {
-    logger.error('Can not find any instance!', e);
+  } else {
+    logger.error(`Can not find any instance matched '${injectionToken.toString()}'`);
     return null;
   }
 }

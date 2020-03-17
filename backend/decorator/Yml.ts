@@ -4,6 +4,7 @@ import * as path from "path";
 import * as yaml_config from 'node-yaml-config';
 import {ZumDecoratorType} from "./ZumDecoratorType";
 import logger from "../util/Logger";
+import {isRegisteredToken} from "../util/TokenCheck";
 
 // Yml파일 컨테이너 토큰명을 가져오는 함수
 export const _getYmlToken = (filename) => `${ZumDecoratorType.PREFIX}yml__${filename}`;
@@ -16,13 +17,19 @@ export function Yml(filename: string) {
   try {
     const token = _getYmlToken(filename);
 
-    try {
+    // @ts-ignore
+    if (isRegisteredToken(token)) {
       container.resolve(token);
 
-    } catch (e) {
-      glob.sync(path.join(process.env.INIT_CWD, `./resources/**/${filename}.{yaml,yml}`))
-        .forEach(src => container.register(token, {useValue: yaml_config.load(src)}));
+    } else {
+      const files = glob.sync(path.join(process.env.INIT_CWD, `./resources/**/${filename}.{yaml,yml}`));
+      if (files.length) {
+        files.forEach(src => container.register(token, {useValue: yaml_config.load(src)}));
+      } else {
+        container.register(token, {useValue: ''});
+      }
     }
+
     return inject(token);
 
   } catch (e) {

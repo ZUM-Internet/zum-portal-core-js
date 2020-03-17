@@ -7,8 +7,10 @@ Express-Core Project
 
 ### 접근방법
 1. 줌인터넷 넥서스 로그인
-  npm login --registry=http://ci-portal.zuminternet.com/nexus/repository/zum-portal-core-js/
+  npm login --registry=http://ci-portal.zuminternet.com/nexus/repository/zum-portal-core-js/  
   아이디/비밀번호는 팀 문서 확인
+1. typescript 컴파일 
+  npm run build 명령어로 컴파일
 2. 배포
   npm publish
 
@@ -51,9 +53,9 @@ Express-Core Project
 #### 코어 적용 및 서버 구동
 1. 백엔드 프로젝트에서 Express.js 어플리케이션 컨테이너인 AppContainer 클래스에 BaseAppContainer 추상 클래스를 상속받는다.
 1. 백엔드 프로젝트 시작을 위해 작성하는 Server.ts 파일에서 AppContainer를 import 할 수 있도록 AppContainer에 export 구문을 작성한다
-    ```typescript
-    export const appContainer = container.resolve(AppContainer);
-    ```
+```typescript
+export const appContainer = container.resolve(AppContainer);
+```
 이 구문은 tsyring 컨테이너에 추가된 AppContainer 객체를 export하는 구문으로, Server.ts에서는 해당 객체를 이용하여 서버측 어플리케이션을 실행할 수 있다.
 
 #### 아키텍처 설계
