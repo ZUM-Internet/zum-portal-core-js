@@ -1,17 +1,13 @@
-require('@vue/cli-plugin-typescript');
 const path = require('path');
 const webpack = require('webpack');
-const frontendPath = process.env.INIT_CWD.includes('frontend')
-                    ? process.env.INIT_CWD : path.resolve(process.env.INIT_CWD, './frontend');
-const page = require(frontendPath + '/vue.page'); // 페이지 리스트
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const getPageConfig = require('./_getPageConfig');
 
-
 // 프론트엔드 src 폴더
-const frontSrcPath = path.resolve(process.env.INIT_CWD, './frontend');
-const resourcePath = path.resolve(process.env.INIT_CWD, './resources');
+const frontSrcPath = global.ZUM_OPTION.frontSrcPath;
+const resourcePath = global.ZUM_OPTION.resourcePath;
+const page = require(path.join(global.ZUM_OPTION.frontSrcPath, '/vue.page')); // 페이지 리스트
 
 /**
  * CSS 및 ChainWebpack이 설정된 기본 옵션을 가져오는 함수

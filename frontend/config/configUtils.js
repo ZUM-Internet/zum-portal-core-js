@@ -1,15 +1,21 @@
 const path = require('path');
-const rimraf = require('rimraf'); // 쉘 파일 제거 명령 수행 라이브러리
 const merge = require('deepmerge'); // 객체 병합
-const getDefaultCliOption = require('./default/_getDefaultCliOption');
+const rimraf = require('rimraf'); // 쉘 파일 제거 명령 수행 라이브러리
+
+// 노드가 optional chaining을 지원하지 않으므로 기본값을 설정한다.
+global.ZUM_OPTION = merge({
+  frontSrcPath: path.join(process.env.INIT_CWD, './frontend'),
+  resourcePath: path.join(process.env.INIT_CWD, './resources'),
+  stubPath: path.join(process.env.INIT_CWD, './resources', './stub')
+}, global.ZUM_OPTION);
 
 // 프론트엔드 src 폴더 정의
-const frontendPath = process.env.INIT_CWD.includes('frontend')
-                   ? process.env.INIT_CWD : path.resolve(process.env.INIT_CWD, './frontend');
+const frontSrcPath = global.ZUM_OPTION.frontSrcPath;
+const resourcePath = global.ZUM_OPTION.resourcePath;
+const page = require(frontSrcPath + '/vue.page'); // 페이지 리스트
 
-const page = require(frontendPath + '/vue.page'); // 페이지 리스트
-const resourcePath = path.resolve(frontendPath, './resources');
-
+// 웹팩 기본 설정 획득
+const getDefaultCliOption = require('./default/_getDefaultCliOption');
 
 module.exports = {
 
@@ -34,6 +40,11 @@ module.exports = {
 
     // 줌 모드 환경 변수에 따라 설정 적용
     if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === undefined) { // dev || publish
+
+      if (!process.env.ZUM_FRONT_MODE) {
+        throw `ZUM_FRONT_MODE is not defined!\nZUM_FRONT_MODE must be 'dev' or 'publish'`;
+      }
+
       const requiredConfig = require(`./default/${process.env.ZUM_FRONT_MODE}.config.js`);
       return merge.all([defaultOption, projectConfigurer, requiredConfig, {
         chainWebpack: config => {

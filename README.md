@@ -15,6 +15,17 @@ Express-Core Project
   npm publish
 
 ### 기본 설정
+1. global.ZUM_OPTION
+    프론트엔드 줌 코어 옵션
+    - frontSrcPath
+        프론트엔드 소스 폴더 위치. 기본값 process.env.INIT_CWD/frontend
+    - resourcePath
+        프론트엔드 리소스 폴더 위치. 기본값 process.env.INIT_CWD/frontend/resources 
+    - stubPath
+        프론트엔드 publish 모드에서 stub 데이터 위치. 기본값 resourcePath/stub
+1. process.env.ZUM_FRONT_MODE
+    프론트엔드 기동 모드. [dev/publish/ssr/undefined] undefined의 경우 빌드시에만 사용할 것
+
 #### 백엔드  
 1. resources/application.yml  
   - publicPath: 백엔드 라우터의 기본 URL을 지정
@@ -23,6 +34,10 @@ Express-Core Project
 1. vue.config.js
 **modeConfigurer**: 프론트엔드의 dev/publish 모드 등 기본 설정을 적용하는 함수
   - publicPath: 프론트엔드 Vue.js 라우터의 기본 URL을 지정
+  
+0. path shortcut
+  - @ : process.env.FRONTEND_PATH/assets
+  - \# : process.env.RESOUCES_PATH
 
 ### 유틸성 객체 및 함수
 1. Logger : winston logger를 이용하여 로그를 남길때 사용한다.

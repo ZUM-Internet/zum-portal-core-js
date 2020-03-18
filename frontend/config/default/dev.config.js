@@ -1,11 +1,8 @@
 const path = require('path');
 const proxy = require('http-proxy-middleware');
 const proxyConfig = require('./_proxyConfig');
-
-
-const frontendPath = process.env.INIT_CWD.includes('frontend')
-                    ? process.env.INIT_CWD : path.resolve(process.env.INIT_CWD, './frontend');
-const page = require(frontendPath + '/vue.page');
+const frontSrcPath = process.env.ZUM_OPTION.frontSrcPath;
+const page = require(frontSrcPath + '/vue.page');
 
 module.exports = {
 

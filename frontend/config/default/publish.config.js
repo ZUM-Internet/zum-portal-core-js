@@ -1,7 +1,7 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-const resourcePath = path.resolve(process.env.INIT_CWD, './resources');
+const stubPath = global.ZUM_OPTION.stubPath;
 
 module.exports = {
 
@@ -31,7 +31,7 @@ module.exports = {
 			/***************************/
 
 			// app.js 등록
-			require(path.join(resourcePath, './stub/app'))(app);
+			require(path.join(stubPath, './app'))(app);
 
 			// public path
 			const publicPath = process.env.publicPath;
@@ -40,7 +40,7 @@ module.exports = {
 			 * /stub으로 요청된 데이터 처리
 			 */
 			app.all(`${publicPath}stub/**`, (req, res) => {
-				const data = require(path.join(resourcePath, `./${req.path.replace(publicPath, '')}`));
+				const data = require(path.join(stubPath, `../${req.path.replace(publicPath, '')}`));
 				const method = Object.keys(data)
 						.find(key => key.toUpperCase() === req.method);
 
