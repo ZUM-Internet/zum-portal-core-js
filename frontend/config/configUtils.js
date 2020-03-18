@@ -7,7 +7,7 @@ global.ZUM_OPTION = merge({
   frontSrcPath: path.join(process.env.INIT_CWD, './frontend'),
   resourcePath: path.join(process.env.INIT_CWD, './resources'),
   stubPath: path.join(process.env.INIT_CWD, './resources', './stub')
-}, global.ZUM_OPTION);
+}, global.ZUM_OPTION || {});
 
 // 프론트엔드 src 폴더 정의
 const frontSrcPath = global.ZUM_OPTION.frontSrcPath;
