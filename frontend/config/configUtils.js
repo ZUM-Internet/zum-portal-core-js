@@ -7,8 +7,8 @@ const getDefaultCliOption = require('./default/_getDefaultCliOption');
 const frontendPath = process.env.INIT_CWD.includes('frontend')
                    ? process.env.INIT_CWD : path.resolve(process.env.INIT_CWD, './frontend');
 
+const page = require(frontendPath + '/vue.page'); // 페이지 리스트
 const resourcePath = path.resolve(frontendPath, './resources');
-const page = require(resourcePath + '/vue.page'); // 페이지 리스트
 
 
 module.exports = {

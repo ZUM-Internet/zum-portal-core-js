@@ -1,7 +1,9 @@
 require('@vue/cli-plugin-typescript');
 const path = require('path');
-const page = require(path.resolve(process.env.INIT_CWD, './frontend') + '/vue.page'); // 페이지 리스트
 const webpack = require('webpack');
+const frontendPath = process.env.INIT_CWD.includes('frontend')
+                    ? process.env.INIT_CWD : path.resolve(process.env.INIT_CWD, './frontend');
+const page = require(frontendPath + '/vue.page'); // 페이지 리스트
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const getPageConfig = require('./_getPageConfig');
