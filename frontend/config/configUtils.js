@@ -1,11 +1,14 @@
 const path = require('path');
 const rimraf = require('rimraf'); // 쉘 파일 제거 명령 수행 라이브러리
 const merge = require('deepmerge'); // 객체 병합
-const page = require(path.resolve(process.env.INIT_CWD, './frontend') + '/vue.page'); // 페이지 리스트
 const getDefaultCliOption = require('./default/_getDefaultCliOption');
 
-// 프론트엔드 src 폴더
-const resourcePath = path.resolve(process.env.INIT_CWD, './resources');
+// 프론트엔드 src 폴더 정의
+const frontendPath = process.env.INIT_CWD.includes('frontend')
+                   ? process.env.INIT_CWD : path.resolve(process.env.INIT_CWD, './frontend');
+
+const resourcePath = path.resolve(frontendPath, './resources');
+const page = require(resourcePath + '/vue.page'); // 페이지 리스트
 
 
 module.exports = {
