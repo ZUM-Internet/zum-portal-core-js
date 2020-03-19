@@ -1,7 +1,7 @@
 const path = require('path');
 const proxy = require('http-proxy-middleware');
 const proxyConfig = require('./_proxyConfig');
-const frontSrcPath = process.env.ZUM_OPTION.frontSrcPath;
+const frontSrcPath = global.ZUM_OPTION.frontSrcPath;
 const page = require(frontSrcPath + '/vue.page');
 
 module.exports = {
