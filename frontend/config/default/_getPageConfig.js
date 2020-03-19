@@ -1,3 +1,5 @@
+const path = require('path');
+
 /**
  * 멀티 페이지 설정 함수.
  *
@@ -11,16 +13,21 @@ module.exports = function getPageConfig(pageObj) {
 
   Object.keys(pageObj)
       .forEach(key => {
+        if (!pageObj[key].template) return;
+
         if (mode === 'ssr') { // SSR 모드인 경우 파일명 세팅 SSR 삽입
           pageObj[key].entry = pageObj[key].ssrEntry;
           if (!pageObj[key].entry) { // ssr Entry가 없는 것 제외
             return delete pageObj[key];
           }
         }
-        pageObj[key].template = 'resources/' + pageObj[key].template;
+
+        pageObj[key].template = path.join(global.ZUM_OPTION.resourcePath, pageObj[key].template);
 
         if (mode === 'publish') {
-          pageObj[key].template = 'resources/' + pageObj[key].publishTemplate || pageObj[key].template;
+          if (pageObj[key].publishTemplate) {
+            pageObj[key].template = path.join(global.ZUM_OPTION.resourcePath, pageObj[key].publishTemplate);
+          }
           delete pageObj[key].filename;
         }
 

@@ -22,40 +22,41 @@ module.exports = {
      */
     setup: function (app, server) {
 
-      Object.keys(page).forEach(pageKey => {
-        const pageElement = page[pageKey];
 
-        // path 미설정시 기본 값 설정
-        if (!pageElement.path || !pageElement.path.length) {
-          pageElement.path = ['/*'];
+      // CMS 인증 리다이렉트
+      if (global.ZUM_OPTION.cmsHomeUrl) {
+        const authenticationUrl = (process.env.publicPath + '/authentication').replace(/\/\//gi, '/');
+        const cmsIndexUrl = (process.env.publicPath + global.ZUM_OPTION.cmsHomeUrl).replace(/\/\//gi, '/');
+
+        app.use(authenticationUrl, (req, res, next) => {
+          if (req.query.result === 'true') {
+            return res.redirect(cmsIndexUrl);
+          }
+          next();
+        });
+      }
+
+
+      // 프록시 객체 생성
+      const proxyFunction = proxy({
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        selfHandleResponse: true,
+        onProxyRes: proxyConfig(page, 'localhost:3000', 'localhost:8080'),
+      });
+
+      // 프록시 처리
+      app.use('/**', (req, res, next) => {
+
+        // .js 혹은 static 요소는 프록시 적용하지 않음
+        if (req.originalUrl.includes(`.js`) || req.originalUrl.includes(`/static`)) {
+          return next();
         }
 
-        // proxy 객체 생성
-        const proxyFunction = proxy({
-          target: 'http://localhost:8080',
-          changeOrigin: true,
-          selfHandleResponse: true,
-          onProxyRes: proxyConfig(pageElement.path,
-              [pageKey],
-              'localhost:3000', 'localhost:8080'),
-        });
-
-        // 프록시 설정
-        pageElement.path.forEach(path => {
-          app.use(path, (req, res, next) => {
-
-            // .js 혹은 static 요소는 프록시 적용하지 않음
-            if (req.originalUrl.includes(`.js`) || req.originalUrl.includes(`/static`)) {
-              return next();
-            }
-
-            return proxyFunction(req, res, next);
-          });
-
-        });
+        return proxyFunction(req, res, next);
       });
-    },
 
 
-  },
+    }
+  }
 };

@@ -17,7 +17,7 @@ export function initializer(initFunction) {
   let restarted = false;
 
   Vue.config.errorHandler = function (err, vm, info) {
-    console.error(`An unhandled Vue global error occurred!`, error, vm, info);
+    console.error(`An unhandled Vue global error occurred!`, err, vm, info);
     if (restarted) return;
 
     // 글로벌 예외 발생시 렌더링된 HTML 모두 제거하고 재시도
