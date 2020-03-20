@@ -1,4 +1,3 @@
-const path = require('path');
 const proxy = require('http-proxy-middleware');
 const proxyConfig = require('./_proxyConfig');
 const frontSrcPath = global.ZUM_OPTION.frontSrcPath;

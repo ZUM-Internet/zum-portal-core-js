@@ -40,16 +40,16 @@ module.exports = function (pageElements,
     }
 
 
-    const pageElemnt = Object.keys(pageElements).map(key => [key, pageElements[key]])
-                             .find(([key, pageElemnt]) => generatePathRegex(pageElemnt.path).test(request.originalUrl));
+    const pageElement = Object.keys(pageElements).map(key => [key, pageElements[key]])
+                             .find(([key, pageEl]) => generatePathRegex(pageEl.path).test(request.originalUrl));
 
     // 검사후 URL에 맞게 스크립트 삽입
-    if (pageElemnt &&
+    if (pageElement && pageElement.length &&
         proxyRes.headers &&
         proxyRes.headers['content-type'] &&
         proxyRes.headers['content-type'].match('text/html')) {
 
-    const scriptFilename = (`${publicPath}/${pageElemnt[0]}.js`).replace(/\/\//gi, '/');
+    const scriptFilename = (`${publicPath}/${pageElement[0]}.js`).replace(/\/\//gi, '/');
     const appendScript = `<script src="${scriptFilename}"></script>`;
 
       proxyRes.on('data', chunk => body.push(chunk));
