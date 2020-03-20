@@ -47,7 +47,7 @@ module.exports = function getDefaultCliOption() {
 
       // ts 플러그인이 있을 때 타입스크립트 적용
       try {
-        require.resolve('@vue/cli-plugin-typescript');
+        require('typescript') && require('@vue/cli-plugin-typescript');
 
         config.module.rule('ts')
             .use('ts-loader').loader('ts-loader')
