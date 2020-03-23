@@ -8,7 +8,7 @@ Express-Core Project
 ### 접근방법
 1. 줌인터넷 넥서스 로그인
   npm login --registry=http://ci-portal.zuminternet.com/nexus/repository/zum-portal-core-js/  
-  아이디/비밀번호는 팀 문서 확인
+  ID: zum-portal-dev PW: 비밀번호 (팀문서확인)
 1. typescript 컴파일 
   npm run build 명령어로 컴파일
 2. 배포
