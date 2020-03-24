@@ -13,8 +13,10 @@ let $vm;
 let restarted = false;
 
 /**
- * Global Error를 핸들링한 Vue 실행 함수
- * @param initFunction
+ * Global Error를 핸들링한 Vue 초기화 함수
+ * 
+ * @param initFunction Vue.JS 실행 함수. 
+ *        Router, Vuex 생성 후 Vue 인스턴스를 리턴할 것
  */
 export function initializer(initFunction) {
   Vue.config.errorHandler = exceptionHandler.bind(this, initFunction);
