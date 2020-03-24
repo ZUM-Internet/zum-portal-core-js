@@ -20,14 +20,27 @@ export function initializer(initFunction) {
     console.error(`An unhandled Vue global error occurred!`, err, vm, info);
     if (restarted) return;
 
-    // 글로벌 예외 발생시 렌더링된 HTML 모두 제거하고 재시도
-    document.querySelector('#app').remove();
-    const $div = document.createElement("div");
-    $div.id = 'app';
-    document.body.appendChild($div);
+    const $app = document.querySelector('#app');
+    $app.id = `__${$app.id}`;
+    $app.style.display = 'none';
+    $app.remove();
 
-    restarted = true;
-    initFunction();
+    // 글로벌 예외 발생시 렌더링된 HTML 모두 제거하고 재시도
+    setTimeout(() => {
+
+      // #app이 이미 존재하면 다시 제거
+      const $app = document.querySelector('#app').remove();
+      if ($app) $app.remove();
+
+      // #app 생성 후 삽입
+      const $div = document.createElement("div");
+      $div.id = 'app';
+      document.body.appendChild($div);
+
+      restarted = true;
+      initFunction();
+
+    }, 100);
   };
 
 // 프로젝트 시작
