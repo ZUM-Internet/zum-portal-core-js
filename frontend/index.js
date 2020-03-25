@@ -5,7 +5,6 @@
  *
  **********************************************************
  */
-import Vue from 'vue';
 import './monkeypatch';
 
 
@@ -13,14 +12,10 @@ let $vm;
 let restarted = false;
 
 /**
- * Global Error를 핸들링한 Vue 초기화 함수
- * 
- * @param initFunction Vue.JS 실행 함수. 
- *        Router, Vuex 생성 후 Vue 인스턴스를 리턴할 것
+ * Global Error를 핸들링한 Vue 실행 함수
+ * @param initFunction
  */
 export function initializer(initFunction) {
-  Vue.config.errorHandler = exceptionHandler.bind(this, initFunction);
-
   // 프로젝트 시작
   try {
     $vm = initFunction();
@@ -43,7 +38,7 @@ function exceptionHandler(initFunction, ...err) {
   console.log('Vue will restart!');
   if ($vm) $vm.$destroy();
   const $app = document.querySelector('#app');
-  if ($app) $app.remove();
+  if ($app) { $app.innerHTML = ''; $app.remove(); }
 
   // #app 생성 후 삽입
   const $div = document.createElement("div");
