@@ -6,12 +6,14 @@ const rimraf = require('rimraf'); // 쉘 파일 제거 명령 수행 라이브�
 global.ZUM_OPTION = merge({
   frontSrcPath: path.join(process.env.INIT_CWD, './frontend'),
   resourcePath: path.join(process.env.INIT_CWD, './resources'),
+  outputPath: path.join(process.env.INIT_CWD, './resources'),
   stubPath: path.join(process.env.INIT_CWD, './resources', './stub')
 }, global.ZUM_OPTION || {});
 
 // 프론트엔드 src 폴더 정의
 const frontSrcPath = global.ZUM_OPTION.frontSrcPath;
 const resourcePath = global.ZUM_OPTION.resourcePath;
+const outputPath =  global.ZUM_OPTION.outputPath;
 const page = require(frontSrcPath + '/vue.page'); // 페이지 리스트
 
 // 웹팩 기본 설정 획득
@@ -77,7 +79,7 @@ module.exports = {
         },
 
         assetsDir: './static/',
-        outputDir: resourcePath,
+        outputDir: outputPath,
       }]);
     }
 

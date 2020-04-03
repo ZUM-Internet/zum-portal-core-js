@@ -21,6 +21,8 @@ Express-Core Project
         프론트엔드 소스 폴더 위치. 기본값 process.env.INIT_CWD/frontend
     - resourcePath
         프론트엔드 리소스 폴더 위치. 기본값 process.env.INIT_CWD/frontend/resources 
+    - outputPath
+        프론트엔드 번들링 결과 폴더 위치. 기본값 process.env.INIT_CWD/frontend/resources
     - stubPath
         프론트엔드 publish 모드에서 stub 데이터 위치. 기본값 resourcePath/stub
 1. process.env.ZUM_FRONT_MODE
