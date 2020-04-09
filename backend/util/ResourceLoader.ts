@@ -21,10 +21,5 @@ export function ResourceLoader(filename: string) {
  * @param filename 가져올 디렉토리/파일명
  */
 export function ResourcePath(filename: string) {
-  const resourcePath = path.join(process.env.INIT_CWD, './resources', filename);
-  const data = require(resourcePath);
-  if (!data) {
-    throw new Error(`There is an error when getting resources file ${filename}`);
-  }
-  return resourcePath;
+  return path.join(process.env.INIT_CWD, './resources', filename);
 }
