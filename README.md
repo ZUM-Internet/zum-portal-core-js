@@ -43,7 +43,7 @@ Express-Core Project
 
 ### 유틸성 객체 및 함수
 1. Logger : winston logger를 이용하여 로그를 남길때 사용한다.
-2. ResourceLoader : /resources 디렉토리 내의 파일을 가져올 때 사용한다.
+2. ResourceLoader / ResourcePath : /resources 디렉토리 내의 파일을 가져올 때 사용한다.
 
 ### 데코레이터 목록
 1. @Controller : Request Mapping을 위해 사용하는 컨트롤러 클래스에 사용한다.

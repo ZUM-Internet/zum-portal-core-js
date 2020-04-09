@@ -13,6 +13,7 @@ import * as ejs from 'ejs';
 import logger from "./util/Logger";
 import VersionResponse from "./middleware/VersionResponse";
 import ErrorResponse from "./middleware/ErrorResponse";
+import {ResourcePath} from "./util/ResourceLoader";
 
 // express 객체 생성 및 컨테이너 등록
 const app = express();
@@ -102,6 +103,11 @@ export default abstract class BaseAppContainer {
       maxAge: 3600 * 1000,
       etag: false
     }));
+
+    // favicon, robots, sitemap 등록
+    ['favicon.ico', 'robots.txt', 'sitemap.xml'].forEach(filename => {
+      app.get(`/${filename}`, (req, res) => res.sendFile(ResourcePath(`/static/${filename}`)));
+    });
 
     // 템플릿 폴더 및 엔진 설정
     app.set('views', path.join(dirname, '../resources/templates/'));
