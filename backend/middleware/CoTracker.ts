@@ -23,8 +23,7 @@ export default function (req: Request, res: Response, next: NextFunction) {
   // cocode 획득
   let {cocode, couid} = req.headers;
   if (!validate(cocode, couid)) {
-    cocode = String(req.query.cocode);
-    couid = String(req.query.couid);
+    ({cocode, couid} = req.query);
   }
 
   // cocode, couid가 정상적이지 않은 경우 실행하지 않는다.
