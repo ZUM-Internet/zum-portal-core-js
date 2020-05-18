@@ -56,6 +56,7 @@ module.exports = function getDefaultCliOption() {
                 options.appendTsSuffixTo = [/\.ts\.vue$/];
                 options.appendTsxSuffixTo = [/\.tsx\.vue$/];
                 options.transpileOnly = true;
+                options.configFile = 'tsconfig.frontend.json';
               }
               return options;
             });
