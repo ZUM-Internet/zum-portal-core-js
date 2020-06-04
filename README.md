@@ -49,7 +49,8 @@ Express-Core Project
 1. @Controller : Request Mapping을 위해 사용하는 컨트롤러 클래스에 사용한다.
     1. @[Get, Post, Put, Delete]Mapping : 데코레이팅한 메소드를 http 요청에 핸들링한다.
 1. @Component : 기능을 담당하는 클래스임을 표기한다. 설정시 singleton 객체로 등록된다.
-    1. @Caching : 해당 메소드의 반환값을 캐시한다.
+    1. @PostConstructor: 생성자 실행 이후 실행되는 메소드. 생성자에서 불가능한 async 작업 등을 수행한다.
+    1. @Caching : 해당 메소드의 반환값을 캐시한다. 결과값은 deepFreeze 상태로 변경이 불가능하다.
     1. @Scheduled : 해당 메소드를 일정 시간마다 실행한다.
     1. @Inject : Component의 constructor에서 사용 가능한 데코레이터로 파라미터에 해당하는 객체를 주입받는다.
     1. @Yml : Component의 constructor에서 사용 가능한 데코레이터로 파일명에 해당하는 yml 객체를 주입받는다.

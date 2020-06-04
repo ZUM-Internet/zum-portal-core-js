@@ -11,8 +11,11 @@ import logger from "../util/Logger";
 export function Component() {
   return function (constructor) {
     singleton()(constructor);
-
     const instance = container.resolve(constructor);
+
+    /**
+     * schedule, cache와 같은 선처리 데코레이터 적용
+     */
     for (let methodName of Object.getOwnPropertyNames(constructor.prototype)) {
       const method = instance[methodName];
 
@@ -22,7 +25,29 @@ export function Component() {
       appendCache(instance, method);
     }
 
+    /**
+     * post constructor와 같은 후처리 데코레이터 적용
+      */
+    for (let methodName of Object.getOwnPropertyNames(constructor.prototype)) {
+      const method = instance[methodName];
+      // post constructor 메소드 수행
+      if (Reflect.getMetadata(ZumDecoratorType.ComponentPostConstructor, method)) {
+        method.call(instance);
+      }
+    }
+
   }
+}
+
+/**
+ * Post Constructor 메소드
+ * @constructor
+ */
+export function PostConstructor() {
+  return function(clazz, methodName: string, descriptor: any) {
+    Reflect.defineMetadata(ZumDecoratorType.ComponentPostConstructor, true, descriptor.value);
+    return descriptor;
+  };
 }
 
 
@@ -76,14 +101,14 @@ function appendCache(instance, method) {
   if (!CachingOption) return;
 
   const _function = method;
-  const conditionFunction: Function = CachingOption.unless?.bind(instance) || (() => true);
+  const conditionFunction: Function = CachingOption.unless?.bind(instance) || (() => false);
   instance[method.name] = function () {
     const cacheKey: string = CachingOption.key || `${instance.constructor.name}_${method.name}_` + [...arguments].toString();
     const cachingValue: any = globalCache.get(cacheKey);
 
     // 캐시된 값이 있으면
     if (cachingValue) {
-      return cachingValue;
+      return deepFreeze(cachingValue);
     }
 
     // 캐시된 값이 없으면
@@ -123,31 +148,52 @@ function appendCache(instance, method) {
  * @param value 체크 후 캐시에 저장할 값
  * @param unlessFunction instance가 바인딩된 값 체크 함수
  * @param CachingOption 캐시 옵션
+ * @return 체크한 값
  */
 function checkCondition(cacheKey: string, value: any,
-                        unlessFunction: Function, CachingOption: CachingOption) {
+                        unlessFunction: Function, CachingOption: CachingOption): any {
 
   if (value instanceof Promise) { // 결과가 Promise인 경우
+    return new Promise(resolve => {
 
-    value.then(v => {
-      if (!unlessFunction(v)) { // unless 함수가 false인 경우에만 저장
-        globalCache.set(cacheKey, value, CachingOption.ttl || 0)
-      } else {
-        value = globalCache.get(cacheKey)
+      // 저장되어있는 캐시가 null인 경우 우선 데이터를 삽입하고 수정한다
+      if (!globalCache.get(cacheKey)) {
+        globalCache.set(cacheKey,
+          value.then(async v => {
+            if (unlessFunction(v)) { // unless === true 일 시 캐시 제거
+              globalCache.set(cacheKey, null);
+              return null;
+            }
+            return deepFreeze(v);
+          }),
+          CachingOption.ttl || 0);
       }
+
+
+      value.then(async v => {
+        if (!unlessFunction(v)) { // unless 함수가 없거나 false인 경우에만 저장
+          globalCache.set(cacheKey, deepFreeze(value), CachingOption.ttl || 0);
+          return resolve(v);
+
+        } else {
+          value = globalCache.get(cacheKey);
+          return resolve(await value);
+        }
+      });
     });
+
 
   } else { // 결과가 일반 값인 경우.
 
-    if (unlessFunction(value)) {
-      globalCache.set(cacheKey, value, CachingOption.ttl)
+    if (!unlessFunction(value)) {
+      globalCache.set(cacheKey, deepFreeze(value), CachingOption.ttl)
     } else {
       value = globalCache.get(cacheKey);
     }
 
+    return value;
   }
 
-  return value;
 }
 
 /**
@@ -161,4 +207,19 @@ export function callOptionWithInstance(obj, instance) {
     (function () { obj = eval(obj.toString())(); }).call(instance);
   }
   return obj;
+}
+
+
+/**
+ * 객체를 완전동결하는 함수
+ * @param object
+ */
+function deepFreeze(object) {
+  const propNames = Object.getOwnPropertyNames(object);
+  for (let name of propNames) {
+    let value = object[name];
+    object[name] = value && typeof value === "object" ?
+      deepFreeze(value) : value;
+  }
+  return Object.freeze(object);
 }
