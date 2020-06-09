@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {NextFunction, Request, Response} from "express";
 
 // 쿠키 기본 옵션
