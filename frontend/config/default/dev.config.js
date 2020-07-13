@@ -21,21 +21,6 @@ module.exports = {
      */
     setup: function (app, server) {
 
-
-      // CMS 인증 리다이렉트
-      if (global.ZUM_OPTION.cmsHomeUrl) {
-        const authenticationUrl = (process.env.publicPath + '/authentication').replace(/\/\//gi, '/');
-        const cmsIndexUrl = (process.env.publicPath + global.ZUM_OPTION.cmsHomeUrl).replace(/\/\//gi, '/');
-
-        app.use(authenticationUrl, (req, res, next) => {
-          if (req.query.result === 'true') {
-            return res.redirect(cmsIndexUrl);
-          }
-          next();
-        });
-      }
-
-
       // 프록시 객체 생성
       const proxyFunction = proxy({
         target: 'http://localhost:8080',

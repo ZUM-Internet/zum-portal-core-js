@@ -55,13 +55,17 @@ module.exports = function (pageElements,
       proxyRes.on('data', chunk => body.push(chunk));
       proxyRes.on('end', () => {
         // http 스테이터스 코드 및 헤더 적용
-        // response.writeHead(proxyRes.statusCode, proxyRes.headers);
+        response.writeHead(proxyRes.statusCode, proxyRes.headers);
         response.end(changeHost(appendScriptToHtml(Buffer.concat(body).toString(), appendScript),
             devHost, backendHost));
       });
     } else {
       proxyRes.on('data', chunk => body.push(chunk));
-      proxyRes.on('end', () => response.end(changeHost(Buffer.concat(body).toString(), devHost, backendHost)));
+      proxyRes.on('end', () => {
+        // http 스테이터스 코드 및 헤더 적용
+        response.writeHead(proxyRes.statusCode, proxyRes.headers);
+        response.end(changeHost(Buffer.concat(body).toString(), devHost, backendHost));
+      });
     }
 
 
