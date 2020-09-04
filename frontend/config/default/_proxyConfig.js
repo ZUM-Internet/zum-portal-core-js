@@ -54,17 +54,25 @@ module.exports = function (pageElements,
 
       proxyRes.on('data', chunk => body.push(chunk));
       proxyRes.on('end', () => {
+        const html = changeHost(appendScriptToHtml(Buffer.concat(body).toString(), appendScript), devHost, backendHost);
+
         // http 스테이터스 코드 및 헤더 적용
+        // content-length는 html을 변경했으므로 다시 계산하여 삽입
+        proxyRes.headers['content-length'] = html.length.toString();
         response.writeHead(proxyRes.statusCode, proxyRes.headers);
-        response.end(changeHost(appendScriptToHtml(Buffer.concat(body).toString(), appendScript),
-            devHost, backendHost));
+        response.end(html);
       });
+
     } else {
       proxyRes.on('data', chunk => body.push(chunk));
       proxyRes.on('end', () => {
-        // http 스테이터스 코드 및 헤더 적용
+        const html = changeHost(Buffer.concat(body).toString(), devHost, backendHost);
+
+        // http 스테이터스 코드 및 헤더 적용.
+        // content-length는 html을 변경했으므로 다시 계산하여 삽입
+        proxyRes.headers['content-length'] = html.length.toString();
         response.writeHead(proxyRes.statusCode, proxyRes.headers);
-        response.end(changeHost(Buffer.concat(body).toString(), devHost, backendHost));
+        response.end(html);
       });
     }
 
