@@ -57,7 +57,7 @@ export default abstract class BaseAppContainer {
     this.app.use((err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {
       logger.error(`\n[FATAL ERROR!]`);
       logger.error(`Unhandled global error event! You must check application logic`, err.stack);
-      next();
+      res.sendStatus(500);
     })
   }
 
