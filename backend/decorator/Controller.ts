@@ -23,6 +23,9 @@ export function Controller(ControllerOption: ControllerOption = {path: '/'}) {
     // 컨트롤러 객체 획득
     const instance = container.resolve(constructor);
 
+    // 더 긴 URL부터 핸들링하기 위해 사용되는 Map 객체
+    const apiInstaller = {};
+
     // application.yml의 public path 획득
     // @ts-ignore
     const publicPath = container.resolve(_getYmlToken('application'))?.publicPath || '';
@@ -44,9 +47,17 @@ export function Controller(ControllerOption: ControllerOption = {path: '/'}) {
         const routePath = (publicPath + ControllerOption.path + requestPath)
                           .replace(/\/\//gi, '/'); // `//` 형식 제거
 
-        app[requestType](routePath, method.bind(app, instance));
-      })
+        // intaller에 등록
+        apiInstaller[routePath] = () => app[requestType](routePath, method.bind(app, instance));
+      });
     }
+
+
+    // 더 긴 URL부터 핸들링해야 정상 작동하므로 소팅한 후 Express App에 등록한다
+    Object.keys(apiInstaller)
+      .sort((l, r) => r.length - l.length)
+      .forEach(key => apiInstaller[key]());
+
 
   }
 }
