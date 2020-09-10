@@ -14,6 +14,7 @@ import logger from "./util/Logger";
 import VersionResponse from "./middleware/VersionResponse";
 import ErrorResponse from "./middleware/ErrorResponse";
 import {ResourcePath} from "./util/ResourceLoader";
+import {urlInstall} from "./decorator/Controller";
 
 // express 객체 생성 및 컨테이너 등록
 const app = express();
@@ -58,7 +59,11 @@ export default abstract class BaseAppContainer {
       logger.error(`\n[FATAL ERROR!]`);
       logger.error(`Unhandled global error event! You must check application logic`, err.stack);
       res.sendStatus(500);
-    })
+    });
+
+
+    // 정리된 컨트롤러별 URL 핸들링을 시작
+    urlInstall();
   }
 
   /**
