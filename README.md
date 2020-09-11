@@ -4,7 +4,13 @@ Express-Core Project
 1. MS의 (tsyring)[https://github.com/microsoft/tsyringe] 컨테이너를 이용하여 싱글톤 기반으로 구현한다.
 1. (node-schedule)[https://github.com/node-schedule/node-schedule], (node-cache)[https://github.com/node-cache/node-cache] 등의 라이브러리를 이용하여
 포털 개발팀에서 자주 사용되는 패턴을 간단하게 사용하는 것을 목표로 한다.
+===
+### 변경 내역
 
+- 1.0.2
+  - @Controller에서 URL 등록시 긴 URL 핸들링을 우선하여 적용
+
+===
 ### 접근방법
 1. 줌인터넷 넥서스 로그인
   npm login --registry=http://ci-portal.zuminternet.com/nexus/repository/zum-portal-core-js/  
