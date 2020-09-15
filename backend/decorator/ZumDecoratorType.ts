@@ -1,9 +1,12 @@
-export enum ZumDecoratorType {
-  PREFIX = '__$zum__',
-  Component = '__$zum__component',
-  ComponentPostConstructor = '__$zum__component__post_constructor',
-  Controller = '__$zum__controller',
-  RequestMapping = '__$zum__request_mapping',
-  Scheduled = '__$zum__scheduled',
-  Caching = '__$zum__caching',
+const ZUM_CORE_DECORATOR_PREFIX = '__$zum__';
+
+export const ZumDecoratorType = {
+  PREFIX : ZUM_CORE_DECORATOR_PREFIX,
+  Component : `${ZUM_CORE_DECORATOR_PREFIX}component`,
+  ComponentPostConstructor : `${ZUM_CORE_DECORATOR_PREFIX}component__post_constructor`,
+  Controller : `${ZUM_CORE_DECORATOR_PREFIX}controller`,
+  RequestMapping : `${ZUM_CORE_DECORATOR_PREFIX}request_mapping`,
+  Scheduled : `${ZUM_CORE_DECORATOR_PREFIX}scheduled`,
+  Caching : `${ZUM_CORE_DECORATOR_PREFIX}caching`,
+  Middleware : `${ZUM_CORE_DECORATOR_PREFIX}middleware`,
 }

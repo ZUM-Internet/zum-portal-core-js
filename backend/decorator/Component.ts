@@ -61,10 +61,10 @@ function appendSchedule(instance, method) {
   if (!ScheduleOption) return;
 
   // 스케줄러 컨디션 함수 생성
+  const condition = ScheduleOption.condition;
   let conditionFunction: Function;
-  if (ScheduleOption.condition !== undefined) {
-    conditionFunction = ScheduleOption.condition.bind
-                        ? ScheduleOption.condition.bind(instance) : () => ScheduleOption.condition; 
+  if (condition !== undefined) {
+    conditionFunction = condition.bind ? condition.bind(instance) : () => ScheduleOption.condition;
   } else {
     conditionFunction = () => conditionFunction;
   }
@@ -196,8 +196,13 @@ function checkCondition(cacheKey: string, value: any,
 
 }
 
+
+
+
+
 /**
- *
+ * 메소드의 scope를 재설정하기 위해 사용되는 함수.
+ * 람다식 사용시 'this' scope가 고정되는 것을 수정하기 위해 구현
  * @param obj
  * @param instance
  */
@@ -211,7 +216,9 @@ export function callOptionWithInstance(obj, instance) {
 
 
 /**
- * 객체를 완전동결하는 함수
+ * 객체를 완전 동결하는 함수.
+ * 캐시된 값을 수정하지 못하도록 하기 위해 사용한다
+ * 
  * @param object
  */
 function deepFreeze(object) {

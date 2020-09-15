@@ -15,6 +15,8 @@ import VersionResponse from "./middleware/VersionResponse";
 import ErrorResponse from "./middleware/ErrorResponse";
 import {ResourcePath} from "./util/ResourceLoader";
 import {urlInstall} from "./decorator/Controller";
+import {ZumDecoratorType} from "./decorator/ZumDecoratorType";
+import {constructor} from "tsyringe/dist/typings/types";
 
 // express 객체 생성 및 컨테이너 등록
 const app = express();
@@ -35,8 +37,18 @@ export default abstract class BaseAppContainer {
                                   }) {
     const dirname = path.join(process.env.INIT_CWD, options?.dirname || './backend');
 
-    // 파라미터로 입력된 초기 미들웨어 등록
-    options?.initMiddleWares?.forEach(app.use);
+
+    // 파라미터/데코레이터로 입력된 초기 미들웨어 등록
+    const middleware = Reflect.getMetadata(ZumDecoratorType.Middleware, Object.getPrototypeOf(this).constructor);
+    if (middleware) { // 데코레이터 미들웨어 등록
+      const middlewareArr = middleware.forEach ? middleware : [middleware];
+      middlewareArr.forEach(func => app.use(func));
+    }
+    // 파라미터 미들웨어 등록
+    options?.initMiddleWares?.forEach(func => app.use(func));
+
+
+
 
     // 템플릿 및 에셋 디렉토리 등록
     BaseAppContainer.templateAndAssets(dirname);
@@ -56,9 +68,15 @@ export default abstract class BaseAppContainer {
 
     // Express 글로벌 예외 처리
     this.app.use((err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {
-      logger.error(`\n[FATAL ERROR!]`);
-      logger.error(`Unhandled global error event! You must check application logic`, err.stack);
-      res.sendStatus(500);
+
+      if (req.originalUrl === '/favicon.ico') { // 파비콘 요청인 경우 No Contents 전송
+        res.sendStatus(204);
+
+      } else { // 핸들링되지 않은 에러가 발생하면 500 전송
+        logger.error(`\n[FATAL ERROR!]\nUnhandled global error event! You must check application logic`, err);
+        res.sendStatus(500);
+      }
+
     });
 
 

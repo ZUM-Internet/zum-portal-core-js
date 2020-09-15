@@ -7,7 +7,16 @@ Express-Core Project
 ===
 ### 변경 내역
 
+- 1.0.3
+  - AppContainer와 Controller 메소드(*Mapping 데코레이터 메소드)에 사용할 수 있는 
+    @Middleware(RequestHandler|RequestHandler[]) 데코레이터 추가
+  - 미들웨어 추가시 @Middleware 데코레이터 사용을 권장
+  - favicon.ico 요청시 Fatal Error 메시지 노출하지 않도록 수정
+  - @Cache 메소드의 결과가 null일때 동시 호출하면 여러번 호출되던 문제 수정
+
+
 - 1.0.2
+  - 프론트엔드 dev모드 프록시에서 status 무시하는 현상, content-length 짤리는 문제 수정
   - @Controller에서 URL 등록시 긴 URL 핸들링을 우선하여 적용
 
 ===
@@ -54,6 +63,7 @@ Express-Core Project
 ### 데코레이터 목록
 1. @Controller : Request Mapping을 위해 사용하는 컨트롤러 클래스에 사용한다.
     1. @[Get, Post, Put, Delete]Mapping : 데코레이팅한 메소드를 http 요청에 핸들링한다.
+    1. @Middleware: 핸들러에 미들웨어를 삽입한다.
 1. @Component : 기능을 담당하는 클래스임을 표기한다. 설정시 singleton 객체로 등록된다.
     1. @PostConstructor: 생성자 실행 이후 실행되는 메소드. 생성자에서 불가능한 async 작업 등을 수행한다.
     1. @Caching : 해당 메소드의 반환값을 캐시한다. 결과값은 deepFreeze 상태로 변경이 불가능하다.
