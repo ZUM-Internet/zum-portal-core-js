@@ -8,8 +8,7 @@
         "types": ["reflect-metadata"],
         "moduleResolution": "node",
         "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "watch": true
+        "emitDecoratorMetadata": true
     },
     "include": [
         "./backend"

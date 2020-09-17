@@ -28,7 +28,7 @@ export class CalculateService {
   public async test() {
     console.log('go man')
     const result = await Axios.get('https://jsonplaceholder.typicode.com/todos/1');
-    return result.data;
+    return {data: result.data}
   }
 
 
