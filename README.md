@@ -12,8 +12,9 @@ Express-Core Project
     @Middleware(RequestHandler|RequestHandler[]) 데코레이터 추가
   - 미들웨어 추가시 @Middleware 데코레이터 사용을 권장
   - favicon.ico 요청시 Fatal Error 메시지 노출하지 않도록 수정
-  - @Cache 메소드의 결과가 null일때 동시 호출하면 여러번 호출되던 문제 수정
-
+  - @Caching 데코레이터에서 DeepFreeze 로직을 중복 호출하는 문제 수정 (반환시에만 Freeze)
+  - @Caching를 적용한 메소드의 결과가 null일때 동시 호출하면 여러번 호출되던 문제 수정
+  - ResourceLoader 유틸 함수 require에서 fs 모듈로 변경
 
 - 1.0.2
   - 프론트엔드 dev모드 프록시에서 status 무시하는 현상, content-length 짤리는 문제 수정

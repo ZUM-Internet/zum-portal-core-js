@@ -127,8 +127,8 @@ export default abstract class BaseAppContainer {
       etag: false
     }));
 
-    // favicon, robots, sitemap 등록
-    ['favicon.ico', 'robots.txt', 'sitemap.xml'].forEach(filename => {
+    // favicon, robots 등록. sitemap은 동적 생성할 가능성이 있어 제외함(직접등록)
+    ['favicon.ico', 'robots.txt'].forEach(filename => {
       app.get(`/${filename}`, (req, res) => res.sendFile(ResourcePath(`/static/${filename}`)));
     });
 

@@ -113,7 +113,7 @@ function appendCache(instance, method) {
 
     // 캐시된 값이 없으면
     const value = _function.call(instance, ...arguments) || `${ZumDecoratorType.PREFIX}${instance.constructor.name}_${_function.name}`;
-    return checkCondition(cacheKey, value, conditionFunction, CachingOption);
+    return deepFreeze(checkCondition(cacheKey, value, conditionFunction, CachingOption));
   };
 
   // auto refresh
@@ -122,7 +122,7 @@ function appendCache(instance, method) {
     const refreshFunc = function() {
       const cacheKey = CachingOption.key || `${instance.constructor.name}_${method.name}_`;
       const value = _function.call(instance);
-      return checkCondition(cacheKey, value, conditionFunction, CachingOption);
+      return deepFreeze(checkCondition(cacheKey, value, conditionFunction, CachingOption));
     };
 
     // cron 값 설정
@@ -164,7 +164,7 @@ function checkCondition(cacheKey: string, value: any,
               globalCache.set(cacheKey, null);
               return null;
             }
-            return deepFreeze(v);
+            return v;
           }),
           CachingOption.ttl || 0);
       }
@@ -172,7 +172,7 @@ function checkCondition(cacheKey: string, value: any,
 
       value.then(async v => {
         if (!unlessFunction(v)) { // unless 함수가 없거나 false인 경우에만 저장
-          globalCache.set(cacheKey, deepFreeze(value), CachingOption.ttl || 0);
+          globalCache.set(cacheKey, value, CachingOption.ttl || 0);
           return resolve(v);
 
         } else {
@@ -186,7 +186,7 @@ function checkCondition(cacheKey: string, value: any,
   } else { // 결과가 일반 값인 경우.
 
     if (!unlessFunction(value)) {
-      globalCache.set(cacheKey, deepFreeze(value), CachingOption.ttl)
+      globalCache.set(cacheKey, value, CachingOption.ttl)
     } else {
       value = globalCache.get(cacheKey);
     }
@@ -222,6 +222,8 @@ export function callOptionWithInstance(obj, instance) {
  * @param object
  */
 function deepFreeze(object) {
+  if (typeof object !== 'object') return object;
+
   const propNames = Object.getOwnPropertyNames(object);
   for (let name of propNames) {
     let value = object[name];

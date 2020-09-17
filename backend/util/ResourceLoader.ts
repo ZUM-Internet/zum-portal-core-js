@@ -1,5 +1,6 @@
 // @ts-ignore
 import * as path from "path";
+import * as fs from 'fs';
 
 /**
  * Resources 폴더 내의 파일을 가져오는 함수.
@@ -7,11 +8,11 @@ import * as path from "path";
  * @param filename 가져올 디렉토리/파일명
  */
 export function ResourceLoader(filename: string) {
-  const data = require(path.join(process.env.INIT_CWD, './resources', filename));
-  if (!data) {
-    throw new Error(`There is an error when getting resources file ${filename}`);
+  try {
+    return fs.readFileSync(path.join(process.env.INIT_CWD, './resources', filename));
+  } catch (e) {
+    throw e;
   }
-  return data;
 }
 
 
