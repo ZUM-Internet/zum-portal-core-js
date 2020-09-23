@@ -6,7 +6,10 @@ Express-Core Project
 포털 개발팀에서 자주 사용되는 패턴을 간단하게 사용하는 것을 목표로 한다.
 ===
 ### 변경 내역
-
+- 1.0.4
+  - 프론트엔드 뷰 initalizer 수정 (spread operator 제거)
+  - 프론트엔드 Cli Option에서 fork-ts-checker 제거.<br>해당 플러그인이 tsconfig를 무시하게 만들어 제거함
+  
 - 1.0.3
   - AppContainer와 Controller 메소드(*Mapping 데코레이터 메소드)에 사용할 수 있는 
     @Middleware(RequestHandler|RequestHandler[]) 데코레이터 추가
