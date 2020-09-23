@@ -37,13 +37,13 @@ function exceptionHandler(initFunction, err) {
   // 에러 발생한 #app 제거
   console.log('Vue will restart!');
   if ($vm) $vm.$destroy();
-  const $app = document.querySelector('#app');
+  const $app = document.getElementById('#app');
   if ($app) { $app.innerHTML = ''; $app.remove(); }
 
   // #app 생성 후 삽입
   const $div = document.createElement("div");
   $div.id = 'app';
-  document.body.append($div);
+  document.body.appendChild($div);
 
   restarted = true;
   $vm = initFunction();
