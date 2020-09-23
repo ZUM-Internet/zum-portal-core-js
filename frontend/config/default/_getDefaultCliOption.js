@@ -49,6 +49,7 @@ module.exports = function getDefaultCliOption() {
       try {
         require('typescript') && require('@vue/cli-plugin-typescript');
 
+        config.plugins.delete('fork-ts-checker');
         config.module.rule('ts')
             .use('ts-loader').loader('ts-loader')
             .tap((options) => {

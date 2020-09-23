@@ -30,8 +30,8 @@ export function initializer(initFunction) {
  * SSR Hydration 및 Global Exception을 핸들링한다
  */
 
-function exceptionHandler(initFunction, ...err) {
-  console.error(`An unhandled Vue global error occurred!`, ...err);
+function exceptionHandler(initFunction, err) {
+  console.error(`An unhandled Vue global error occurred!`, err);
   if (restarted) return;
 
   // 에러 발생한 #app 제거
