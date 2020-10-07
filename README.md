@@ -5,8 +5,7 @@ Express-Core Project
 1. (node-schedule)[https://github.com/node-schedule/node-schedule], (node-cache)[https://github.com/node-cache/node-cache] 등의 라이브러리를 이용하여
 포털 개발팀에서 자주 사용되는 패턴을 간단하게 사용하는 것을 목표로 한다.  
 
-===
-
+---
 ### 변경 내역
 - 1.0.4
   - 프론트엔드 뷰 initalizer 수정 (spread operator 제거)
