@@ -104,5 +104,5 @@ export const appContainer = container.resolve(AppContainer);
 #### EJS 템플릿 엔진
 1. 대부분의 데이터는 프론트엔드에서 처리하지만 SSR 후 HTML 태그 삽입이나 데이터 전달을 위해 사용한다.
 1. <% %> 형태의 기본 문법 사용시 웹팩 플러그인과 충돌하여 <? ?> 태그로 변경 처리되어 있다.
-[change delimieter](https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/raw/master/change_delimeter.png)
+![change delimieter](https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/raw/master/change_delimeter.png)
 InteliJ의 EJS 플러그인에 위 옵션을 적용하여 템플릿 문법을 사용할 수 있다.
