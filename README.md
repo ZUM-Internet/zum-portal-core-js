@@ -6,6 +6,7 @@ Express-Core Project
 포털 개발팀에서 자주 사용되는 패턴을 간단하게 사용하는 것을 목표로 한다.  
 
 ---
+
 ### 변경 내역
 - 1.0.4
   - 프론트엔드 뷰 initalizer 수정 (spread operator 제거)
@@ -24,7 +25,8 @@ Express-Core Project
   - 프론트엔드 dev모드 프록시에서 status 무시하는 현상, content-length 짤리는 문제 수정
   - @Controller에서 URL 등록시 긴 URL 핸들링을 우선하여 적용
 
-===
+---
+
 ### 접근방법
 1. 줌인터넷 넥서스 로그인
   npm login --registry=http://ci-portal.zuminternet.com/nexus/repository/zum-portal-core-js/  
