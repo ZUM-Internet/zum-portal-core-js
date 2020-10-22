@@ -58,7 +58,7 @@ module.exports = function (pageElements,
 
         // http 스테이터스 코드 및 헤더 적용
         // content-length는 html을 변경했으므로 다시 계산하여 삽입
-        proxyRes.headers['content-length'] = html.length.toString();
+        proxyRes.headers['content-length'] = Buffer.byteLength(html);
         response.writeHead(proxyRes.statusCode, proxyRes.headers);
         response.end(html);
       });
@@ -70,7 +70,7 @@ module.exports = function (pageElements,
 
         // http 스테이터스 코드 및 헤더 적용.
         // content-length는 html을 변경했으므로 다시 계산하여 삽입
-        proxyRes.headers['content-length'] = html.length.toString();
+        proxyRes.headers['content-length'] = Buffer.byteLength(html);
         response.writeHead(proxyRes.statusCode, proxyRes.headers);
         response.end(html);
       });

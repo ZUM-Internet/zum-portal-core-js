@@ -1,6 +1,6 @@
 {
   "name": "zum-portal-core",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Express.js 백엔드 및 Vue 2.6으로 만들어진 코어 프로젝트",
   "author": "ksy7533 <ksy7533@zuminternet.com>, partjun <partjun@zuminternet.com>, junil <junil@zuminternet.com>",
   "scripts": {
