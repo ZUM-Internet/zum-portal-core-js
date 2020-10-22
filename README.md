@@ -8,6 +8,9 @@ Express-Core Project
 ---
 
 ### 변경 내역
+- 1.0.5
+  - 프론트엔드 프록시 버그 수정 
+
 - 1.0.4
   - 프론트엔드 뷰 initalizer 수정 (spread operator 제거)
   - 프론트엔드 Cli Option에서 fork-ts-checker 제거.<br>해당 플러그인이 tsconfig를 무시하게 만들어 제거함
