@@ -8,6 +8,9 @@ Express-Core Project
 ---
 
 ### 변경 내역
+- 1.0.6
+  - SSR시 optimization 비활성화 처리
+
 - 1.0.5
   - 프론트엔드 프록시 버그 수정 
 
