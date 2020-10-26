@@ -79,6 +79,7 @@ module.exports = function getDefaultCliOption() {
       /** SSR 빌드 진행시에만 적용 **/
       if (process.env.ZUM_FRONT_MODE === 'ssr') {
         config.target('node');
+        config.optimization.minimize(false);
         config.optimization.delete('splitChunks');
         config
             .output
