@@ -1,0 +1,1 @@
+{"version":3,"file":"TokenCheck.js","sourceRoot":"","sources":["../../util/TokenCheck.ts"],"names":[],"mappings":";;AAAA,uCAAmC;AAEnC;;;;GAIG;AACH,SAAgB,iBAAiB,CAAC,KAAK;IACrC,IAAI;QACF,oBAAS,CAAC,OAAO,CAAC,KAAK,CAAC,CAAC;QACzB,OAAO,IAAI,CAAC;KACb;IAAC,OAAO,CAAC,EAAE;QACV,OAAO,KAAK,CAAC;KACd;AACH,CAAC;AAPD,8CAOC"}
