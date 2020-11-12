@@ -3,7 +3,7 @@ import {container} from "tsyringe";
 import * as cookieParser from 'cookie-parser'
 import * as path from 'path';
 import * as express from "express";
-import {Application, ErrorRequestHandler, NextFunction, Request, Response, RequestHandler} from "express";
+import {Application, ErrorRequestHandler, NextFunction, Request, RequestHandler, Response} from "express";
 import * as glob from 'glob';
 import * as morgan from 'morgan';
 import chalk from 'chalk';
@@ -16,10 +16,10 @@ import ErrorResponse from "./middleware/ErrorResponse";
 import {ResourcePath} from "./util/ResourceLoader";
 import {urlInstall} from "./decorator/Controller";
 import {ZumDecoratorType} from "./decorator/ZumDecoratorType";
-import {constructor} from "tsyringe/dist/typings/types";
 
 // express 객체 생성 및 컨테이너 등록
 const app = express();
+app.set('trust proxy', true);
 container.register(express, { useValue: app });
 
 export default abstract class BaseAppContainer {
@@ -90,6 +90,7 @@ export default abstract class BaseAppContainer {
   private static middleWares() {
     // cookie parser
     app.use(cookieParser());
+
 
     // body parser
     app.use(express.json());

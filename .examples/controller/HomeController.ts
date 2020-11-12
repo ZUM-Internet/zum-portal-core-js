@@ -17,7 +17,9 @@ export class HomeController {
   ] )
   @GetMapping({path: 'hello'})
   public hello(req: Request, res: Response) {
+    console.log(req.ip)
     res.json({
+      ip: req.ip,
       hello: 'world',
       add: this.calculateService.add(100, 200)
     });
