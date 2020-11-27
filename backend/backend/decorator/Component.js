@@ -103,11 +103,12 @@ function appendCache(instance, method) {
     let CachingOption = callOptionWithInstance(Reflect.getMetadata(ZumDecoratorType_1.ZumDecoratorType.Caching, method), instance);
     if (!CachingOption)
         return;
+    const cache = CachingOption.cache || Caching_1.globalCache;
     const _function = method;
     const conditionFunction = ((_a = CachingOption.unless) === null || _a === void 0 ? void 0 : _a.bind(instance)) || (() => false);
     instance[method.name] = function () {
         const cacheKey = CachingOption.key || `${instance.constructor.name}_${method.name}_` + [...arguments].toString();
-        const cachingValue = Caching_1.globalCache.get(cacheKey);
+        const cachingValue = cache.get(cacheKey);
         // 캐시된 값이 있으면
         if (cachingValue) {
             return deepFreeze(cachingValue);
