@@ -100,11 +100,12 @@ function appendCache(instance, method) {
   let CachingOption = callOptionWithInstance(Reflect.getMetadata(ZumDecoratorType.Caching, method), instance);
   if (!CachingOption) return;
 
+  const cache = CachingOption.cache || globalCache;
   const _function = method;
   const conditionFunction: Function = CachingOption.unless?.bind(instance) || (() => false);
   instance[method.name] = function () {
     const cacheKey: string = CachingOption.key || `${instance.constructor.name}_${method.name}_` + [...arguments].toString();
-    const cachingValue: any = globalCache.get(cacheKey);
+    const cachingValue: any = cache.get(cacheKey);
 
     // 캐시된 값이 있으면
     if (cachingValue) {
