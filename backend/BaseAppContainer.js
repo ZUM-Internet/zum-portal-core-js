@@ -19,6 +19,7 @@ const Controller_1 = require("./decorator/Controller");
 const ZumDecoratorType_1 = require("./decorator/ZumDecoratorType");
 // express 객체 생성 및 컨테이너 등록
 const app = express();
+app.set('trust proxy', true);
 tsyringe_1.container.register(express, { useValue: app });
 class BaseAppContainer {
     /**

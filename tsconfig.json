@@ -3,7 +3,7 @@
         "sourceMap": true,
         "target": "es6",
         "module": "commonjs",
-        "outDir": "./backend/",
+        "outDir": "./",
         "baseUrl": "./",
         "types": ["reflect-metadata"],
         "moduleResolution": "node",
