@@ -8,6 +8,13 @@ Express-Core Project
 ---
 
 ### 변경 내역
+- 1.0.8
+  - 로거 ISO String의 T/Z 문자 제거
+  
+- 1.0.7
+  - Caching expire 관련 버그 수정
+  - Vue SSR ClientManifest 관련 기능 수정
+
 - 1.0.5
   - 프론트엔드 프록시 버그 수정 
 

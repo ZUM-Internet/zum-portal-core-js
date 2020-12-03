@@ -17,7 +17,10 @@ export class LoggerClass {
         winston.format.errors({stack: true}),
         winston.format.printf(info => {
           const infoDate = new Date(info.timestamp);
-          return `${new Date(infoDate.getTime() - timezoneOffset).toISOString()?.replace(/[a-zA-Z]/g, ' ')} ${info.level} : ${info.message}`;
+          return `${new Date(infoDate.getTime() - timezoneOffset)
+                        .toISOString()
+                        ?.replace(/[a-zA-Z]/g, ' ')
+                        ?.trimRight()} ${info.level} : ${info.message}`;
         })
       ),
       transports: [new winston.transports.Console()]
