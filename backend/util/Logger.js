@@ -19,8 +19,9 @@ let LoggerClass = class LoggerClass {
         this.winstonLogger = winston.createLogger({
             level: 'info',
             format: winston.format.combine(winston.format.timestamp(), winston.format.errors({ stack: true }), winston.format.printf(info => {
+                var _a;
                 const infoDate = new Date(info.timestamp);
-                return `${new Date(infoDate.getTime() - timezoneOffset).toISOString()} ${info.level} : ${info.message}`;
+                return `${(_a = new Date(infoDate.getTime() - timezoneOffset).toISOString()) === null || _a === void 0 ? void 0 : _a.replace(/[a-zA-Z]/g, ' ')} ${info.level} : ${info.message}`;
             })),
             transports: [new winston.transports.Console()]
         });
