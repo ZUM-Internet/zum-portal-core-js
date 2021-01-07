@@ -8,6 +8,9 @@ Express-Core Project
 ---
 
 ### 변경 내역
+- 1.0.9
+  - API 핸들러 규칙 추가 (/api 순위↑, * 포함시 순위↓)
+  
 - 1.0.8
   - 로거 ISO String의 T/Z 문자 제거
   

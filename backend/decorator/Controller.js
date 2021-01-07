@@ -59,6 +59,8 @@ exports.Controller = Controller;
 function urlInstall() {
     Object.keys(urlInstaller)
         .sort((l, r) => r.length - l.length)
+        .sort((l, r) => l.includes('*') ? 1 : -1)
+        .sort((l, r) => l.includes('/api') ? -1 : 1)
         .forEach(key => urlInstaller[key]());
 }
 exports.urlInstall = urlInstall;
