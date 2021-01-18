@@ -18,7 +18,7 @@ import {urlInstall} from "./decorator/Controller";
 import {ZumDecoratorType} from "./decorator/ZumDecoratorType";
 
 // express 객체 생성 및 컨테이너 등록
-const app = express();
+export const app = express();
 app.set('trust proxy', true);
 container.register(express, { useValue: app });
 
@@ -55,7 +55,7 @@ export default abstract class BaseAppContainer {
 
     // 기본 미들웨어 등록
     // 에셋보다 먼저 등록시 헤더가 붙지 않는 문제가 발생함
-    BaseAppContainer.middleWares();
+    attachMiddleWares(app);
     
     // !반드시 미들웨어 등록 후 실행!
     // 객체 생성을 위해 js, ts 파일 import
@@ -83,35 +83,6 @@ export default abstract class BaseAppContainer {
     // 정리된 컨트롤러별 URL 핸들링을 시작
     urlInstall();
   }
-
-  /**
-   * 기본 미들웨어 등록
-   */
-  private static middleWares() {
-    // cookie parser
-    app.use(cookieParser());
-
-
-    // body parser
-    app.use(express.json());
-    app.use(express.urlencoded({ extended: true }));
-
-    if (process.env.NODE_ENV === 'development') {
-      // morgan (http access log)
-      app.use(morgan(`${chalk.greenBright(':date[iso]')} ${chalk.blue(':method')} ${chalk.yellow(':status')} ${chalk.bold(':response-time')}ms :url`));
-    }
-
-
-    // --------------------------------------------
-    app.use(CoTracker); // cotracker 미들웨어
-    app.use(NoCacheHtml); // HTML 캐시 미적용
-    app.use('/state/version', VersionResponse); // 버전 응답 미들웨어
-    app.use('/state/log/:type/:message', ErrorResponse); // 에러 로그 응답 미들웨어
-    // --------------------------------------------
-
-  }
-
-
   /**
    * 에셋 폴더 및 템플릿 엔진 등록
    * @param dirname 프로젝트 메인 디렉토리
@@ -139,3 +110,32 @@ export default abstract class BaseAppContainer {
     app.engine('html', ejs.renderFile);
   }
 }
+
+
+/**
+ * 기본 미들웨어 등록
+ */
+export function attachMiddleWares(app = app) {
+  // cookie parser
+  app.use(cookieParser());
+
+
+  // body parser
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+
+  if (process.env.NODE_ENV === 'development') {
+    // morgan (http access log)
+    app.use(morgan(`${chalk.greenBright(':date[iso]')} ${chalk.blue(':method')} ${chalk.yellow(':status')} ${chalk.bold(':response-time')}ms :url`));
+  }
+
+
+  // --------------------------------------------
+  app.use(CoTracker); // cotracker 미들웨어
+  app.use(NoCacheHtml); // HTML 캐시 미적용
+  app.use('/state/version', VersionResponse); // 버전 응답 미들웨어
+  app.use('/state/log/:type/:message', ErrorResponse); // 에러 로그 응답 미들웨어
+  // --------------------------------------------
+
+}
+

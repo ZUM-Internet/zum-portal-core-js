@@ -3,7 +3,7 @@ import {container, singleton} from "tsyringe";
 
 @singleton()
 export class LoggerClass {
-  public winstonLogger;
+  public winstonLogger: winston.Logger;
 
   constructor() {
     // ISOString에 타임존을 적용하기 위한 오프셋
@@ -33,5 +33,5 @@ export class LoggerClass {
 /**
  * 다른 파일에서 사용 가능하게 Logger export
  */
-const logger = container.resolve(LoggerClass).winstonLogger;
+const logger: winston.Logger = container.resolve(LoggerClass).winstonLogger;
 export default logger;

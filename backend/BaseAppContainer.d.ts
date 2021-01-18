@@ -1,4 +1,5 @@
 import { Application, RequestHandler } from "express";
+export declare const app: import("express-serve-static-core").Express;
 export default abstract class BaseAppContainer {
     app: Application;
     /**
@@ -12,12 +13,12 @@ export default abstract class BaseAppContainer {
         dirname?: string;
     });
     /**
-     * 기본 미들웨어 등록
-     */
-    private static middleWares;
-    /**
      * 에셋 폴더 및 템플릿 엔진 등록
      * @param dirname 프로젝트 메인 디렉토리
      */
     private static templateAndAssets;
 }
+/**
+ * 기본 미들웨어 등록
+ */
+export declare function attachMiddleWares(app?: any): void;

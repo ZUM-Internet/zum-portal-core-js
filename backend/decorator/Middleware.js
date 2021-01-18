@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Middleware = void 0;
 const ZumDecoratorType_1 = require("./ZumDecoratorType");
 /**
  * 스케줄 등록 데코레이터

@@ -8,6 +8,11 @@ Express-Core Project
 ---
 
 ### 변경 내역
+- 1.1.0
+  - 바닐라 Node.js express에서 사용 가능하도록 exporting  
+  
+
+
 - 1.0.9
   - API 핸들러 규칙 추가 (/api 순위↑, * 포함시 순위↓)
   
@@ -102,6 +107,15 @@ Express-Core Project
 1. bundleRendering: Vue Server Renderer 객체를 받아 JSDOM을 활용, 렌더링하고 결과를 반환하는 함수
 1. createCookieJar: JSDOM에 적용할 수 있는 CookieJar 생성 함수
 1. renderingUserAgent: JSDOM에 적용할 브라우저별 user agent
+
+### SSR 사용시 백엔드 -> 프론트엔드 Vuex Store 연동
+1. 프론트엔드 main.js (엔트리 포인트)에 아래 구문을 작성할 것 (clientManifest 파일 사용시에만 작동)
+```js
+if (window.__INITIAL_STATE__) {
+  store.replaceState(window.__INITIAL_STATE__)
+}
+```
+
 
 ### 사용 방법
 #### 코어 적용 및 서버 구동

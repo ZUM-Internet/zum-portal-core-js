@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.LoggerClass = void 0;
 const winston = require("winston");
 const tsyringe_1 = require("tsyringe");
 let LoggerClass = class LoggerClass {

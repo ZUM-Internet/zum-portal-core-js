@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Yml = exports._getYmlToken = void 0;
 const tsyringe_1 = require("tsyringe");
 const glob = require("glob");
 const path = require("path");
@@ -8,7 +9,8 @@ const ZumDecoratorType_1 = require("./ZumDecoratorType");
 const Logger_1 = require("../util/Logger");
 const TokenCheck_1 = require("../util/TokenCheck");
 // Yml파일 컨테이너 토큰명을 가져오는 함수
-exports._getYmlToken = (filename) => `${ZumDecoratorType_1.ZumDecoratorType.PREFIX}yml__${filename}`;
+const _getYmlToken = (filename) => `${ZumDecoratorType_1.ZumDecoratorType.PREFIX}yml__${filename}`;
+exports._getYmlToken = _getYmlToken;
 /**
  * 리소스 폴더 내의 yml 설정 파일을 객체로 가져오는 데코레이터
  * @param filename 가져올 Yml 파일명

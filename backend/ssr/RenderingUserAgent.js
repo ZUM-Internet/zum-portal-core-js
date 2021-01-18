@@ -1,7 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.iosValidator = exports.renderingUserAgent = void 0;
 /**
- * SSR 시 사용할 유저 에이전트
+ * SSR 시 사용할 유저 에이전트.
+ *
+ * SSR 렌더링된 HTML과 프론트엔드에서 생성한 가상돔 불일치 가능성이 높아
+ * 사용을 권장하지 않음
  */
 exports.renderingUserAgent = {
     desktop: {
@@ -13,4 +17,5 @@ exports.renderingUserAgent = {
     },
 };
 const iosValidator = (userAgent) => /iphone|ipad|ipod|ios/gi.test(userAgent);
+exports.iosValidator = iosValidator;
 //# sourceMappingURL=RenderingUserAgent.js.map

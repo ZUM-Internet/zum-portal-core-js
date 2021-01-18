@@ -20,7 +20,7 @@ export class CalculateService {
   }
   @PostConstructor()
   public async post2() {
-    // console.log('post constructor2')
+    console.log('post constructor2')
     // console.log('result2', await this.test())
   }
 

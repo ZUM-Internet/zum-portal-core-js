@@ -9,9 +9,16 @@ export declare function Component(): (constructor: any) => void;
  */
 export declare function PostConstructor(): (clazz: any, methodName: string, descriptor: any) => any;
 /**
- * 메소드의 scope를 재설정하기 위해 사용되는 함수.
- * 람다식 사용시 'this' scope가 고정되는 것을 수정하기 위해 구현
- * @param obj
+ * 스케줄 등록함수
  * @param instance
+ * @param method
+ * @param scheduleOption
  */
-export declare function callOptionWithInstance(obj: any, instance: any): any;
+export declare function appendSchedule(instance: any, method: any, scheduleOption?: any): void;
+/**
+ * 캐시 등록함수
+ * @param instance
+ * @param method
+ * @param cachingOption
+ */
+export declare function appendedCache(instance: any, method: any, cachingOption?: any): any;

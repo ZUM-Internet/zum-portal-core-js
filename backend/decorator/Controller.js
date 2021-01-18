@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DeleteMapping = exports.PutMapping = exports.PostMapping = exports.GetMapping = exports.urlInstall = exports.Controller = void 0;
 const express = require("express");
 const tsyringe_1 = require("tsyringe");
 const ZumDecoratorType_1 = require("./ZumDecoratorType");

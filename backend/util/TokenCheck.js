@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.isRegisteredToken = void 0;
 const tsyringe_1 = require("tsyringe");
 /**
  * tsyringe 컨테이너에 등록된 토큰인지 체크하는 함수

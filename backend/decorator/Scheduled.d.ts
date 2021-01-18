@@ -2,9 +2,10 @@ declare type ScheduleOptionFunction = () => ScheduleOption;
 /**
  * 스케줄 등록 데코레이터
  * @param ScheduleOption 스케줄 등록 옵션
+ * @param func
  * @constructor
  */
-export declare function Scheduled(ScheduleOption: ScheduleOption | ScheduleOptionFunction): (component: any, propertyKey: string, descriptor: PropertyDescriptor) => PropertyDescriptor;
+export declare function Scheduled(ScheduleOption: ScheduleOption | ScheduleOptionFunction, func?: Function): Function | void;
 /**
  * 스케줄 설정 옵션
  */

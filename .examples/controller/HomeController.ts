@@ -3,11 +3,13 @@ import {Request, Response} from "express";
 import {Inject} from "../../backend/decorator/Alias";
 import {CalculateService} from "../service/CalculateService";
 import {Middleware} from "../../backend/decorator/Middleware";
+import HomeFacade from "../facade/HomeFacade";
 
 @Controller({path: '/'})
 export class HomeController {
 
-  constructor(@Inject(CalculateService) private calculateService: CalculateService) {
+  constructor(@Inject(CalculateService) private calculateService: CalculateService,
+              @Inject(HomeFacade) private homeFacade: HomeFacade) {
   }
 
 
@@ -25,6 +27,11 @@ export class HomeController {
     });
   }
 
+
+  @GetMapping({path: '/bundle'})
+  public async getRenderedHtml(req: Request, res: Response) {
+    res.send(await this.homeFacade.getRenderedHtml())
+  }
 
 
 }

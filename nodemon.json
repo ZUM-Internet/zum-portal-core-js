@@ -1,6 +1,7 @@
 {
   "watch": [
-    "./.examples/**"
+    "./.examples/**",
+    "./.examples_vanilla/**"
   ],
   "ext": "ts,js,html,yaml,yml,json",
   "exec": "npm start"

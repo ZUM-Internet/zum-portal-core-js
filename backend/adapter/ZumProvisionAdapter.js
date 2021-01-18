@@ -17,6 +17,7 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ZumProvisionAdapter = void 0;
 /**
  * 줌 API 전용 어댑터
  */

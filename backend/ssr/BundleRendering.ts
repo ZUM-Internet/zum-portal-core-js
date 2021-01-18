@@ -78,7 +78,6 @@ export function createCookieJar(domain: string, cookieObject: object): object {
   return cookieJar;
 }
 
-
 /**
  * Vue SSR Rendering 처리를 위한 옵션
  */

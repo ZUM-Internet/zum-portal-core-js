@@ -1,6 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ZumDecoratorType = void 0;
 const ZUM_CORE_DECORATOR_PREFIX = '__$zum__';
+/**
+ * 컨테이너에 등록할 때 사용될 타입 프리픽스
+ */
 exports.ZumDecoratorType = {
     PREFIX: ZUM_CORE_DECORATOR_PREFIX,
     Component: `${ZUM_CORE_DECORATOR_PREFIX}component`,
