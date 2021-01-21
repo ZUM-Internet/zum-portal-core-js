@@ -1,42 +1,28 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoggerClass = void 0;
-const winston = require("winston");
-const tsyringe_1 = require("tsyringe");
-let LoggerClass = class LoggerClass {
-    constructor() {
-        // ISOString에 타임존을 적용하기 위한 오프셋
-        const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
-        // winston logger 생성
-        this.winstonLogger = winston.createLogger({
-            level: 'info',
-            format: winston.format.combine(winston.format.timestamp(), winston.format.errors({ stack: true }), winston.format.printf(info => {
-                var _a, _b;
-                const infoDate = new Date(info.timestamp);
-                return `${(_b = (_a = new Date(infoDate.getTime() - timezoneOffset)
-                    .toISOString()) === null || _a === void 0 ? void 0 : _a.replace(/[a-zA-Z]/g, ' ')) === null || _b === void 0 ? void 0 : _b.trimRight()} ${info.level} : ${info.message}`;
-            })),
-            transports: [new winston.transports.Console()]
-        });
+const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
+function getTimestamp() {
+    var _a, _b;
+    return `${(_b = (_a = new Date(Date.now() - timezoneOffset).toISOString()) === null || _a === void 0 ? void 0 : _a.replace(/[a-zA-Z]/g, ' ')) === null || _b === void 0 ? void 0 : _b.trimRight()}`;
+}
+/**
+ * 서비스인프라팀에서 관리하는 로그 양식에 맞추기 위해 winston 제거
+ */
+exports.default = {
+    info(...args) {
+        return console.info(getTimestamp(), '[info]', ...args);
+    },
+    debug(...args) {
+        return console.debug(getTimestamp(), '[debug]', ...arguments);
+    },
+    log(...args) {
+        return console.log(getTimestamp(), '[log]', ...args);
+    },
+    warn(...args) {
+        return console.warn(getTimestamp(), '[warn]', ...args);
+    },
+    error(...args) {
+        return console.error(getTimestamp(), '[error]', ...args);
     }
 };
-LoggerClass = __decorate([
-    tsyringe_1.singleton(),
-    __metadata("design:paramtypes", [])
-], LoggerClass);
-exports.LoggerClass = LoggerClass;
-/**
- * 다른 파일에서 사용 가능하게 Logger export
- */
-const logger = tsyringe_1.container.resolve(LoggerClass).winstonLogger;
-exports.default = logger;
 //# sourceMappingURL=Logger.js.map

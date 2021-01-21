@@ -30,7 +30,7 @@ const renderer = createBundleRenderer(bundle, {
 
 // 캐싱테스트
 const cachingFunction = Caching({}, function (id) {
-  console.log('executed function', id);
+  logger.log('executed function', id);
   return id;
 });
 app.get('/test', function (req, res) {

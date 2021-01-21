@@ -30,28 +30,26 @@ class BaseAppContainer {
         const dirname = path.join(process.env.INIT_CWD, (options === null || options === void 0 ? void 0 : options.dirname) || './backend');
         // express 객체 생성 및 컨테이너 등록
         const app = express();
+        this.app = app;
         app.set('trust proxy', true);
-        tsyringe_1.container.register(express, { useValue: app });
+        tsyringe_1.container.register(express, { useValue: this.app });
         // 파라미터 미들웨어 등록
-        (_a = options === null || options === void 0 ? void 0 : options.initMiddleWares) === null || _a === void 0 ? void 0 : _a.forEach(func => app.use(func));
+        (_a = options === null || options === void 0 ? void 0 : options.initMiddleWares) === null || _a === void 0 ? void 0 : _a.forEach(func => this.app.use(func));
         // 파라미터/데코레이터로 입력된 초기 미들웨어 등록
         const middleware = Reflect.getMetadata(ZumDecoratorType_1.ZumDecoratorType.Middleware, Object.getPrototypeOf(this).constructor);
         if (middleware) { // 데코레이터 미들웨어 등록
             const middlewareArr = middleware.forEach ? middleware : [middleware];
-            middlewareArr.forEach(func => app.use(func));
+            middlewareArr.forEach(func => this.app.use(func));
         }
         // 템플릿 및 에셋 디렉토리 등록
-        this.templateAndAssets(app, dirname);
+        this.templateAndAssets(this.app, dirname);
         // 기본 미들웨어 등록
         // 에셋보다 먼저 등록시 헤더가 붙지 않는 문제가 발생함
-        attachMiddleWares(app);
-        // !반드시 미들웨어 등록 후 실행!
-        // 객체 생성을 위해 js, ts 파일 import
+        attachMiddleWares(this.app);
+        // 객체 생성을 위해 js, ts 파일 import (반드시 미들웨어 등록 후 실행)
         glob.sync(path.join(dirname, '/*/**/*.{js,ts}'))
             .filter(src => path.parse(path.basename(src)).name !== __filename)
             .forEach(src => require(src));
-        // 어플리케이션 등록
-        this.app = app;
         // 정리된 컨트롤러별 URL 핸들링을 시작
         Controller_1.urlInstall();
         // Express 글로벌 예외 처리
@@ -60,7 +58,7 @@ class BaseAppContainer {
                 res.sendStatus(204);
             }
             else { // 핸들링되지 않은 에러가 발생하면 500 전송
-                Logger_1.default.error(`\n[FATAL ERROR!]\nUnhandled global error event! You must check application logic`, err);
+                Logger_1.default.error(`[FATAL ERROR] Unhandled global error event! You must check application logic`, err);
                 res.sendStatus(500);
             }
         });
@@ -102,10 +100,8 @@ function attachMiddleWares(app) {
     // body parser
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
-    // cors setting
-    // app.use(cors())
+    // morgan (http access log)
     if (process.env.NODE_ENV === 'development') {
-        // morgan (http access log)
         app.use(morgan(`${chalk_1.default.greenBright(':date[iso]')} ${chalk_1.default.blue(':method')} ${chalk_1.default.yellow(':status')} ${chalk_1.default.bold(':response-time')}ms :url`));
     }
     // --------------------------------------------
