@@ -17,11 +17,6 @@ import {ResourcePath} from "./util/ResourceLoader";
 import {urlInstall} from "./decorator/Controller";
 import {ZumDecoratorType} from "./decorator/ZumDecoratorType";
 
-// express 객체 생성 및 컨테이너 등록
-export const app = express();
-app.set('trust proxy', true);
-container.register(express, { useValue: app });
-
 export default abstract class BaseAppContainer {
   public app: Application;
 
@@ -37,6 +32,14 @@ export default abstract class BaseAppContainer {
                                   }) {
     const dirname = path.join(process.env.INIT_CWD, options?.dirname || './backend');
 
+    // express 객체 생성 및 컨테이너 등록
+    const app = express();
+    app.set('trust proxy', true);
+    container.register(express, { useValue: app });
+
+
+    // 파라미터 미들웨어 등록
+    options?.initMiddleWares?.forEach(func => app.use(func));
 
     // 파라미터/데코레이터로 입력된 초기 미들웨어 등록
     const middleware = Reflect.getMetadata(ZumDecoratorType.Middleware, Object.getPrototypeOf(this).constructor);
@@ -44,14 +47,9 @@ export default abstract class BaseAppContainer {
       const middlewareArr = middleware.forEach ? middleware : [middleware];
       middlewareArr.forEach(func => app.use(func));
     }
-    // 파라미터 미들웨어 등록
-    options?.initMiddleWares?.forEach(func => app.use(func));
-
-
-
 
     // 템플릿 및 에셋 디렉토리 등록
-    BaseAppContainer.templateAndAssets(dirname);
+    this.templateAndAssets(app, dirname);
 
     // 기본 미들웨어 등록
     // 에셋보다 먼저 등록시 헤더가 붙지 않는 문제가 발생함
@@ -66,6 +64,10 @@ export default abstract class BaseAppContainer {
     // 어플리케이션 등록
     this.app = app;
 
+    // 정리된 컨트롤러별 URL 핸들링을 시작
+    urlInstall();
+
+
     // Express 글로벌 예외 처리
     this.app.use((err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {
 
@@ -79,15 +81,13 @@ export default abstract class BaseAppContainer {
 
     });
 
-
-    // 정리된 컨트롤러별 URL 핸들링을 시작
-    urlInstall();
   }
   /**
    * 에셋 폴더 및 템플릿 엔진 등록
+   * @param app app
    * @param dirname 프로젝트 메인 디렉토리
    */
-  private static templateAndAssets(dirname) {
+  private templateAndAssets(app, dirname) {
     ejs.delimiter = '?';
     ejs.open = '?';
     ejs.close = '?';
@@ -115,14 +115,18 @@ export default abstract class BaseAppContainer {
 /**
  * 기본 미들웨어 등록
  */
-export function attachMiddleWares(app = app) {
+export function attachMiddleWares(app) {
+  if (!app) return;
+
   // cookie parser
   app.use(cookieParser());
-
 
   // body parser
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+
+  // cors setting
+  // app.use(cors())
 
   if (process.env.NODE_ENV === 'development') {
     // morgan (http access log)
