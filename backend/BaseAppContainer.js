@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.attachMiddleWares = void 0;
 // @ts-nocheck
+const Sentry = require("@sentry/node");
 const tsyringe_1 = require("tsyringe");
 const cookieParser = require("cookie-parser");
 const path = require("path");
@@ -12,12 +13,12 @@ const chalk_1 = require("chalk");
 const CoTracker_1 = require("./middleware/CoTracker");
 const NoCacheHtml_1 = require("./middleware/NoCacheHtml");
 const ejs = require("ejs");
-const Logger_1 = require("./util/Logger");
 const VersionResponse_1 = require("./middleware/VersionResponse");
 const ErrorResponse_1 = require("./middleware/ErrorResponse");
 const ResourceLoader_1 = require("./util/ResourceLoader");
 const Controller_1 = require("./decorator/Controller");
 const ZumDecoratorType_1 = require("./decorator/ZumDecoratorType");
+const yamlConfig = require("node-yaml-config");
 class BaseAppContainer {
     /**
      * Express App 컨테이너
@@ -27,6 +28,7 @@ class BaseAppContainer {
      */
     constructor(options) {
         var _a;
+        const sentryOptions = getSentryOptions();
         const dirname = path.join(process.env.INIT_CWD, (options === null || options === void 0 ? void 0 : options.dirname) || './backend');
         // express 객체 생성 및 컨테이너 등록
         const app = express();
@@ -50,17 +52,24 @@ class BaseAppContainer {
         glob.sync(path.join(dirname, '/*/**/*.{js,ts}'))
             .filter(src => path.parse(path.basename(src)).name !== __filename)
             .forEach(src => require(src));
-        // 정리된 컨트롤러별 URL 핸들링을 시작
+        // 1. 센트리 리퀘스트 핸들러 등록
+        if (sentryOptions) {
+            Sentry.init({ dsn: sentryOptions.dsn });
+            app.use(Sentry.Handlers.requestHandler(Object.assign(Object.assign({}, sentryOptions), { dsn: null })));
+        }
+        // 2. 정리된 컨트롤러별 URL 핸들링을 시작
         Controller_1.urlInstall();
+        // 3. 센트리 에러 핸들러 등록
+        if (sentryOptions) {
+            app.use(Sentry.Handlers.errorHandler());
+        }
         // Express 글로벌 예외 처리
         this.app.use((err, req, res, next) => {
             if (req.originalUrl === '/favicon.ico') { // 파비콘 요청인 경우 No Contents 전송
-                res.sendStatus(204);
+                return res.sendStatus(204);
             }
-            else { // 핸들링되지 않은 에러가 발생하면 500 전송
-                Logger_1.default.error(`[FATAL ERROR] Unhandled global error event! You must check application logic`, err);
-                res.sendStatus(500);
-            }
+            res.statusCode = 500;
+            res.end(res.sentry + "\n");
         });
     }
     /**
@@ -112,4 +121,14 @@ function attachMiddleWares(app) {
     // --------------------------------------------
 }
 exports.attachMiddleWares = attachMiddleWares;
+function getSentryOptions() {
+    const files = glob.sync(path.join(process.env.INIT_CWD, `./resources/**/application.{yaml,yml}`));
+    if (files.length) {
+        return yamlConfig.load(files[0]).sentry;
+    }
+    else {
+        console.log(`Cannot found application.yml file. setup default.`);
+        return {};
+    }
+}
 //# sourceMappingURL=BaseAppContainer.js.map

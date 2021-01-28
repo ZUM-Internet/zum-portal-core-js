@@ -1,4 +1,5 @@
 // @ts-nocheck
+import * as Sentry from "@sentry/node";
 import {container} from "tsyringe";
 import * as cookieParser from 'cookie-parser'
 import * as path from 'path';
@@ -10,12 +11,12 @@ import chalk from 'chalk';
 import CoTracker from "./middleware/CoTracker";
 import NoCacheHtml from "./middleware/NoCacheHtml";
 import * as ejs from 'ejs';
-import logger from "./util/Logger";
 import VersionResponse from "./middleware/VersionResponse";
 import ErrorResponse from "./middleware/ErrorResponse";
 import {ResourcePath} from "./util/ResourceLoader";
 import {urlInstall} from "./decorator/Controller";
 import {ZumDecoratorType} from "./decorator/ZumDecoratorType";
+import * as yamlConfig from 'node-yaml-config';
 
 export default abstract class BaseAppContainer {
   public app: Application;
@@ -30,6 +31,7 @@ export default abstract class BaseAppContainer {
                                     initMiddleWares?: Array<RequestHandler>
                                     dirname?: string
                                   }) {
+    const sentryOptions = getSentryOptions();
     const dirname = path.join(process.env.INIT_CWD, options?.dirname || './backend');
 
     // express 객체 생성 및 컨테이너 등록
@@ -63,21 +65,31 @@ export default abstract class BaseAppContainer {
             .forEach(src => require(src));
 
 
-    // 정리된 컨트롤러별 URL 핸들링을 시작
+
+    // 1. 센트리 리퀘스트 핸들러 등록
+    if (sentryOptions) {
+      Sentry.init({ dsn: sentryOptions.dsn });
+      app.use(Sentry.Handlers.requestHandler({...sentryOptions, dsn: null}));
+    }
+
+    // 2. 정리된 컨트롤러별 URL 핸들링을 시작
     urlInstall();
+
+
+    // 3. 센트리 에러 핸들러 등록
+    if (sentryOptions) {
+      app.use(Sentry.Handlers.errorHandler());
+    }
 
 
     // Express 글로벌 예외 처리
     this.app.use((err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {
-
       if (req.originalUrl === '/favicon.ico') { // 파비콘 요청인 경우 No Contents 전송
-        res.sendStatus(204);
-
-      } else { // 핸들링되지 않은 에러가 발생하면 500 전송
-        logger.error(`[FATAL ERROR] Unhandled global error event! You must check application logic`, err);
-        res.sendStatus(500);
+        return res.sendStatus(204);
       }
 
+      res.statusCode = 500;
+      res.end(res.sentry + "\n");
     });
 
   }
@@ -140,3 +152,13 @@ export function attachMiddleWares(app) {
 
 }
 
+
+function getSentryOptions() {
+  const files = glob.sync(path.join(process.env.INIT_CWD, `./resources/**/application.{yaml,yml}`));
+  if (files.length) {
+    return yamlConfig.load(files[0]).sentry;
+  } else {
+    console.log(`Cannot found application.yml file. setup default.`);
+    return {};
+  }
+}
