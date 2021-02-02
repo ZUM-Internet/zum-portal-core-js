@@ -28,7 +28,7 @@ export default {
   },
 
   error(...args) {
+    console.error(getTimestamp(), '[error]', ...args);
     Sentry.captureMessage(JSON.stringify(args));
-    return console.error(getTimestamp(), '[error]', ...args);
   }
 };
