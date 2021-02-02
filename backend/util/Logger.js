@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const Sentry = require("@sentry/node");
 const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
 function getTimestamp() {
     var _a, _b;
@@ -22,6 +23,7 @@ exports.default = {
         return console.warn(getTimestamp(), '[warn]', ...args);
     },
     error(...args) {
+        Sentry.captureMessage(JSON.stringify(args));
         return console.error(getTimestamp(), '[error]', ...args);
     }
 };

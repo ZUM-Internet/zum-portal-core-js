@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/node";
 const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
 
 function getTimestamp() {
@@ -27,6 +28,7 @@ export default {
   },
 
   error(...args) {
+    Sentry.captureMessage(JSON.stringify(args));
     return console.error(getTimestamp(), '[error]', ...args);
   }
 };
