@@ -9,10 +9,9 @@ Express-Core Project
 
 ### 변경 내역
 - 1.1.0
-  - 바닐라 Node.js express에서 사용 가능하도록 exporting  
+  - 바닐라 Node.js express에서 사용 가능하도록 exporting
+  - Sentry 추가
   
-
-
 - 1.0.9
   - API 핸들러 규칙 추가 (/api 순위↑, * 포함시 순위↓)
   
@@ -84,6 +83,34 @@ Express-Core Project
 ### 유틸성 객체 및 함수
 1. Logger : winston logger를 이용하여 로그를 남길때 사용한다.
 2. ResourceLoader / ResourcePath : /resources 디렉토리 내의 파일을 가져올 때 사용한다.
+
+### resources/*.yml 파일 설정
+- resources/application.yml 파일은 서버 구동을 위해 반드시 필요하다.
+- yml 확장자를 가진 파일은 생성자에서 @Yml('파일명') private YML_NAME: any 구문으로  
+객체화하여 컨텍스트에 주입해 사용할 수 있다.
+- ex) 'YML_NAME.test.value'와 
+
+```
+* application.yml 파일 기본 옵션
+
+default: // 각 모드별로 적용될 옵션. default에 development / production 값이 덮어씌워진다
+  port: 8080 // 서버가 실행될 포트. application.yml 파일에서 자동으로 체크하여 
+
+  sentry: // 센트리 설정 옵션
+    dsn: 'https://b31b56d0ecd846eab9b6153797a594d1@o345995.ingest.sentry.io/5374955...' // 센트리 DSN 값
+    request: ''
+    serverName: true
+    transaction: ''
+    user: ''
+    ip: false
+    version: false
+    flushTimeout: 1000
+
+development:
+
+production:
+```
+
 
 ### 데코레이터 목록
 1. @Controller : Request Mapping을 위해 사용하는 컨트롤러 클래스에 사용한다.
