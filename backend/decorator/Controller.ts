@@ -35,8 +35,15 @@ export function Controller(ControllerOption: ControllerOption = {path: '/'}) {
     for (let methodName of Object.getOwnPropertyNames(constructor.prototype)) {
       const method = instance[methodName];
       const requestMappingMeta = Reflect.getMetadata(ZumDecoratorType.RequestMapping, method);
-      const middleware = Reflect.getMetadata(ZumDecoratorType.Middleware, method);
+      let middleware = Reflect.getMetadata(ZumDecoratorType.Middleware, method);
+      const constructorMiddleware = Reflect.getMetadata(ZumDecoratorType.Middleware, constructor);
       if (!requestMappingMeta) continue;
+      // 미들웨어 정리
+      if (Array.isArray(middleware)) {
+        middleware = [constructorMiddleware, ...middleware].filter(t => t);
+      } else {
+        middleware = [constructorMiddleware, middleware].filter(t => t);
+      }
 
       // 메타 데이터 destruct
       const {path, requestType} = requestMappingMeta;
@@ -52,8 +59,7 @@ export function Controller(ControllerOption: ControllerOption = {path: '/'}) {
 
         // URL 핸들러를 intaller에 등록. 등록된 URL 핸들러는 BaseAppContainer에서 마지막에 실행한다
         if (middleware) {
-          const middlewareArr = middleware.forEach ? middleware : [middleware]
-          urlInstaller[routePath] = () => app[requestType](routePath, ...middlewareArr, method.bind(app, instance));
+          urlInstaller[routePath] = () => app[requestType](routePath, ...middleware, method.bind(app, instance));
 
         } else {
           urlInstaller[routePath] = () => app[requestType](routePath, method.bind(app, instance));

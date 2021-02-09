@@ -30,9 +30,17 @@ function Controller(ControllerOption = { path: '/' }) {
         for (let methodName of Object.getOwnPropertyNames(constructor.prototype)) {
             const method = instance[methodName];
             const requestMappingMeta = Reflect.getMetadata(ZumDecoratorType_1.ZumDecoratorType.RequestMapping, method);
-            const middleware = Reflect.getMetadata(ZumDecoratorType_1.ZumDecoratorType.Middleware, method);
+            let middleware = Reflect.getMetadata(ZumDecoratorType_1.ZumDecoratorType.Middleware, method);
+            const constructorMiddleware = Reflect.getMetadata(ZumDecoratorType_1.ZumDecoratorType.Middleware, constructor);
             if (!requestMappingMeta)
                 continue;
+            // 미들웨어 정리
+            if (Array.isArray(middleware)) {
+                middleware = [constructorMiddleware, ...middleware].filter(t => t);
+            }
+            else {
+                middleware = [constructorMiddleware, middleware].filter(t => t);
+            }
             // 메타 데이터 destruct
             const { path, requestType } = requestMappingMeta;
             // 컨트롤러 path 획득.
@@ -43,8 +51,7 @@ function Controller(ControllerOption = { path: '/' }) {
                     .replace(/\/\//gi, '/'); // `//` 형식 제거
                 // URL 핸들러를 intaller에 등록. 등록된 URL 핸들러는 BaseAppContainer에서 마지막에 실행한다
                 if (middleware) {
-                    const middlewareArr = middleware.forEach ? middleware : [middleware];
-                    urlInstaller[routePath] = () => app[requestType](routePath, ...middlewareArr, method.bind(app, instance));
+                    urlInstaller[routePath] = () => app[requestType](routePath, ...middleware, method.bind(app, instance));
                 }
                 else {
                     urlInstaller[routePath] = () => app[requestType](routePath, method.bind(app, instance));

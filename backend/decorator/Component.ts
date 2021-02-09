@@ -186,7 +186,6 @@ export function appendCustomDecorator(instance, method) {
     // after hook
     if (afterDecoratorFunction) {
       const afterResult = afterDecoratorFunction.call(instance, result, ...args);
-      console.log('afterresult', afterResult)
       if (afterResult !== undefined) return afterResult
     }
 
