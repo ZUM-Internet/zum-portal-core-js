@@ -12,4 +12,7 @@ export const ZumDecoratorType = {
   Scheduled: `${ZUM_CORE_DECORATOR_PREFIX}scheduled`,
   Caching: `${ZUM_CORE_DECORATOR_PREFIX}caching`,
   Middleware: `${ZUM_CORE_DECORATOR_PREFIX}middleware`,
+
+  CustomBefore: `${ZUM_CORE_DECORATOR_PREFIX}custom__before`,
+  CustomAfter: `${ZUM_CORE_DECORATOR_PREFIX}custom__after`,
 }

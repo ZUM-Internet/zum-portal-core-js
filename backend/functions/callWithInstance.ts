@@ -6,6 +6,7 @@
  *
  * @param func
  * @param instance
+ * @param args
  */
 export function callWithInstance(func, instance) {
   if (func?.call) {

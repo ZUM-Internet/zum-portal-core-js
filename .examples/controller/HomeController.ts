@@ -5,12 +5,14 @@ import {CalculateService} from "../service/CalculateService";
 import {Middleware} from "../../backend/decorator/Middleware";
 import HomeFacade from "../facade/HomeFacade";
 import * as cors from 'cors';
+import CustomDecoratorService from "../service/CustomDecoratorService";
 
 @Controller({path: '/'})
 export class HomeController {
 
   constructor(@Inject(CalculateService) private calculateService: CalculateService,
-              @Inject(HomeFacade) private homeFacade: HomeFacade) {
+              @Inject(HomeFacade) private homeFacade: HomeFacade,
+              @Inject(CustomDecoratorService) private customDecorator: CustomDecoratorService) {
   }
 
 
@@ -55,6 +57,27 @@ export class HomeController {
   public async getCorsContents(req: Request, res: Response) {
     res.json({hello: 'world'})
   }
+
+
+
+  @GetMapping({path: '/custom'})
+  public async customDecoratorTest(req: Request, res: Response) {
+
+    res.json({
+      before1: await this.customDecorator.beforeReplace('12345'),
+      before2_1: await this.customDecorator.beforeOddStop(1),
+      before2_2: await this.customDecorator.beforeOddStop(2),
+      before2_3: await this.customDecorator.beforeOddStop(3),
+
+      after1_1: await this.customDecorator.afterReplace(1),
+      after1_2: await this.customDecorator.afterReplace(2),
+
+      after2_1: await this.customDecorator.afterOddStop(1),
+      after2_2: await this.customDecorator.afterOddStop(2),
+
+    });
+  }
+
 
 
 }

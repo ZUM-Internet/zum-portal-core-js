@@ -1,6 +1,6 @@
 import * as NodeCache from "node-cache";
 import {ZumDecoratorType} from "./ZumDecoratorType";
-import {appendedCache} from "./Component";
+import {appendCache} from "./Component";
 
 type CachingOptionFunction = () => CachingOption
 
@@ -23,7 +23,7 @@ export function Caching(CachingOption: CachingOptionFunction | CachingOption = {
   
   // 마지막 파리미터로 함수를 입력받으면 캐싱처리된 함수를 반환
   if (func) {
-    return appendedCache(this, func, CachingOption);
+    return appendCache(this, func, CachingOption);
   }
 
   // 데코레이터 메타데이터 삽입

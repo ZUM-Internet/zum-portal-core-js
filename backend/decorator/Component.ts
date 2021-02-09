@@ -26,7 +26,10 @@ export function Component() {
       appendSchedule(instance, method);
 
       // 캐시 기능 추가
-      instance[method.name] = appendedCache(instance, method);
+      instance[method.name] = appendCache(instance, method);
+
+      // 커스텀 데코레이터 기능 추가
+      instance[method.name] = appendCustomDecorator(instance, method);
     }
 
     /**
@@ -41,7 +44,7 @@ export function Component() {
         }
 
       } catch (e) {
-        console.error('err', e);
+        console.error('error on post constructor', e);
       }
     }
 
@@ -107,7 +110,7 @@ export function appendSchedule(instance, method, scheduleOption?) {
  * @param method
  * @param cachingOption
  */
-export function appendedCache(instance, method, cachingOption?) {
+export function appendCache(instance, method, cachingOption?) {
   let CachingOption = callWithInstance(cachingOption || Reflect.getMetadata(ZumDecoratorType.Caching, method), instance);
   if (!CachingOption) return method;
 
@@ -152,6 +155,49 @@ export function appendedCache(instance, method, cachingOption?) {
   };
 }
 
+
+/**
+ * 커스텀 데코레이터로 설정된 함수 설치
+ * @param instance
+ * @param method
+ */
+export function appendCustomDecorator(instance, method) {
+  const beforeDecoratorFunction = Reflect.getMetadata(ZumDecoratorType.CustomBefore, method)?.bind(instance);
+  const afterDecoratorFunction = Reflect.getMetadata(ZumDecoratorType.CustomAfter, method)?.bind(instance);
+
+  return function () {
+    let args = [...arguments];
+
+    // before hook
+    if (beforeDecoratorFunction) {
+      let next = false;
+      beforeDecoratorFunction.call(instance,
+                                    (...beforeResult) => {
+                                      next = true;
+                                      beforeResult.length ? args = [...beforeResult] : ''
+                                    },
+                                    ...args)
+      if (!next) return;
+    }
+
+    // call original method
+    let result = method.call(instance, ...args);
+
+    // after hook
+    if (afterDecoratorFunction) {
+      const afterResult = afterDecoratorFunction.call(instance, result, ...args);
+      console.log('afterresult', afterResult)
+      if (afterResult !== undefined) return afterResult
+    }
+
+    // return original result
+    return result;
+
+  };
+
+
+
+}
 
 
 

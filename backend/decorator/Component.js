@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.appendedCache = exports.appendSchedule = exports.PostConstructor = exports.Component = void 0;
+exports.appendCustomDecorator = exports.appendCache = exports.appendSchedule = exports.PostConstructor = exports.Component = void 0;
 const tsyringe_1 = require("tsyringe");
 const ZumDecoratorType_1 = require("./ZumDecoratorType");
 const schedule = require("node-schedule");
@@ -25,7 +25,9 @@ function Component() {
             // 스케줄 등록 및 취소 함수 추가
             appendSchedule(instance, method);
             // 캐시 기능 추가
-            instance[method.name] = appendedCache(instance, method);
+            instance[method.name] = appendCache(instance, method);
+            // 커스텀 데코레이터 기능 추가
+            instance[method.name] = appendCustomDecorator(instance, method);
         }
         /**
          * post constructor와 같은 후처리 데코레이터 적용
@@ -39,7 +41,7 @@ function Component() {
                 }
             }
             catch (e) {
-                console.error('err', e);
+                console.error('error on post constructor', e);
             }
         }
     };
@@ -101,7 +103,7 @@ exports.appendSchedule = appendSchedule;
  * @param method
  * @param cachingOption
  */
-function appendedCache(instance, method, cachingOption) {
+function appendCache(instance, method, cachingOption) {
     var _a;
     let CachingOption = callWithInstance_1.callWithInstance(cachingOption || Reflect.getMetadata(ZumDecoratorType_1.ZumDecoratorType.Caching, method), instance);
     if (!CachingOption)
@@ -142,5 +144,40 @@ function appendedCache(instance, method, cachingOption) {
         return deepFreeze_1.default(checkCacheCondition_1.default(cacheKey, value, conditionFunction, CachingOption));
     };
 }
-exports.appendedCache = appendedCache;
+exports.appendCache = appendCache;
+/**
+ * 커스텀 데코레이터로 설정된 함수 설치
+ * @param instance
+ * @param method
+ */
+function appendCustomDecorator(instance, method) {
+    var _a, _b;
+    const beforeDecoratorFunction = (_a = Reflect.getMetadata(ZumDecoratorType_1.ZumDecoratorType.CustomBefore, method)) === null || _a === void 0 ? void 0 : _a.bind(instance);
+    const afterDecoratorFunction = (_b = Reflect.getMetadata(ZumDecoratorType_1.ZumDecoratorType.CustomAfter, method)) === null || _b === void 0 ? void 0 : _b.bind(instance);
+    return function () {
+        let args = [...arguments];
+        // before hook
+        if (beforeDecoratorFunction) {
+            let next = false;
+            beforeDecoratorFunction.call(instance, (...beforeResult) => {
+                next = true;
+                beforeResult.length ? args = [...beforeResult] : '';
+            }, ...args);
+            if (!next)
+                return;
+        }
+        // call original method
+        let result = method.call(instance, ...args);
+        // after hook
+        if (afterDecoratorFunction) {
+            const afterResult = afterDecoratorFunction.call(instance, result, ...args);
+            console.log('afterresult', afterResult);
+            if (afterResult !== undefined)
+                return afterResult;
+        }
+        // return original result
+        return result;
+    };
+}
+exports.appendCustomDecorator = appendCustomDecorator;
 //# sourceMappingURL=Component.js.map

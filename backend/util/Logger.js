@@ -23,8 +23,8 @@ exports.default = {
         return console.warn(getTimestamp(), '[warn]', ...args);
     },
     error(...args) {
+        console.error(getTimestamp(), '[error]', ...args);
         Sentry.captureMessage(JSON.stringify(args));
-        return console.error(getTimestamp(), '[error]', ...args);
     }
 };
 //# sourceMappingURL=Logger.js.map

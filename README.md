@@ -10,7 +10,23 @@ Express-Core Project
 ### 변경 내역
 - 1.1.0
   - 바닐라 Node.js express에서 사용 가능하도록 exporting
-  - Sentry 추가
+  - Sentry 추가.
+    - application.yml 파일 내 DSN 옵션이 있는 경우 활성화됨
+    - ```
+default:
+  sentry:
+    dsn: 'https://b31b56d0ecd846eab9b6153797a594d1@o345995.ingest.sentry.io/5374955'
+    request: ''
+    serverName: true
+    transaction: ''
+    user: ''
+    ip: false
+    version: false
+    flushTimeout: 1000
+```text
+ - 커스텀 데코레이터 before, after 추가
+   - .examples/decorator 폴더의 예시 파일 참조
+
   
 - 1.0.9
   - API 핸들러 규칙 추가 (/api 순위↑, * 포함시 순위↓)

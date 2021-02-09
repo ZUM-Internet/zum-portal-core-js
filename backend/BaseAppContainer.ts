@@ -120,6 +120,7 @@ export default abstract class BaseAppContainer {
     app.set('view engine', 'ejs');
     app.engine('html', ejs.renderFile);
   }
+
 }
 
 

@@ -21,7 +21,7 @@ exports.globalCache = new NodeCache({
 function Caching(CachingOption = {}, func) {
     // 마지막 파리미터로 함수를 입력받으면 캐싱처리된 함수를 반환
     if (func) {
-        return Component_1.appendedCache(this, func, CachingOption);
+        return Component_1.appendCache(this, func, CachingOption);
     }
     // 데코레이터 메타데이터 삽입
     return function (clazz, methodName, descriptor) {
