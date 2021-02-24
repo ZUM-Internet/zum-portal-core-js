@@ -44,7 +44,7 @@ export function putVariantCookies(req: Request, res: Response, variant: variant,
     for (let key in variantValues) {
       if (!variantValues.hasOwnProperty(key)) continue;
       const value = variantValues[key];
-      if (seed < fixValue + value) {
+      if (seed <= fixValue + value) {
         targetKey = key;
         break;
       }
