@@ -1,12 +1,17 @@
 import {ZumDecoratorType} from "./ZumDecoratorType";
 import {NextFunction, Request, RequestHandler, Response} from "express";
 
+
+type FunctionHandler = () => RequestHandler;
+type FunctionHandlerArray = () => RequestHandler[];
+
 /**
- * 스케줄 등록 데코레이터
+ * 미들웨어 등록 데코레이터
  * @param middleware
  * @constructor
  */
-export function Middleware(middleware: RequestHandler | RequestHandler[]): any {
+export function Middleware(middleware: RequestHandler | RequestHandler[]
+                                     | FunctionHandler | FunctionHandlerArray): any {
   return function (component, propertyKey?: string, descriptor?: PropertyDescriptor) {
 
     // 메소드 데코레이터인 경우(descriptor) 메소드 반환

@@ -9,6 +9,7 @@ Express-Core Project
 
 ### 변경 내역
 - 1.1.0
+  - 미들웨어 함수(람다) 사용 가능하도록 추가
   - 바닐라 Node.js express에서 사용 가능하도록 exporting
   - Sentry 추가.
     - application.yml 파일 내 DSN 옵션이 있는 경우 활성화됨
@@ -157,7 +158,15 @@ production:
 if (window.__INITIAL_STATE__) {
   store.replaceState(window.__INITIAL_STATE__)
 }
+
+### 엔트리 포인트(BaseAppContainer)
+1. 생성자로 객체를 입력받음
 ```
+{
+    initMiddleWares?: Array<RequestHandler> // 0순위로 설치할 미들웨어 함수 배열
+    dirname?: string // 컴포넌트를 스캔할 기본 디렉토리 (상대주소)
+}
+```ts
 
 
 ### 사용 방법

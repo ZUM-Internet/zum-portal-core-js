@@ -4,10 +4,10 @@ import {container, singleton} from "tsyringe";
 import {ZumDecoratorType} from "./ZumDecoratorType";
 import logger from "../util/Logger";
 import {_getYmlToken} from "./Yml";
-import {isRegisteredToken} from "../util/TokenCheck";
+import {callWithInstance} from "../functions/callWithInstance";
 
 // 더 긴 URL부터 핸들링하기 위해 사용되는 Map 객체
-const urlInstaller = {};
+const urlInstaller: Array<{[url: string]: Function}> = [];
 
 /**
  * 컨트롤러 데코레이터
@@ -38,12 +38,16 @@ export function Controller(ControllerOption: ControllerOption = {path: '/'}) {
       let middleware = Reflect.getMetadata(ZumDecoratorType.Middleware, method);
       const constructorMiddleware = Reflect.getMetadata(ZumDecoratorType.Middleware, constructor);
       if (!requestMappingMeta) continue;
-      // 미들웨어 정리
+
+      // 함수형 미들웨어 정리
       if (Array.isArray(middleware)) {
+        middleware = middleware.map(m => callWithInstance(m, instance));
         middleware = [constructorMiddleware, ...middleware].filter(t => t);
       } else {
+        middleware = callWithInstance(middleware, instance);
         middleware = [constructorMiddleware, middleware].filter(t => t);
       }
+
 
       // 메타 데이터 destruct
       const {path, requestType} = requestMappingMeta;
@@ -59,10 +63,10 @@ export function Controller(ControllerOption: ControllerOption = {path: '/'}) {
 
         // URL 핸들러를 intaller에 등록. 등록된 URL 핸들러는 BaseAppContainer에서 마지막에 실행한다
         if (middleware) {
-          urlInstaller[routePath] = () => app[requestType](routePath, ...middleware, method.bind(app, instance));
+          urlInstaller.push({[routePath]: () => app[requestType](routePath, ...middleware, method.bind(app, instance))});
 
         } else {
-          urlInstaller[routePath] = () => app[requestType](routePath, method.bind(app, instance));
+          urlInstaller.push({[routePath]: () => app[requestType](routePath, method.bind(app, instance))});
         }
 
 
@@ -76,11 +80,11 @@ export function Controller(ControllerOption: ControllerOption = {path: '/'}) {
  * 더 긴 URL부터 핸들링해야 정상 작동하므로 소팅한 후 Express App에 등록한다
  */
 export function urlInstall() {
-  Object.keys(urlInstaller)
-    .sort((l, r) => r.length - l.length)
-    .sort((l, r) => l.includes('*') ? 1 : -1)
-    .sort((l, r) => l.includes('/api') ? -1 : 1)
-    .forEach(key => urlInstaller[key]());
+  urlInstaller
+    .sort((l, r) => Object.keys(r)[0].length - Object.keys(l)[0].length)
+    .sort((l, r) => Object.keys(l)[0].includes('*') ? 1 : -1)
+    .sort((l, r) => Object.keys(l)[0].includes('/api') ? -1 : 1)
+    .forEach(obj => (Object.values(obj)[0])());
 }
 
 

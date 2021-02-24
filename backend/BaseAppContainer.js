@@ -57,13 +57,11 @@ class BaseAppContainer {
             Sentry.init({ dsn: sentryOptions.dsn });
             app.use(Sentry.Handlers.requestHandler(Object.assign(Object.assign({}, sentryOptions), { dsn: null })));
         }
-        // 2. 정리된 컨트롤러별 URL 핸들링을 시작
-        Controller_1.urlInstall();
-        // 3. 센트리 에러 핸들러 등록
+        // 2. 센트리 에러 핸들러 등록
         if (sentryOptions) {
             app.use(Sentry.Handlers.errorHandler());
         }
-        // Express 글로벌 예외 처리
+        // 3. Express 글로벌 예외 처리
         this.app.use((err, req, res, next) => {
             if (req.originalUrl === '/favicon.ico') { // 파비콘 요청인 경우 No Contents 전송
                 return res.sendStatus(204);
@@ -71,6 +69,8 @@ class BaseAppContainer {
             res.statusCode = 500;
             res.end(res.sentry + "\n");
         });
+        // 4. app URL 설치
+        Controller_1.urlInstall();
     }
     /**
      * 에셋 폴더 및 템플릿 엔진 등록
