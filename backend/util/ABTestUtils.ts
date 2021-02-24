@@ -37,7 +37,7 @@ export function putVariantCookies(req: Request, res: Response, variant: variant,
 
     // 랜덤하게 Variant 타깃 생성
     const total = Object.values(variantValues).reduce((acc, cur) => acc+cur, 0);
-    const seed = Math.random() % total;
+    const seed = Math.random() * total;
     let targetKey = Object.keys(variantValues)[0];
     let fixValue = 0;
 
