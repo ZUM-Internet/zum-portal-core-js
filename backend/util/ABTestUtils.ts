@@ -20,8 +20,9 @@ type variant = { [testName: string]: variantValue };
  */
 export function putVariantCookies(req: Request, res: Response, variant: variant,
                                   cookieOptions: CookieOptions = {}): void {
-  const cookieValue = {};
+
   const cookie = JSON.parse(req.cookies[ABTEST_COOKIE_NAME] || null);
+  const cookieValue = { ...cookie };
 
   // 테스트별로 쿠키 값 객체에 랜덤 생성하여 추가
   for (const [testName, variantValues] of Object.entries(variant)) {
@@ -48,7 +49,6 @@ export function putVariantCookies(req: Request, res: Response, variant: variant,
 
     cookieValue[testName] = targetKey;
   }
-
 
   // 쿠키 설정
   const option = Object.assign({}, cookieOptions, {});
