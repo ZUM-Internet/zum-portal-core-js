@@ -1,4 +1,4 @@
-import {Service} from "../../backend/decorator/Alias";
+import {Service} from "../../../backend/decorator/Alias";
 import {BeforeEx1, BeforeEx2} from "../decorator/BeforeDecorator";
 import {AfterEx1, AfterEx2} from "../decorator/AfterDecorator";
 

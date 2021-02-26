@@ -2,12 +2,24 @@
 import * as path from "path";
 import * as fs from 'fs';
 
-
 export enum ResourceType {
   FILE,
   JSON
 }
 
+/**
+ * resources 폴더의 경로
+ */
+const RESOURCES_PATH = path.join(process.env.INIT_CWD, process.env.BASE_PATH || '', 'resources');
+
+/**
+ * Resources 폴더 내의 파일 path를 가져오는 함수.
+ *
+ * @param filename 가져올 디렉토리/파일명
+ */
+export function ResourcePath(filename: string) {
+  return path.join(RESOURCES_PATH, filename);
+}
 
 
 /**
@@ -18,7 +30,7 @@ export enum ResourceType {
  */
 export function ResourceLoader(filename: string, resourceType: ResourceType = ResourceType.FILE) {
   try {
-    const filePath = path.join(process.env.INIT_CWD, './resources', filename);
+    const filePath = ResourcePath(filename);
 
     if (resourceType == ResourceType.JSON) {
       return require(filePath);
@@ -28,14 +40,4 @@ export function ResourceLoader(filename: string, resourceType: ResourceType = Re
   } catch (e) {
     throw e;
   }
-}
-
-
-/**
- * Resources 폴더 내의 파일 path를 가져오는 함수.
- *
- * @param filename 가져올 디렉토리/파일명
- */
-export function ResourcePath(filename: string) {
-  return path.join(process.env.INIT_CWD, './resources', filename);
 }

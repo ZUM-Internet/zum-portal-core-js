@@ -14,10 +14,7 @@ function putVariantCookies(req, res, variant, cookieOptions = {}) {
     const cookieValue = {};
     const cookie = JSON.parse(req.cookies[ABTEST_COOKIE_NAME] || null);
     // 테스트별로 쿠키 값 객체에 랜덤 생성하여 추가
-    for (let testName in variant) {
-        if (!variant.hasOwnProperty(testName))
-            continue;
-        const variantValues = variant[testName];
+    for (const [testName, variantValues] of Object.entries(variant)) {
         const existCookieVariant = cookie === null || cookie === void 0 ? void 0 : cookie[testName];
         // 이미 쿠키에 선언되어 있는 경우 제외
         if (existCookieVariant && variantValues[existCookieVariant]) {
@@ -25,14 +22,11 @@ function putVariantCookies(req, res, variant, cookieOptions = {}) {
         }
         // 랜덤하게 Variant 타깃 생성
         const total = Object.values(variantValues).reduce((acc, cur) => acc + cur, 0);
-        const seed = Math.random() % total;
+        const seed = Math.random() * total;
         let targetKey = Object.keys(variantValues)[0];
         let fixValue = 0;
-        for (let key in variantValues) {
-            if (!variantValues.hasOwnProperty(key))
-                continue;
-            const value = variantValues[key];
-            if (seed < fixValue + value) {
+        for (const [key, value] of Object.entries(variantValues)) {
+            if (seed <= fixValue + value) {
                 targetKey = key;
                 break;
             }

@@ -1,8 +1,8 @@
-import {Controller, GetMapping} from "../../backend/decorator/Controller";
+import {Controller, GetMapping} from "../../../backend/decorator/Controller";
 import {Application, Request, Response} from "express";
-import {Inject} from "../../backend/decorator/Alias";
+import {Inject} from "../../../backend/decorator/Alias";
 import {CalculateService} from "../service/CalculateService";
-import {Middleware} from "../../backend/decorator/Middleware";
+import {Middleware} from "../../../backend/decorator/Middleware";
 import HomeFacade from "../facade/HomeFacade";
 import * as cors from 'cors';
 import CustomDecoratorService from "../service/CustomDecoratorService";

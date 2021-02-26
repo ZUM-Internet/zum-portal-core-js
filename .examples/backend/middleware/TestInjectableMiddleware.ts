@@ -1,8 +1,8 @@
-import {Component} from "../../backend/decorator/Component";
+import {Component} from "../../../backend/decorator/Component";
 import {Request, Response, NextFunction} from "express";
-import {Inject} from "../../backend/decorator/Alias";
+import {Inject} from "../../../backend/decorator/Alias";
 import {CalculateService} from "../service/CalculateService";
-import {putVariantCookies} from '../../backend/util/ABTestUtils';
+import {putVariantCookies} from '../../../backend/util/ABTestUtils';
 
 @Component()
 export default class TestInjectableMiddleware {

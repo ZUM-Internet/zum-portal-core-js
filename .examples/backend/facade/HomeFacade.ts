@@ -1,7 +1,7 @@
-import {Facade} from "../../backend/decorator/Alias";
+import {Facade} from "../../../backend/decorator/Alias";
 import * as path from 'path';
-import {bundleRendering, createCookieJar} from "../../backend/ssr/BundleRendering";
-import {renderingUserAgent} from '../../backend/ssr/RenderingUserAgent';
+import {bundleRendering, createCookieJar} from "../../../backend/ssr/BundleRendering";
+import {renderingUserAgent} from '../../../backend/ssr/RenderingUserAgent';
 import {BundleRenderer, createBundleRenderer} from "vue-server-renderer";
 
 const domain = 'http://localhost:8080';
@@ -14,8 +14,9 @@ export default class HomeFacade {
   constructor() {
 
     // SSR 번들 렌더러 생성
-    const bundle = require(path.join(process.env.INIT_CWD, '/resources/vue-ssr-server-bundle.json'));
-    const clientManifest = require(path.join(process.env.INIT_CWD, '/resources/vue-ssr-client-manifest.json'));
+    const resourcePath = path.join(process.env.INIT_CWD, process.env.BASE_PATH, 'resources')
+    const bundle = require(path.join(resourcePath, '/vue-ssr-server-bundle.json'));
+    const clientManifest = require(path.join(resourcePath, '/vue-ssr-client-manifest.json'));
     this.renderer = createBundleRenderer(bundle, {
       runInNewContext: false,
       clientManifest: clientManifest,

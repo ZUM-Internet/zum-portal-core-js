@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ResourcePath = exports.ResourceLoader = exports.ResourceType = void 0;
+exports.ResourceLoader = exports.ResourcePath = exports.ResourceType = void 0;
 // @ts-ignore
 const path = require("path");
 const fs = require("fs");
@@ -10,6 +10,19 @@ var ResourceType;
     ResourceType[ResourceType["JSON"] = 1] = "JSON";
 })(ResourceType = exports.ResourceType || (exports.ResourceType = {}));
 /**
+ * resources 폴더의 경로
+ */
+const RESOURCES_PATH = path.join(process.env.INIT_CWD, process.env.BASE_PATH || '', 'resources');
+/**
+ * Resources 폴더 내의 파일 path를 가져오는 함수.
+ *
+ * @param filename 가져올 디렉토리/파일명
+ */
+function ResourcePath(filename) {
+    return path.join(RESOURCES_PATH, filename);
+}
+exports.ResourcePath = ResourcePath;
+/**
  * Resources 폴더 내의 파일을 가져오는 함수.
  *
  * @param filename 가져올 디렉토리/파일명
@@ -17,7 +30,7 @@ var ResourceType;
  */
 function ResourceLoader(filename, resourceType = ResourceType.FILE) {
     try {
-        const filePath = path.join(process.env.INIT_CWD, './resources', filename);
+        const filePath = ResourcePath(filename);
         if (resourceType == ResourceType.JSON) {
             return require(filePath);
         }
@@ -28,13 +41,4 @@ function ResourceLoader(filename, resourceType = ResourceType.FILE) {
     }
 }
 exports.ResourceLoader = ResourceLoader;
-/**
- * Resources 폴더 내의 파일 path를 가져오는 함수.
- *
- * @param filename 가져올 디렉토리/파일명
- */
-function ResourcePath(filename) {
-    return path.join(process.env.INIT_CWD, './resources', filename);
-}
-exports.ResourcePath = ResourcePath;
 //# sourceMappingURL=ResourceLoader.js.map

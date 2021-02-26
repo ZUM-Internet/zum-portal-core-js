@@ -1,4 +1,4 @@
-import {ZumDecoratorType} from "../../backend/decorator/ZumDecoratorType";
+import {ZumDecoratorType} from "../../../backend/decorator/ZumDecoratorType";
 
 
 /**

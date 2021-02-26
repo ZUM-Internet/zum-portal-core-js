@@ -4,8 +4,10 @@
   "description": "Express.js 백엔드 및 Vue 2.6으로 만들어진 코어 프로젝트",
   "author": "partjun <partjun@zuminternet.com>, junil <junil@zuminternet.com>",
   "scripts": {
-    "example:dev": "tsc-watch --onSuccess \"cross-env NODE_ENV=development nodemon --exec ts-node --transpile-only .examples/Server.ts\"",
-    "example-node:dev": "tsc-watch --onSuccess \"cross-env NODE_ENV=development nodemon --exec ts-node --transpile-only .examples_vanilla/app.js\"",
+    "example:backend": "tsc-watch --onSuccess \"cross-env NODE_ENV=development BASE_PATH=.examples nodemon --exec ts-node --transpile-only .examples/backend/Server.ts\"",
+    "example:backend-vanilla": "tsc-watch --onSuccess \"cross-env NODE_ENV=development BASE_PATH=.examples nodemon --exec ts-node --transpile-only .examples/backend_vanilla/app.js\"",
+    "example:frontend:publish": "cross-env ZUM_FRONT_MODE=publish BASE_PATH=.examples vue-cli-service serve",
+    "example:frontend:dev": "cross-env ZUM_FRONT_MODE=dev BASE_PATH=.examples vue-cli-service serve",
     "build": "tsc"
   },
   "files": [
