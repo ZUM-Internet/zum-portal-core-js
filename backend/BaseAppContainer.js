@@ -29,7 +29,7 @@ class BaseAppContainer {
     constructor(options) {
         var _a;
         const sentryOptions = getSentryOptions();
-        const dirname = path.join(process.env.INIT_CWD, (options === null || options === void 0 ? void 0 : options.dirname) || './backend');
+        const dirname = path.join(process.env.INIT_CWD, process.env.BASE_PATH || '', (options === null || options === void 0 ? void 0 : options.dirname) || './backend');
         // express 객체 생성 및 컨테이너 등록
         const app = express();
         this.app = app;
@@ -122,7 +122,7 @@ function attachMiddleWares(app) {
 }
 exports.attachMiddleWares = attachMiddleWares;
 function getSentryOptions() {
-    const files = glob.sync(path.join(process.env.INIT_CWD, `./resources/**/application.{yaml,yml}`));
+    const files = glob.sync(path.join(process.env.INIT_CWD, process.env.BASE_PATH || '', `./resources/**/application.{yaml,yml}`));
     if (files.length) {
         return yamlConfig.load(files[0]).sentry;
     }

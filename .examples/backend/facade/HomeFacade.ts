@@ -7,7 +7,7 @@ import {bundleRendering, createCookieJar} from "../../../backend/ssr/BundleRende
 import {renderingUserAgent} from '../../../backend/ssr/RenderingUserAgent';
 
 const domain = 'http://localhost:8080';
-const RESOURCES_PATH = path.join(process.env.INIT_CWD, process.env.BASE_PATH, 'resources')
+const RESOURCES_PATH = path.join(process.env.INIT_CWD, process.env.BASE_PATH || '', 'resources')
 const TEMPLATES_PATH = path.join(RESOURCES_PATH, 'templates')
 
 @Facade()
@@ -40,7 +40,7 @@ export default class HomeFacade {
   public async getRenderedHtml(): Promise<string> {
     try {
       if (!process.env.NODE_ENV.includes('production')) {
-        return this._defaultHtml;
+        return this._emptyHtml;
       }
       console.time('start vue.js ssr rendering');
 

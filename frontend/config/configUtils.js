@@ -3,11 +3,12 @@ const merge = require('deepmerge'); // 객체 병합
 const rimraf = require('rimraf'); // 쉘 파일 제거 명령 수행 라이브러리
 
 // 노드가 optional chaining을 지원하지 않으므로 기본값을 설정한다.
+const INIT_CWD = path.join(process.env.INIT_CWD, process.env.BASE_PATH || '');
 global.ZUM_OPTION = merge({
-  frontSrcPath: path.join(process.env.INIT_CWD, process.env.BASE_PATH, 'frontend'),
-  resourcePath: path.join(process.env.INIT_CWD, process.env.BASE_PATH, 'resources'),
-  outputPath: path.join(process.env.INIT_CWD, process.env.BASE_PATH, 'resources'),
-  stubPath: path.join(process.env.INIT_CWD, process.env.BASE_PATH, 'resources', 'stub')
+  frontSrcPath: path.join(INIT_CWD, 'frontend'),
+  resourcePath: path.join(INIT_CWD, 'resources'),
+  outputPath: path.join(INIT_CWD, 'resources'),
+  stubPath: path.join(INIT_CWD, 'resources', 'stub')
 }, global.ZUM_OPTION || {});
 
 // 프론트엔드 src 폴더 정의

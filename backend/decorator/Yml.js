@@ -23,7 +23,7 @@ function Yml(filename) {
             tsyringe_1.container.resolve(token);
         }
         else {
-            const files = glob.sync(path.join(process.env.INIT_CWD, `./resources/**/${filename}.{yaml,yml}`));
+            const files = glob.sync(path.join(process.env.INIT_CWD, process.env.BASE_PATH || '', `./resources/**/${filename}.{yaml,yml}`));
             if (files.length) {
                 files.forEach(src => tsyringe_1.container.register(token, { useValue: yaml_config.load(src) }));
             }

@@ -22,7 +22,7 @@ export function Yml(filename: string) {
       container.resolve(token);
 
     } else {
-      const files = glob.sync(path.join(process.env.INIT_CWD, process.env.BASE_PATH, `./resources/**/${filename}.{yaml,yml}`));
+      const files = glob.sync(path.join(process.env.INIT_CWD, process.env.BASE_PATH || '', `./resources/**/${filename}.{yaml,yml}`));
       if (files.length) {
         files.forEach(src => container.register(token, {useValue: yaml_config.load(src)}));
       } else {

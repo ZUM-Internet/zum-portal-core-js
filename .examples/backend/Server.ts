@@ -12,7 +12,7 @@ export class AppContainer extends BaseAppContainer {
   public app: Application;
 
   constructor() {
-    super({dirname: './.examples/backend'});
+    super();
   }
 
   public listen() {

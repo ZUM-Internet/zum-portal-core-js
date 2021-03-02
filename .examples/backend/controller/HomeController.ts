@@ -13,8 +13,7 @@ export class HomeController {
 
   constructor(@Inject(CalculateService) private calculateService: CalculateService,
               @Inject(HomeFacade) private homeFacade: HomeFacade,
-              @Inject(CustomDecoratorService) private customDecorator: CustomDecoratorService,
-              @Inject(TestInjectableMiddleware) private testInjectableMiddleware: TestInjectableMiddleware) {
+              @Inject(CustomDecoratorService) private customDecorator: CustomDecoratorService) {
 
 
 
