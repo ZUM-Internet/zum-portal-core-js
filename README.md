@@ -13,20 +13,140 @@ Express-Core Project
   - 바닐라 Node.js express에서 사용 가능하도록 exporting
   - Sentry 추가.
     - application.yml 파일 내 DSN 옵션이 있는 경우 활성화됨
-    - ```
-default:
-  sentry:
-    dsn: 'https://b31b56d0ecd846eab9b6153797a594d1@o345995.ingest.sentry.io/5374955'
-    request: ''
-    serverName: true
-    transaction: ''
-    user: ''
-    ip: false
-    version: false
-    flushTimeout: 1000
-```text
- - 커스텀 데코레이터 before, after 추가
-   - .examples/decorator 폴더의 예시 파일 참조
+    ```yml
+    default:
+      sentry:
+        dsn: 'https://b31b56d0ecd846eab9b6153797a594d1@o345995.ingest.sentry.io/5374955'
+        request: ''
+        serverName: true
+        transaction: ''
+        user: ''
+        ip: false
+        version: false
+        flushTimeout: 1000
+    ```
+    
+  - 커스텀 데코레이터 before, after 추가
+    - .examples/decorator 폴더의 예시 파일 참조
+  - ABTest 관련 코드 추가
+    - 사용 방법
+      - Backend
+      ```ts
+      /** 1. Middleware 추가 **/
+      import {Component} from "zum-portal-core/backend/decorator/Component";
+      import {putVariantCookies} from "zum-portal-core/backend/util/ABTestUtils";
+      import {Request, Response, NextFunction} from "express";
+      
+      @Component()
+      export default class ABTestMiddleware {
+      
+        public setup(req: Request, res: Response, next: NextFunction) {
+            putVariantCookies(req, res, {
+              // A, B, C, D 테스트에 대한 가중치 부여
+              example: {
+                A: 0.1,
+                B: 0.2,
+                C: 0.3,
+                D: 0.4,
+              }
+            });
+            next();
+        }
+      
+      }
+      
+      /** 2. Controller에 Middleware 연결 **/
+      import {Controller, GetMapping} from "zum-portal-core/backend/decorator/Controller";
+      import {Request, Response} from "express";
+      import {Middleware} from "zum-portal-core/backend/decorator/Middleware";
+      import {Inject} from "zum-portal-core/backend/decorator/Alias";
+      
+      // 앞에서 선언한 미들웨어
+      import ABTestMiddleware from "./middleware/TestInjectableMiddleware";
+      
+      @Controller({path: '/'})
+      export class ABTestController {
+        
+        // 의존성 주입
+        constructor(
+          @Inject(ABTestMiddleware) private abTestMiddleware: ABTestMiddleware
+        ) {}
+        
+        /** API를 통해서 ABTest Variant를 설정하는 경우 **/
+        // Middleware를 통해 ABTest Variant 설정(쿠키에 값 할당) 
+        @Middleware(() => this.ABTestMiddleware.setup)
+        @GetMapping({path: '/api/abtest'})
+        public abtest(req: Request, res: Response) {
+          // 결과값은 임의로 반환.
+          res.json({
+            cookies: res.getHeader('set-cookie')
+          });
+        }
+        
+        /** SSR과 동시에 ABTest Variant를 설정하는 경우 **/
+        @Middleware(() => this.ABTestMiddleware.setup)
+        @GetMapping({path: '/**'})
+        public async getHome(req: Request, res: Response) {
+          res.send(await this.homeFacade.getRenderedHtml());
+        }
+      
+      }
+      ```
+        
+      - Frontend
+      ```vue
+      <template>
+        <div id="app">
+          <!--
+          - ABTest Component를 import하여 사용해야 함
+          - @params `variants`: abtest에서 사용될 variants
+          - @params `selectedVariant`: 선택된 variant
+          -->
+          <ABTest :variants="variants" :selectedVariant="selectedVariant">
+            <!-- slot의 값과 selectedVariant가 동일한 경우에 렌더링 됨 -->
+            <div :slot="variants[0]">A 렌더링</div>
+            <div :slot="variants[1]">B 렌더링</div>
+            <div :slot="variants[2]">C 렌더링</div>
+            <div :slot="variants[3]">D 렌더링</div>
+          </ABTest>
+        </div>
+      </template>
+      
+      <script>
+      import ABTest from "zum-portal-core/frontend/components/ABTest";
+      
+      // 쿠키에서 ABTest의 Variant를 가져오는 함수
+      const getABTestVariant = (key) => {
+        const variants = Cookies.getJSON('_ABTEST_VARIANT') || {};
+        return variants[key] || null;
+      }
+            
+      export default {
+        name: 'App',
+      
+        components: {ABTest},
+      
+        data: () => ({
+          selectedVariant: 'A', // 초기 Variant는 A를 사용한다.
+          variants: ['A', 'B', 'C', 'D'],
+        }),
+      
+        // SSR 때문에 mounted 시점에 variant를 교체해야 됨.
+        mounted () {
+          const selectedVariant = getABTestVariant('example');
+          if (selectedVariant === null) {
+            // API로 variant를 설정할 경우에는 다음과 같이 호출이 필요함
+            Axios.get('/api/abtest').then(() => {
+              this.selectedVariant = getABTestVariant('example') || 'A';
+            });
+          } else {
+            this.selectedVariant = selectedVariant;
+          }
+        }
+      }
+      </script>
+      ```
+  
 
   
 - 1.0.9
