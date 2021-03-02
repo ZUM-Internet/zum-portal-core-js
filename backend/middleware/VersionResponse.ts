@@ -5,7 +5,7 @@ import * as glob from 'glob';
 import {NextFunction, Request, Response} from "express";
 
 // 도커 컨테이너 이미지 빌드 시간
-const containerImageTag = glob.sync(path.resolve(process.env.INIT_CWD, 'container_image_tag.txt'))
+const containerImageTag = glob.sync(path.resolve(process.env.INIT_CWD, process.env.BASE_PATH, 'container_image_tag.txt'))
                               .map(src => fs.readFileSync(src))
                               .join('');
 

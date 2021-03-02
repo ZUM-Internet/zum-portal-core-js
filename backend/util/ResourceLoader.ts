@@ -10,7 +10,7 @@ export enum ResourceType {
 /**
  * resources 폴더의 경로
  */
-const RESOURCES_PATH = path.join(process.env.INIT_CWD, process.env.BASE_PATH || '', 'resources');
+const RESOURCES_PATH = path.join(process.env.INIT_CWD, process.env.BASE_PATH, 'resources');
 
 /**
  * Resources 폴더 내의 파일 path를 가져오는 함수.

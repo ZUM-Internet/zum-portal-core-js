@@ -32,7 +32,7 @@ export default abstract class BaseAppContainer {
                                     dirname?: string
                                   }) {
     const sentryOptions = getSentryOptions();
-    const dirname = path.join(process.env.INIT_CWD, options?.dirname || './backend');
+    const dirname = path.join(process.env.INIT_CWD, process.env.BASE_PATH, options?.dirname || './backend');
 
     // express 객체 생성 및 컨테이너 등록
     const app = express();
@@ -155,7 +155,7 @@ export function attachMiddleWares(app) {
 
 
 function getSentryOptions() {
-  const files = glob.sync(path.join(process.env.INIT_CWD, `./resources/**/application.{yaml,yml}`));
+  const files = glob.sync(path.join(process.env.INIT_CWD, process.env.BASE_PATH, `./resources/**/application.{yaml,yml}`));
   if (files.length) {
     return yamlConfig.load(files[0]).sentry;
   } else {

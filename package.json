@@ -4,10 +4,12 @@
   "description": "Express.js 백엔드 및 Vue 2.6으로 만들어진 코어 프로젝트",
   "author": "partjun <partjun@zuminternet.com>, junil <junil@zuminternet.com>",
   "scripts": {
-    "example:backend": "tsc-watch --onSuccess \"cross-env NODE_ENV=development BASE_PATH=.examples nodemon --exec ts-node --transpile-only .examples/backend/Server.ts\"",
-    "example:backend-vanilla": "tsc-watch --onSuccess \"cross-env NODE_ENV=development BASE_PATH=.examples nodemon --exec ts-node --transpile-only .examples/backend_vanilla/app.js\"",
+    "example:backend:dev": "tsc-watch --onSuccess \"cross-env NODE_ENV=development BASE_PATH=.examples nodemon --exec ts-node --transpile-only .examples/backend/Server.ts\"",
+    "example:backend-vanilla:dev": "tsc-watch --onSuccess \"cross-env NODE_ENV=development BASE_PATH=.examples nodemon --exec ts-node --transpile-only .examples/backend_vanilla/app.js\"",
+    "example:backend:prod": "cross-env ZUM_BACK_MODE=deploy NODE_ENV=production BASE_PATH=.examples ts-node ./.examples/backend/Server.ts",
     "example:frontend:publish": "cross-env ZUM_FRONT_MODE=publish BASE_PATH=.examples vue-cli-service serve",
     "example:frontend:dev": "cross-env ZUM_FRONT_MODE=dev BASE_PATH=.examples vue-cli-service serve",
+    "example:frontend:build": "cross-env BASE_PATH=.examples vue-cli-service build --no-clean && cross-env ZUM_FRONT_MODE=ssr BASE_PATH=.examples vue-cli-service build --no-clean",
     "build": "tsc"
   },
   "files": [

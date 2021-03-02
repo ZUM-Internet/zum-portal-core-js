@@ -1,4 +1,4 @@
-import "reflect-metadata"
+import "reflect-metadata";
 import {Application} from "express";
 import BaseAppContainer from "../../backend/BaseAppContainer";
 import {Singleton} from "../../backend/decorator/Alias";

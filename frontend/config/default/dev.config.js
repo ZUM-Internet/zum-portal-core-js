@@ -1,4 +1,4 @@
-const proxy = require('http-proxy-middleware');
+const {createProxyMiddleware} = require('http-proxy-middleware');
 const proxyConfig = require('./_proxyConfig');
 const frontSrcPath = global.ZUM_OPTION.frontSrcPath;
 const page = require(frontSrcPath + '/vue.page');
@@ -22,7 +22,7 @@ module.exports = {
     setup: function (app, server) {
 
       // 프록시 객체 생성
-      const proxyFunction = proxy({
+      const proxyFunction = createProxyMiddleware({
         target: 'http://localhost:8080',
         changeOrigin: true,
         selfHandleResponse: true,

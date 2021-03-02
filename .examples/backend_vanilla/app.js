@@ -19,8 +19,9 @@ attachMiddleWares(app); // 코어 기본 미들웨어 설치
 
 
 // SSR 번들 렌더러 생성
-const bundle = require(path.join(process.env.INIT_CWD, '/.examples/resources/vue-ssr-server-bundle.json'));
-const clientManifest = require(path.join(process.env.INIT_CWD, '/.examples/resources/vue-ssr-client-manifest.json'));
+const resourcesPath = path.join(process.env.INIT_CWD, process.env.BASE_PATH, './.examples/resources');
+const bundle = require(path.join(resourcesPath, 'vue-ssr-server-bundle.json'));
+const clientManifest = require(path.join(resourcesPath, 'vue-ssr-client-manifest.json'));
 const renderer = createBundleRenderer(bundle, {
   runInNewContext: false,
   clientManifest: clientManifest,

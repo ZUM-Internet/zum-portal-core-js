@@ -14,7 +14,12 @@ export default class TestInjectableMiddleware {
     // console.log('hi', this.calculateService.add(10, 20));
 
     putVariantCookies(req, res, {
-      example: {A: 0.3, B: 0.7}
+      example: {
+        A: 0.1,
+        B: 0.2,
+        C: 0.3,
+        D: 0.4,
+      }
     });
 
     next();

@@ -20,12 +20,21 @@ export class HomeController {
 
   }
 
-  // @ts-ignore
-  @Middleware(() => this.testInjectableMiddleware.setup)
-  @GetMapping({path: '/ab'})
-  public abtest(req: Request, res: Response) {
-    // console.log(res.locals)
-    res.send('f');
+  /**
+   * 템플릿을 반환
+   * @param req
+   * @param res
+   */
+  @GetMapping({path: '/**'})
+  public async getHome(req: Request, res: Response) {
+    console.error({
+      url: req.url
+    });
+    const template = await this.homeFacade.getRenderedHtml();
+    console.log(template);
+
+    // 템플릿 처리
+    res.send(template);
   }
 
 
@@ -55,13 +64,13 @@ export class HomeController {
 
   /!**
    * CORS 요청 가능하도록 설정하는 예제
-   * 
+   *
    * 브라우저에서 아래 구문 실행시 확인 가능
    * fetch('http://localhost:8080/cors', {
    *   mode: 'cors'
    * }).then(res => res.json())
    * .then(console.log)
-   * 
+   *
    * @param req
    * @param res
    *!/
