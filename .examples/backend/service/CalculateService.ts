@@ -1,8 +1,8 @@
-import {Service} from "../../backend/decorator/Alias";
-import {Yml} from "../../backend/decorator/Yml";
-import {PostConstructor} from "../../backend/decorator/Component";
+import {Service} from "../../../backend/decorator/Alias";
+import {Yml} from "../../../backend/decorator/Yml";
+import {PostConstructor} from "../../../backend/decorator/Component";
 import Axios from "axios";
-import {Caching} from "../../backend/decorator/Caching";
+import {Caching} from "../../../backend/decorator/Caching";
 
 @Service()
 export class CalculateService {
@@ -12,22 +12,23 @@ export class CalculateService {
 
   @PostConstructor()
   public async post1() {
-    console.log('post constructor1')
-    const r = await this.test();
-    console.log('result1', r);
-    // r.id = 100000; // throw error.
+    const r1 = this.test();
+    const r2 = this.test();
+    const r3 = this.test();
+
+
   }
   @PostConstructor()
   public async post2() {
     console.log('post constructor2')
-    console.log('result2', await this.test())
+    // console.log('result2', await this.test())
   }
 
   @Caching({key: 'test', unless: (result) => result.completed === true})
   public async test() {
     console.log('go man')
     const result = await Axios.get('https://jsonplaceholder.typicode.com/todos/1');
-    return result.data;
+    return {data: result.data}
   }
 
 

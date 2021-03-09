@@ -1,8 +1,11 @@
 import {container, singleton} from "tsyringe";
 import {ZumDecoratorType} from "./ZumDecoratorType";
 import * as schedule from 'node-schedule';
-import {CachingOption, globalCache} from "./Caching";
+import {globalCache} from "./Caching";
 import logger from "../util/Logger";
+import deepFreeze from "../functions/deepFreeze";
+import checkCacheCondition from "../functions/checkCacheCondition";
+import {callWithInstance} from "../functions/callWithInstance";
 
 /**
  * 컴포넌트 인스턴스 생성 데코레이터
@@ -21,8 +24,12 @@ export function Component() {
 
       // 스케줄 등록 및 취소 함수 추가
       appendSchedule(instance, method);
+
       // 캐시 기능 추가
-      appendCache(instance, method);
+      instance[method.name] = appendCache(instance, method);
+
+      // 커스텀 데코레이터 기능 추가
+      instance[method.name] = appendCustomDecorator(instance, method);
     }
 
     /**
@@ -31,8 +38,13 @@ export function Component() {
     for (let methodName of Object.getOwnPropertyNames(constructor.prototype)) {
       const method = instance[methodName];
       // post constructor 메소드 수행
-      if (Reflect.getMetadata(ZumDecoratorType.ComponentPostConstructor, method)) {
-        method.call(instance);
+      try {
+        if (Reflect.getMetadata(ZumDecoratorType.ComponentPostConstructor, method)) {
+          method.call(instance);
+        }
+
+      } catch (e) {
+        console.error('error on post constructor', e);
       }
     }
 
@@ -55,16 +67,17 @@ export function PostConstructor() {
  * 스케줄 등록함수
  * @param instance
  * @param method
+ * @param scheduleOption
  */
-function appendSchedule(instance, method) {
-  let ScheduleOption = callOptionWithInstance(Reflect.getMetadata(ZumDecoratorType.Scheduled, method), instance);
+export function appendSchedule(instance, method, scheduleOption?) {
+  let ScheduleOption = callWithInstance(scheduleOption || Reflect.getMetadata(ZumDecoratorType.Scheduled, method), instance);
   if (!ScheduleOption) return;
 
   // 스케줄러 컨디션 함수 생성
+  const condition = ScheduleOption.condition;
   let conditionFunction: Function;
-  if (ScheduleOption.condition !== undefined) {
-    conditionFunction = ScheduleOption.condition.bind
-                        ? ScheduleOption.condition.bind(instance) : () => ScheduleOption.condition; 
+  if (condition !== undefined) {
+    conditionFunction = condition.bind ? condition.bind(instance) : () => ScheduleOption.condition;
   } else {
     conditionFunction = () => conditionFunction;
   }
@@ -95,34 +108,23 @@ function appendSchedule(instance, method) {
  * 캐시 등록함수
  * @param instance
  * @param method
+ * @param cachingOption
  */
-function appendCache(instance, method) {
-  let CachingOption = callOptionWithInstance(Reflect.getMetadata(ZumDecoratorType.Caching, method), instance);
-  if (!CachingOption) return;
+export function appendCache(instance, method, cachingOption?) {
+  let CachingOption = callWithInstance(cachingOption || Reflect.getMetadata(ZumDecoratorType.Caching, method), instance);
+  if (!CachingOption) return method;
 
+  const cache = CachingOption.cache || globalCache;
   const _function = method;
   const conditionFunction: Function = CachingOption.unless?.bind(instance) || (() => false);
-  instance[method.name] = function () {
-    const cacheKey: string = CachingOption.key || `${instance.constructor.name}_${method.name}_` + [...arguments].toString();
-    const cachingValue: any = globalCache.get(cacheKey);
-
-    // 캐시된 값이 있으면
-    if (cachingValue) {
-      return deepFreeze(cachingValue);
-    }
-
-    // 캐시된 값이 없으면
-    const value = _function.call(instance, ...arguments) || `${ZumDecoratorType.PREFIX}${instance.constructor.name}_${_function.name}`;
-    return checkCondition(cacheKey, value, conditionFunction, CachingOption);
-  };
 
   // auto refresh
   if (CachingOption?.refreshCron) {
     // 갱신 함수
     const refreshFunc = function() {
-      const cacheKey = CachingOption.key || `${instance.constructor.name}_${method.name}_`;
+      const cacheKey = CachingOption.key || `${instance?.constructor?.name}_${method.name}_`;
       const value = _function.call(instance);
-      return checkCondition(cacheKey, value, conditionFunction, CachingOption);
+      return deepFreeze(checkCacheCondition(cacheKey, value, conditionFunction, CachingOption));
     };
 
     // cron 값 설정
@@ -137,89 +139,66 @@ function appendCache(instance, method) {
       refreshFunc();
     }
   }
-}
 
+  return function () {
+    const cacheKey: string = CachingOption.key || `${instance?.constructor?.name}_${method.name}_` + [...arguments].toString();
+    const cachingValue: any = cache.get(cacheKey);
 
-
-/**
- * unless 함수를 입력받아 수행하고 true인 경우 캐시에 저장하는 함수
- *
- * @param cacheKey 캐시 키
- * @param value 체크 후 캐시에 저장할 값
- * @param unlessFunction instance가 바인딩된 값 체크 함수
- * @param CachingOption 캐시 옵션
- * @return 체크한 값
- */
-function checkCondition(cacheKey: string, value: any,
-                        unlessFunction: Function, CachingOption: CachingOption): any {
-
-  if (value instanceof Promise) { // 결과가 Promise인 경우
-    return new Promise(resolve => {
-
-      // 저장되어있는 캐시가 null인 경우 우선 데이터를 삽입하고 수정한다
-      if (!globalCache.get(cacheKey)) {
-        globalCache.set(cacheKey,
-          value.then(async v => {
-            if (unlessFunction(v)) { // unless === true 일 시 캐시 제거
-              globalCache.set(cacheKey, null);
-              return null;
-            }
-            return deepFreeze(v);
-          }),
-          CachingOption.ttl || 0);
-      }
-
-
-      value.then(async v => {
-        if (!unlessFunction(v)) { // unless 함수가 없거나 false인 경우에만 저장
-          globalCache.set(cacheKey, deepFreeze(value), CachingOption.ttl || 0);
-          return resolve(v);
-
-        } else {
-          value = globalCache.get(cacheKey);
-          return resolve(await value);
-        }
-      });
-    });
-
-
-  } else { // 결과가 일반 값인 경우.
-
-    if (!unlessFunction(value)) {
-      globalCache.set(cacheKey, deepFreeze(value), CachingOption.ttl)
-    } else {
-      value = globalCache.get(cacheKey);
+    // 캐시된 값이 있으면
+    if (cachingValue) {
+      return deepFreeze(cachingValue);
     }
 
-    return value;
-  }
-
+    // 캐시된 값이 없으면
+    const value = _function.call(instance, ...arguments);
+    return deepFreeze(checkCacheCondition(cacheKey, value, conditionFunction, CachingOption));
+  };
 }
 
+
 /**
- *
- * @param obj
+ * 커스텀 데코레이터로 설정된 함수 설치
  * @param instance
+ * @param method
  */
-export function callOptionWithInstance(obj, instance) {
-  // cron 값 설정
-  if (obj?.call) {
-    (function () { obj = eval(obj.toString())(); }).call(instance);
-  }
-  return obj;
+export function appendCustomDecorator(instance, method) {
+  const beforeDecoratorFunction = Reflect.getMetadata(ZumDecoratorType.CustomBefore, method)?.bind(instance);
+  const afterDecoratorFunction = Reflect.getMetadata(ZumDecoratorType.CustomAfter, method)?.bind(instance);
+
+  return function () {
+    let args = [...arguments];
+
+    // before hook
+    if (beforeDecoratorFunction) {
+      let next = false;
+      beforeDecoratorFunction.call(instance,
+                                    (...beforeResult) => {
+                                      next = true;
+                                      beforeResult.length ? args = [...beforeResult] : ''
+                                    },
+                                    ...args)
+      if (!next) return;
+    }
+
+    // call original method
+    let result = method.call(instance, ...args);
+
+    // after hook
+    if (afterDecoratorFunction) {
+      const afterResult = afterDecoratorFunction.call(instance, result, ...args);
+      if (afterResult !== undefined) return afterResult
+    }
+
+    // return original result
+    return result;
+
+  };
+
+
+
 }
 
 
-/**
- * 객체를 완전동결하는 함수
- * @param object
- */
-function deepFreeze(object) {
-  const propNames = Object.getOwnPropertyNames(object);
-  for (let name of propNames) {
-    let value = object[name];
-    object[name] = value && typeof value === "object" ?
-      deepFreeze(value) : value;
-  }
-  return Object.freeze(object);
-}
+
+
+

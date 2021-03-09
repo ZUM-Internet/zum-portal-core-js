@@ -1,0 +1,49 @@
+{
+  "publicPath": "/",
+  "all": [
+    "static/js/abtest.b779a70a.js",
+    "static/js/chunk-vendors.68efb0ca.js",
+    "static/js/chunk-vendors.68efb0ca.js.LICENSE.txt",
+    "templates/dist/index.html"
+  ],
+  "initial": [
+    "static/js/chunk-vendors.68efb0ca.js",
+    "static/js/abtest.b779a70a.js"
+  ],
+  "async": [],
+  "modules": {
+    "46647304": [
+      0
+    ],
+    "7765c060": [
+      0
+    ],
+    "26198d75": [
+      1
+    ],
+    "d561748e": [
+      1
+    ],
+    "7f99ccae": [
+      0
+    ],
+    "ae607112": [
+      1
+    ],
+    "6e565682": [
+      1
+    ],
+    "5b01f89a": [
+      0
+    ],
+    "6803ab8e": [
+      1
+    ],
+    "fdc56b24": [
+      0
+    ],
+    "a1e49ea0": [
+      1
+    ]
+  }
+}

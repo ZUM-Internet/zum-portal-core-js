@@ -3,15 +3,19 @@
         "sourceMap": true,
         "target": "es6",
         "module": "commonjs",
-        "outDir": "./backend/",
+        "outDir": "./",
         "baseUrl": "./",
         "types": ["reflect-metadata"],
         "moduleResolution": "node",
+        "declaration": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true
     },
     "include": [
-        "./backend"
+      "./backend/**/*.ts",
+      "./types/**/*.ts"
     ],
-    "exclude": []
+    "exclude": [
+      "./**/*.d.ts"
+    ]
 }

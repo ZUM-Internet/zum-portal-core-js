@@ -27,6 +27,7 @@ module.exports = function getPageConfig(pageObj) {
         if (mode === 'publish') {
           if (pageObj[key].publishTemplate) {
             pageObj[key].template = path.join(global.ZUM_OPTION.resourcePath, pageObj[key].publishTemplate);
+            console.log(pageObj[key].template);
           }
           delete pageObj[key].filename;
         }

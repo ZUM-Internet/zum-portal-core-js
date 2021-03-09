@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
+const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const getPageConfig = require('./_getPageConfig');
 
@@ -49,6 +50,7 @@ module.exports = function getDefaultCliOption() {
       try {
         require('typescript') && require('@vue/cli-plugin-typescript');
 
+        config.plugins.delete('fork-ts-checker');
         config.module.rule('ts')
             .use('ts-loader').loader('ts-loader')
             .tap((options) => {
@@ -75,8 +77,8 @@ module.exports = function getDefaultCliOption() {
         })
       ]);
 
-      /** SSR 빌드 진행시에만 적용 **/
       if (process.env.ZUM_FRONT_MODE === 'ssr') {
+      /** SSR 빌드 진행시에만 적용 **/
         config.target('node');
         config.optimization.delete('splitChunks');
         config
@@ -91,8 +93,12 @@ module.exports = function getDefaultCliOption() {
             .plugin('ssr')
             .use(VueSSRServerPlugin) // ssr 플러그인 적용 (vue-server-bundle.json 파일 생성됨)
             .end();
+      } else {
+        config
+            .plugin('ssr')
+            .use(VueSSRClientPlugin) // ssr 플러그인 적용 (vue-client-manifest.json 파일 생성됨)
+            .end()
       }
-      /** SSR 빌드 진행시에만 적용 **/
 
       return config
           .output
