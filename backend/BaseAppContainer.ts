@@ -1,4 +1,5 @@
 // @ts-nocheck
+import * as Sentry from "@sentry/node";
 import {container} from "tsyringe";
 import * as cookieParser from 'cookie-parser'
 import * as path from 'path';
@@ -10,12 +11,12 @@ import chalk from 'chalk';
 import CoTracker from "./middleware/CoTracker";
 import NoCacheHtml from "./middleware/NoCacheHtml";
 import * as ejs from 'ejs';
-import logger from "./util/Logger";
 import VersionResponse from "./middleware/VersionResponse";
 import ErrorResponse from "./middleware/ErrorResponse";
 import {ResourcePath} from "./util/ResourceLoader";
 import {urlInstall} from "./decorator/Controller";
 import {ZumDecoratorType} from "./decorator/ZumDecoratorType";
+import * as yamlConfig from 'node-yaml-config';
 
 export default abstract class BaseAppContainer {
   public app: Application;
@@ -30,56 +31,67 @@ export default abstract class BaseAppContainer {
                                     initMiddleWares?: Array<RequestHandler>
                                     dirname?: string
                                   }) {
-    const dirname = path.join(process.env.INIT_CWD, options?.dirname || './backend');
+
+    const sentryOptions = getSentryOptions();
+    const dirname = path.join(process.env.INIT_CWD, process.env.BASE_PATH || '', options?.dirname || './backend');
 
     // express 객체 생성 및 컨테이너 등록
     const app = express();
+    this.app = app;
     app.set('trust proxy', true);
-    container.register(express, { useValue: app });
-
+    container.register(express, { useValue: this.app });
 
     // 파라미터 미들웨어 등록
-    options?.initMiddleWares?.forEach(func => app.use(func));
+    options?.initMiddleWares?.forEach(func => this.app.use(func));
 
     // 파라미터/데코레이터로 입력된 초기 미들웨어 등록
     const middleware = Reflect.getMetadata(ZumDecoratorType.Middleware, Object.getPrototypeOf(this).constructor);
     if (middleware) { // 데코레이터 미들웨어 등록
       const middlewareArr = middleware.forEach ? middleware : [middleware];
-      middlewareArr.forEach(func => app.use(func));
+      middlewareArr.forEach(func => this.app.use(func));
     }
 
     // 템플릿 및 에셋 디렉토리 등록
-    this.templateAndAssets(app, dirname);
+    this.templateAndAssets(this.app, dirname);
 
     // 기본 미들웨어 등록
     // 에셋보다 먼저 등록시 헤더가 붙지 않는 문제가 발생함
-    attachMiddleWares(app);
-    
-    // !반드시 미들웨어 등록 후 실행!
-    // 객체 생성을 위해 js, ts 파일 import
+    attachMiddleWares(this.app);
+
+
+    // 객체 생성을 위해 js, ts 파일 import (반드시 미들웨어 등록 후 실행)
     glob.sync(path.join(dirname, '/*/**/*.{js,ts}'))
             .filter(src => path.parse(path.basename(src)).name !== __filename)
             .forEach(src => require(src));
 
-    // 어플리케이션 등록
-    this.app = app;
-
-    // 정리된 컨트롤러별 URL 핸들링을 시작
-    urlInstall();
 
 
-    // Express 글로벌 예외 처리
+    // 1. 센트리 리퀘스트 핸들러 등록
+    if (sentryOptions) {
+      Sentry.init({ dsn: sentryOptions.dsn });
+      app.use(Sentry.Handlers.requestHandler({...sentryOptions, dsn: null}));
+    }
+
+    // 2. 센트리 에러 핸들러 등록
+    if (sentryOptions) {
+      app.use(Sentry.Handlers.errorHandler());
+    }
+
+
+    // 3. Express 글로벌 예외 처리
     this.app.use((err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {
-
       if (req.originalUrl === '/favicon.ico') { // 파비콘 요청인 경우 No Contents 전송
-        res.sendStatus(204);
-
-      } else { // 핸들링되지 않은 에러가 발생하면 500 전송
-        logger.error(`\n[FATAL ERROR!]\nUnhandled global error event! You must check application logic`, err);
-        res.sendStatus(500);
+        return res.sendStatus(204);
       }
 
+      res.statusCode = 500;
+      res.end(res.sentry + "\n");
     });
+
+
+    // 4. app URL 설치
+    urlInstall();
+
 
   }
   /**
@@ -109,6 +121,7 @@ export default abstract class BaseAppContainer {
     app.set('view engine', 'ejs');
     app.engine('html', ejs.renderFile);
   }
+
 }
 
 
@@ -125,11 +138,9 @@ export function attachMiddleWares(app) {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
-  // cors setting
-  // app.use(cors())
 
+  // morgan (http access log)
   if (process.env.NODE_ENV === 'development') {
-    // morgan (http access log)
     app.use(morgan(`${chalk.greenBright(':date[iso]')} ${chalk.blue(':method')} ${chalk.yellow(':status')} ${chalk.bold(':response-time')}ms :url`));
   }
 
@@ -143,3 +154,13 @@ export function attachMiddleWares(app) {
 
 }
 
+
+function getSentryOptions() {
+  const files = glob.sync(path.join(process.env.INIT_CWD, process.env.BASE_PATH || '', `./resources/**/application.{yaml,yml}`));
+  if (files.length) {
+    return yamlConfig.load(files[0]).sentry;
+  } else {
+    console.log(`Cannot found application.yml file. setup default.`);
+    return {};
+  }
+}

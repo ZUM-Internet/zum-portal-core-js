@@ -9,15 +9,15 @@
 /**
  * 프록시 Response 처리 로직 수행 함수
  *
- * @param appendPaths html을 삽입할 Path 배열
- * @param entry
+ * @param pageElements html을 삽입할 Path 배열
  * @param devHost Webpack Dev Server Host
  * @param backendHost Back-end Host
  * @param publicPath
  * @returns {Function}
  */
 module.exports = function (pageElements,
-                           devHost, backendHost,
+                           devHost,
+                           backendHost,
                            publicPath = process.env.publicPath) {
 
   // 스크립트를 삽입할 Path 검사 정규식 생성 함수

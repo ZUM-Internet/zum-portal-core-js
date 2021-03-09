@@ -6,8 +6,9 @@ const tsyringe_1 = require("tsyringe");
 const ZumDecoratorType_1 = require("./ZumDecoratorType");
 const Logger_1 = require("../util/Logger");
 const Yml_1 = require("./Yml");
+const callWithInstance_1 = require("../functions/callWithInstance");
 // 더 긴 URL부터 핸들링하기 위해 사용되는 Map 객체
-const urlInstaller = {};
+const urlInstaller = [];
 /**
  * 컨트롤러 데코레이터
  * @param ControllerOption 컨트롤러 데코레이터 옵션
@@ -30,9 +31,19 @@ function Controller(ControllerOption = { path: '/' }) {
         for (let methodName of Object.getOwnPropertyNames(constructor.prototype)) {
             const method = instance[methodName];
             const requestMappingMeta = Reflect.getMetadata(ZumDecoratorType_1.ZumDecoratorType.RequestMapping, method);
-            const middleware = Reflect.getMetadata(ZumDecoratorType_1.ZumDecoratorType.Middleware, method);
+            let middleware = Reflect.getMetadata(ZumDecoratorType_1.ZumDecoratorType.Middleware, method);
+            const constructorMiddleware = Reflect.getMetadata(ZumDecoratorType_1.ZumDecoratorType.Middleware, constructor);
             if (!requestMappingMeta)
                 continue;
+            // 함수형 미들웨어 정리
+            if (Array.isArray(middleware)) {
+                middleware = middleware.map(m => callWithInstance_1.callWithInstance(m, instance));
+                middleware = [constructorMiddleware, ...middleware].filter(t => t);
+            }
+            else {
+                middleware = callWithInstance_1.callWithInstance(middleware, instance);
+                middleware = [constructorMiddleware, middleware].filter(t => t);
+            }
             // 메타 데이터 destruct
             const { path, requestType } = requestMappingMeta;
             // 컨트롤러 path 획득.
@@ -43,11 +54,10 @@ function Controller(ControllerOption = { path: '/' }) {
                     .replace(/\/\//gi, '/'); // `//` 형식 제거
                 // URL 핸들러를 intaller에 등록. 등록된 URL 핸들러는 BaseAppContainer에서 마지막에 실행한다
                 if (middleware) {
-                    const middlewareArr = middleware.forEach ? middleware : [middleware];
-                    urlInstaller[routePath] = () => app[requestType](routePath, ...middlewareArr, method.bind(app, instance));
+                    urlInstaller.push({ [routePath]: () => app[requestType](routePath, ...middleware, method.bind(app, instance)) });
                 }
                 else {
-                    urlInstaller[routePath] = () => app[requestType](routePath, method.bind(app, instance));
+                    urlInstaller.push({ [routePath]: () => app[requestType](routePath, method.bind(app, instance)) });
                 }
             });
         }
@@ -58,11 +68,11 @@ exports.Controller = Controller;
  * 더 긴 URL부터 핸들링해야 정상 작동하므로 소팅한 후 Express App에 등록한다
  */
 function urlInstall() {
-    Object.keys(urlInstaller)
-        .sort((l, r) => r.length - l.length)
-        .sort((l, r) => l.includes('*') ? 1 : -1)
-        .sort((l, r) => l.includes('/api') ? -1 : 1)
-        .forEach(key => urlInstaller[key]());
+    urlInstaller
+        .sort((l, r) => Object.keys(r)[0].length - Object.keys(l)[0].length)
+        .sort((l, r) => Object.keys(l)[0].includes('*') ? 1 : -1)
+        .sort((l, r) => Object.keys(l)[0].includes('/api') ? -1 : 1)
+        .forEach(obj => (Object.values(obj)[0])());
 }
 exports.urlInstall = urlInstall;
 /**

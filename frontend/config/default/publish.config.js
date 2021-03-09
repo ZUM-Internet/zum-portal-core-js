@@ -1,3 +1,4 @@
+const fs = require('fs');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const path = require('path');
@@ -31,7 +32,10 @@ module.exports = {
 			/***************************/
 
 			// app.js 등록
-			require(path.join(stubPath, './app'))(app);
+			const stubAppPath = path.join(stubPath, './app');
+			if (fs.existsSync(stubAppPath)) {
+				require(stubAppPath)(app);
+			}
 
 			// public path
 			const publicPath = process.env.publicPath;

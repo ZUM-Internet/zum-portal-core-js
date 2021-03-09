@@ -10,4 +10,6 @@ export declare const ZumDecoratorType: {
     Scheduled: string;
     Caching: string;
     Middleware: string;
+    CustomBefore: string;
+    CustomAfter: string;
 };

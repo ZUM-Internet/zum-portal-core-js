@@ -1,8 +1,8 @@
-import {Service} from "../../backend/decorator/Alias";
-import {Yml} from "../../backend/decorator/Yml";
-import {PostConstructor} from "../../backend/decorator/Component";
+import {Service} from "../../../backend/decorator/Alias";
+import {Yml} from "../../../backend/decorator/Yml";
+import {PostConstructor} from "../../../backend/decorator/Component";
 import Axios from "axios";
-import {Caching} from "../../backend/decorator/Caching";
+import {Caching} from "../../../backend/decorator/Caching";
 
 @Service()
 export class CalculateService {

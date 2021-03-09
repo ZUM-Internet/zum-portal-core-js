@@ -5,7 +5,8 @@ const fs = require("fs");
 const path = require("path");
 const glob = require("glob");
 // 도커 컨테이너 이미지 빌드 시간
-const containerImageTag = glob.sync(path.resolve(process.env.INIT_CWD, 'container_image_tag.txt'))
+console.log(process.env.INIT_CWD, path.join(process.env.INIT_CWD, 'container_image_tag.txt'));
+const containerImageTag = glob.sync(path.join(process.env.INIT_CWD, 'container_image_tag.txt'))
     .map(src => fs.readFileSync(src))
     .join('');
 /**
