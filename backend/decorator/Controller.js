@@ -6,7 +6,6 @@ const tsyringe_1 = require("tsyringe");
 const ZumDecoratorType_1 = require("./ZumDecoratorType");
 const Logger_1 = require("../util/Logger");
 const Yml_1 = require("./Yml");
-const callWithInstance_1 = require("../functions/callWithInstance");
 // 더 긴 URL부터 핸들링하기 위해 사용되는 Map 객체
 const urlInstaller = [];
 /**
@@ -37,11 +36,11 @@ function Controller(ControllerOption = { path: '/' }) {
                 continue;
             // 함수형 미들웨어 정리
             if (Array.isArray(middleware)) {
-                middleware = middleware.map(m => callWithInstance_1.callWithInstance(m, instance));
+                // middleware = middleware.map(m => callWithInstance(m, instance));
                 middleware = [constructorMiddleware, ...middleware].filter(t => t);
             }
             else {
-                middleware = callWithInstance_1.callWithInstance(middleware, instance);
+                // middleware = callWithInstance(middleware, instance);
                 middleware = [constructorMiddleware, middleware].filter(t => t);
             }
             // 메타 데이터 destruct

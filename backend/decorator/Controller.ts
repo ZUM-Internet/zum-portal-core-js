@@ -41,10 +41,10 @@ export function Controller(ControllerOption: ControllerOption = {path: '/'}) {
 
       // 함수형 미들웨어 정리
       if (Array.isArray(middleware)) {
-        middleware = middleware.map(m => callWithInstance(m, instance));
+        // middleware = middleware.map(m => callWithInstance(m, instance));
         middleware = [constructorMiddleware, ...middleware].filter(t => t);
       } else {
-        middleware = callWithInstance(middleware, instance);
+        // middleware = callWithInstance(middleware, instance);
         middleware = [constructorMiddleware, middleware].filter(t => t);
       }
 
