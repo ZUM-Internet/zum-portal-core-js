@@ -5,7 +5,7 @@ declare type ScheduleOptionFunction = () => ScheduleOption;
  * @param func
  * @constructor
  */
-export declare function Scheduled(ScheduleOption: ScheduleOption | ScheduleOptionFunction, func?: Function): Function | void;
+export declare function Scheduled(ScheduleOption: ScheduleOption | ScheduleOptionFunction, func?: Function): any;
 /**
  * 스케줄 설정 옵션
  */

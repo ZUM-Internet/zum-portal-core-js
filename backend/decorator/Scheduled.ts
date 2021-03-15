@@ -9,7 +9,7 @@ type ScheduleOptionFunction = () => ScheduleOption;
  * @param func
  * @constructor
  */
-export function Scheduled(ScheduleOption: ScheduleOption | ScheduleOptionFunction, func?: Function): Function|void {
+export function Scheduled(ScheduleOption: ScheduleOption | ScheduleOptionFunction, func?: Function): any {
 
   if (func) {
     return appendSchedule(this, func, ScheduleOption);
