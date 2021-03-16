@@ -17,4 +17,4 @@ if (process.env.NODE_ENV === 'production' || process.env.ZUM_BACK_MODE === 'depl
   Vue.config.devtools = true;
   Vue.config.productionTip = true;
 
-}
+};

@@ -8,6 +8,9 @@ Express-Core Project
 ---
 
 ## 1. 변경 내역
+- 1.1.1
+  - 
+
 - 1.1.0
   - 미들웨어 함수(람다) 사용 가능하도록 추가
   - 바닐라 Node.js express에서 사용 가능하도록 exporting

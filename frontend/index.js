@@ -31,7 +31,7 @@ export function initializer(initFunction) {
  */
 
 function exceptionHandler(initFunction, err) {
-  console.error(`An unhandled Vue global error occurred!`, err);
+  console.error('An unhandled Vue global error occurred!', err);
   if (restarted) return;
 
   // 에러 발생한 #app 제거
