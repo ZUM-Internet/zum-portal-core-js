@@ -8,7 +8,7 @@
  *
  **********************************************************
  */
-const isNumber = /^\d+$/;
+var isNumber = /^\d+$/;
 
 /**
  * JS 쿠키 set 메소드
@@ -17,7 +17,7 @@ const isNumber = /^\d+$/;
  * @param options 쿠키 저장 옵션
  * @returns {*}
  */
-const _cookieSet = Cookies.set;
+var _cookieSet = Cookies.set;
 Cookies.set = function set(key, value, options) {
 
   // 쿠키 기본 옵션 설정
@@ -42,9 +42,9 @@ Cookies.set = function set(key, value, options) {
  * @param key 가져올 키
  * @param options 가져오기 위한 옵션
  */
-const _cookieGet = Cookies.get;
+var _cookieGet = Cookies.get;
 Cookies.get = function get(key, options) {
-  const value = _cookieGet(key, options);
+  var value = _cookieGet(key, options);
 
   // Number 파싱
   if (isNumber.test(value)) { return parseInt(value); }

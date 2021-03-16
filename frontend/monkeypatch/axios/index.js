@@ -11,11 +11,11 @@
  **********************************************************
  */
 if (process.env.NODE_ENV !== 'production' && process.env.ZUM_FRONT_MODE === 'publish') {
-  const regex = /^.*\/\/[^\/]+:?[0-9]?\//i;
+  var regex = /^.*\/\/[^\/]+:?[0-9]?\//i;
 
-  ['request', 'get',
-    'delete', 'head', 'options',
-    'post', 'put', 'patch'].forEach(method => {
+  var methods = ['request', 'get', 'delete', 'head', 'options', 'post', 'put', 'patch'];
+
+  for (var method of methods) {
 
     /**
      * axios 몽키패칭
@@ -23,19 +23,21 @@ if (process.env.NODE_ENV !== 'production' && process.env.ZUM_FRONT_MODE === 'pub
      * @param url 기본 URL
      * @param args 그 외 옵션
      */
-    const _method = Axios[method];
+    var _method = Axios[method];
     Axios[method] = function (url, ...args) {
-      if (url.includes('http')) { // 외부 호출인 경우 패칭하지 않음
-        return _method(url, ...args);
+      var m = _method;
+
+      if (url.indexOf('http') !== -1) { // 외부 호출인 경우 패칭하지 않음
+        return m(url, ...args);
       }
 
       // URL 패칭 이후 js 파일 로드
-      let paredUrl = `${url.replace(regex, '')}`;
+      var paredUrl = `${url.replace(regex, '')}`;
       if (paredUrl.charAt(0) !== '/') {
         paredUrl = '/' + paredUrl;
       }
-      return _method(`${process.env.publicPath}stub${paredUrl}`, ...args);
+      return m(`${process.env.publicPath}stub${paredUrl}`, ...args);
     };
 
-  });
+  }
 }
