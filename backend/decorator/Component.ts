@@ -29,7 +29,7 @@ export function Component() {
       instance[method.name] = appendCache(instance, method);
 
       // 커스텀 데코레이터 기능 추가
-      instance[method.name] = appendCustomDecorator(instance, method);
+      // instance[method.name] = appendCustomDecorator(instance, method);
     }
 
     /**

@@ -27,7 +27,7 @@ function Component() {
             // 캐시 기능 추가
             instance[method.name] = appendCache(instance, method);
             // 커스텀 데코레이터 기능 추가
-            instance[method.name] = appendCustomDecorator(instance, method);
+            // instance[method.name] = appendCustomDecorator(instance, method);
         }
         /**
          * post constructor와 같은 후처리 데코레이터 적용
