@@ -146,7 +146,7 @@ export function appendCache(instance, method, cachingOption?) {
 
     // 캐시된 값이 있으면
     if (cachingValue) {
-      return deepFreeze(cachingValue);
+      return cachingValue;
     }
 
     // 캐시된 값이 없으면
