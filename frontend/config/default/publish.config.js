@@ -40,13 +40,14 @@ module.exports = {
 			app.all(`${publicPath}stub/**`, (req, res, next) => {
 				const dataPath = path.join(stubPath, `../${req.path.replace(publicPath, '')}.json`);
 				if (!fs.existsSync(dataPath)) return next();
+				if (req.method === 'PATCH') return res.sendStatus(200); // pre-flight ok
 				const data = require(dataPath);
 
 				const method = Object.keys(data)
 						.find(key => key.toUpperCase() === req.method);
 
 				if (method) { // 메소드 함수가 존재시 실행된 결과 리턴
-					res.send(data[method](req));
+					res.send(data[method](req, res));
 
 				} else { // 존재하지 않으면 데이터 전체를 리턴
 					res.send(data);
