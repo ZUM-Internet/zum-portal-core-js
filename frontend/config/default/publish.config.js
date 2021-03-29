@@ -39,7 +39,7 @@ module.exports = {
 			 */
 			app.all(`${publicPath}stub/**`, (req, res, next) => {
 				try {
-					if (req.method === 'PATCH' || req.method === 'OPTION') return res.sendStatus(200); // pre-flight ok
+					// if (req.method === 'PATCH' || req.method === 'OPTION') return res.sendStatus(200); // pre-flight ok
 
 					const data = require(path.join(stubPath, `../${req.path.replace(publicPath, '')}.json`));
 					const method = Object.keys(data)
