@@ -22,6 +22,8 @@ module.exports = {
 		 * @param server
 		 */
 		setup: function (app, server) {
+			// public path
+			const publicPath = process.env.publicPath;
 
 			/**** 기본 미들웨어 등록 ****/
 			// cookie parser
@@ -31,20 +33,15 @@ module.exports = {
 			app.use(express.urlencoded({ extended: true }));
 			/***************************/
 
-			// app.js 등록
-			const stubAppPath = path.join(stubPath, './app');
-			if (fs.existsSync(stubAppPath)) {
-				require(stubAppPath)(app);
-			}
-
-			// public path
-			const publicPath = process.env.publicPath;
 
 			/**
 			 * /stub으로 요청된 데이터 처리
 			 */
-			app.all(`${publicPath}stub/**`, (req, res) => {
-				const data = require(path.join(stubPath, `../${req.path.replace(publicPath, '')}`));
+			app.all(`${publicPath}stub/**`, (req, res, next) => {
+				const dataPath = path.join(stubPath, `../${req.path.replace(publicPath, '')}.json`);
+				if (!fs.existsSync(dataPath)) return next();
+				const data = require(dataPath);
+
 				const method = Object.keys(data)
 						.find(key => key.toUpperCase() === req.method);
 
@@ -55,6 +52,15 @@ module.exports = {
 					res.send(data);
 				}
 			});
+
+
+
+			// app.js 등록
+			const stubAppPath = path.join(stubPath, './app.js');
+			if (fs.existsSync(stubAppPath)) {
+				require(stubAppPath)(app);
+			}
+
 		},
 
 	}
