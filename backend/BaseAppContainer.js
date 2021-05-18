@@ -111,7 +111,7 @@ function attachMiddleWares(app) {
     app.use(express.urlencoded({ extended: true }));
     // morgan (http access log)
     if (process.env.NODE_ENV === 'development') {
-        app.use(morgan(`${chalk_1.default.greenBright(':date[iso]')} ${chalk_1.default.blue(':method')} ${chalk_1.default.yellow(':status')} ${chalk_1.default.bold(':response-time')}ms :url`));
+        app.use(morgan(`${chalk_1.default.greenBright(':date[iso]')} ${chalk_1.default.blue(':method')} ${chalk_1.default.yellow(':status')} ${chalk_1.default.bold(':response-time')} ms :url`));
     }
     // --------------------------------------------
     app.use(CoTracker_1.default); // cotracker 미들웨어

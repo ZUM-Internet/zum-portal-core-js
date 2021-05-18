@@ -137,7 +137,7 @@ function appendCache(instance, method, cachingOption) {
         const cachingValue = cache.get(cacheKey);
         // 캐시된 값이 있으면
         if (cachingValue) {
-            return deepFreeze_1.default(cachingValue);
+            return cachingValue;
         }
         // 캐시된 값이 없으면
         const value = _function.call(instance, ...arguments);

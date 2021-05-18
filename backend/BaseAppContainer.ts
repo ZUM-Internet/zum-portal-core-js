@@ -141,7 +141,7 @@ export function attachMiddleWares(app) {
 
   // morgan (http access log)
   if (process.env.NODE_ENV === 'development') {
-    app.use(morgan(`${chalk.greenBright(':date[iso]')} ${chalk.blue(':method')} ${chalk.yellow(':status')} ${chalk.bold(':response-time')}ms :url`));
+    app.use(morgan(`${chalk.greenBright(':date[iso]')} ${chalk.blue(':method')} ${chalk.yellow(':status')} ${chalk.bold(':response-time')} ms :url`));
   }
 
 
