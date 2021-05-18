@@ -22,6 +22,8 @@ module.exports = {
 		 * @param server
 		 */
 		setup: function (app, server) {
+			// public path
+			const publicPath = process.env.publicPath;
 
 			/**** 기본 미들웨어 등록 ****/
 			// cookie parser
@@ -31,30 +33,38 @@ module.exports = {
 			app.use(express.urlencoded({ extended: true }));
 			/***************************/
 
-			// app.js 등록
-			const stubAppPath = path.join(stubPath, './app');
-			if (fs.existsSync(stubAppPath)) {
-				require(stubAppPath)(app);
-			}
-
-			// public path
-			const publicPath = process.env.publicPath;
 
 			/**
 			 * /stub으로 요청된 데이터 처리
 			 */
-			app.all(`${publicPath}stub/**`, (req, res) => {
-				const data = require(path.join(stubPath, `../${req.path.replace(publicPath, '')}`));
-				const method = Object.keys(data)
-						.find(key => key.toUpperCase() === req.method);
+			app.all(`${publicPath}stub/**`, (req, res, next) => {
+				try {
+					// if (req.method === 'PATCH' || req.method === 'OPTION') return res.sendStatus(200); // pre-flight ok
 
-				if (method) { // 메소드 함수가 존재시 실행된 결과 리턴
-					res.send(data[method](req));
+					const data = require(path.join(stubPath, `../${req.path.replace(publicPath, '')}.json`));
+					const method = Object.keys(data)
+							.find(key => key.toUpperCase() === req.method);
 
-				} else { // 존재하지 않으면 데이터 전체를 리턴
-					res.send(data);
+					if (method) { // 메소드 함수가 존재시 실행된 결과 리턴
+						res.send(data[method](req, res));
+
+					} else { // 존재하지 않으면 데이터 전체를 리턴
+						res.send(data);
+					}
+
+				} catch (e) {
+					next();
 				}
 			});
+
+
+
+			// app.js 등록
+			const stubAppPath = path.join(stubPath, './app.js');
+			if (fs.existsSync(stubAppPath)) {
+				require(stubAppPath)(app);
+			}
+
 		},
 
 	}
