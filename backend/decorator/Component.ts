@@ -122,8 +122,6 @@ export function appendCache(instance, method, cachingOption) {
   const _function = method;
   const conditionFunction: Function = CachingOption.unless?.bind(instance) || (() => false);
 
-console.log('sdfisdf', _function.toString())
-
   // auto refresh
   if (CachingOption?.refreshCron) {
     // 갱신 함수
