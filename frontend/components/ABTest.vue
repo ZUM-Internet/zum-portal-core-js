@@ -1,6 +1,6 @@
 <template>
   <div>
-    <slot :name="selectedVariant" />
+    <slot :name="group || defaultGroup" />
   </div>
 </template>
 
@@ -9,9 +9,9 @@ export default {
   name: 'ABTest',
 
   props: {
-    selectedVariant: { type: String, required: true, },
-    variants: { type: Array, required: true, },
-  }
+    group: { type: String, required: false, },
+    defaultGroup: {type: String, default: () => 'A'}
+  },
 
 }
 </script>

@@ -7,7 +7,6 @@ import {ZumDecoratorType} from "../../../backend/decorator/ZumDecoratorType";
  * @constructor
  */
 export function AfterEx1() {
-
   function afterFunction(result, ...args) {
     if (result % 2 == 0) {
       return 'even';

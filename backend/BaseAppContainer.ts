@@ -18,6 +18,13 @@ import {urlInstall} from "./decorator/Controller";
 import {ZumDecoratorType} from "./decorator/ZumDecoratorType";
 import * as yamlConfig from 'node-yaml-config';
 
+// 와탭 모니터링 에이전트 등록
+if (process.env.ENABLE_WHATAP === 'true') {
+  require('whatap').NodeAgent;
+}
+
+
+
 export default abstract class BaseAppContainer {
   public app: Application;
 

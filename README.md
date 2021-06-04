@@ -5,9 +5,27 @@ Express-Core Project
 1. (node-schedule)[https://github.com/node-schedule/node-schedule], (node-cache)[https://github.com/node-cache/node-cache] 등의 라이브러리를 이용하여
 포털 개발팀에서 자주 사용되는 패턴을 간단하게 사용하는 것을 목표로 한다.  
 
+
+## process.env 플래그
+1. ENABLE_WHATAP: 'true' | null  
+와탭 모니터링 에이전트 실행 (세부 옵션은 (공식 가이드)[https://docs.whatap.io/kr/agent_node/] 참조)
+2. ZUM_BACK_MODE: 'publish' | 'deploy'  
+줌 어댑터에서 stub 파일 사용 여부 결정
+3. ZUM_FRONT_MODE: 'ssr' | null  
+프론트엔드 번들링 시 ssr 플러그인 삽입 여부 결정
+4.  BASE_PATH: string
+실행할 프로젝트 기본 디렉토리 
+
 ---
 
 ## 1. 변경 내역
+
+- 1.1.2
+  - ENABLE_WHATAP 플래그 추가. 'true' 입력시 와탭 모니터링 에이전트 실행
+  - 커스텀 데코레이터 기능 재개발
+    - 장애 발생으로 제거하였던 기능으로 재개발 진행 (Component.ts 파일 수정)
+  - 프론트엔드 AB테스트 컴포넌트 '그룹'으로 수정
+
 - 1.1.1
   - 
 

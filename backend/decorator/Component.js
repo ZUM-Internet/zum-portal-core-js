@@ -21,13 +21,16 @@ function Component() {
          * schedule, cache와 같은 선처리 데코레이터 적용
          */
         for (let methodName of Object.getOwnPropertyNames(constructor.prototype)) {
-            const method = instance[methodName];
+            const originalMethod = instance[methodName];
+            let method = instance[methodName];
             // 스케줄 등록 및 취소 함수 추가
             appendSchedule(instance, method);
-            // 캐시 기능 추가
-            instance[method.name] = appendCache(instance, method);
             // 커스텀 데코레이터 기능 추가
-            // instance[method.name] = appendCustomDecorator(instance, method);
+            method = appendCustomDecorator(instance, method);
+            // 캐시 기능 추가 (데코레이터 추가 후 메소드가 변경되므로 원래 메소드의 메타데이터 삽입)
+            const cachingMetadata = Reflect.getMetadata(ZumDecoratorType_1.ZumDecoratorType.Caching, originalMethod);
+            method = appendCache(instance, method, cachingMetadata);
+            instance[methodName] = method;
         }
         /**
          * post constructor와 같은 후처리 데코레이터 적용
@@ -105,12 +108,13 @@ exports.appendSchedule = appendSchedule;
  */
 function appendCache(instance, method, cachingOption) {
     var _a;
-    let CachingOption = callWithInstance_1.callWithInstance(cachingOption || Reflect.getMetadata(ZumDecoratorType_1.ZumDecoratorType.Caching, method), instance);
+    let CachingOption = callWithInstance_1.callWithInstance(cachingOption, instance);
     if (!CachingOption)
         return method;
     const cache = CachingOption.cache || Caching_1.globalCache;
     const _function = method;
     const conditionFunction = ((_a = CachingOption.unless) === null || _a === void 0 ? void 0 : _a.bind(instance)) || (() => false);
+    console.log('sdfisdf', _function.toString());
     // auto refresh
     if (CachingOption === null || CachingOption === void 0 ? void 0 : CachingOption.refreshCron) {
         // 갱신 함수
@@ -137,7 +141,7 @@ function appendCache(instance, method, cachingOption) {
         const cachingValue = cache.get(cacheKey);
         // 캐시된 값이 있으면
         if (cachingValue) {
-            return deepFreeze_1.default(cachingValue);
+            return cachingValue;
         }
         // 캐시된 값이 없으면
         const value = _function.call(instance, ...arguments);

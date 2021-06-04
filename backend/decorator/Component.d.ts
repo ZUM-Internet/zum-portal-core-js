@@ -21,7 +21,7 @@ export declare function appendSchedule(instance: any, method: any, scheduleOptio
  * @param method
  * @param cachingOption
  */
-export declare function appendCache(instance: any, method: any, cachingOption?: any): any;
+export declare function appendCache(instance: any, method: any, cachingOption: any): any;
 /**
  * 커스텀 데코레이터로 설정된 함수 설치
  * @param instance

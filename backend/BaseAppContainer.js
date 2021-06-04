@@ -19,6 +19,10 @@ const ResourceLoader_1 = require("./util/ResourceLoader");
 const Controller_1 = require("./decorator/Controller");
 const ZumDecoratorType_1 = require("./decorator/ZumDecoratorType");
 const yamlConfig = require("node-yaml-config");
+// 와탭 모니터링 에이전트 등록
+if (process.env.ENABLE_WHATAP === 'true') {
+    require('whatap').NodeAgent;
+}
 class BaseAppContainer {
     /**
      * Express App 컨테이너

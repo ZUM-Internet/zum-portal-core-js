@@ -24,16 +24,19 @@ export class HomeController {
    * @param req
    * @param res
    */
-  @GetMapping({path: '/**'})
+  @GetMapping({path: '/'})
   public async getHome(req: Request, res: Response) {
-    console.error({
-      url: req.url
-    });
-    const template = await this.homeFacade.getRenderedHtml();
-    console.log(template);
+    // console.error({
+    //   url: req.url
+    // });
+    // const template = await this.homeFacade.getRenderedHtml();
+    // console.log(template);
+
+    console.log(await this.calculateService.test())
 
     // 템플릿 처리
-    res.send(template);
+    // res.send(template);
+    res.json({})
   }
 
 
@@ -78,6 +81,7 @@ export class HomeController {
   public async getCorsContents(req: Request, res: Response) {
     res.json({hello: 'world'})
   }
+  */
 
 
 
@@ -97,7 +101,7 @@ export class HomeController {
       after2_2: await this.customDecorator.afterOddStop(2),
 
     });
-  }*/
+  }
 
 
 

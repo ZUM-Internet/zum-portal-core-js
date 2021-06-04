@@ -24,10 +24,10 @@ export class CalculateService {
     // console.log('result2', await this.test())
   }
 
-  @Caching({key: 'test', unless: (result) => result.completed === true})
+  @Caching({key: 'test', refreshCron: '*/30 * * * * *', unless: (result) => result.completed === true})
   public async test() {
-    console.log('go man')
-    const result = await Axios.get('https://jsonplaceholder.typicode.com/todos/1');
+    console.log('fetching', Date.now())
+    const result = await Axios.get('http://jsonplaceholder.typicode.com/todos/1');
     return {data: result.data}
   }
 
