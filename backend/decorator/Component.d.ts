@@ -27,4 +27,4 @@ export declare function appendCache(instance: any, method: any, cachingOption: a
  * @param instance
  * @param method
  */
-export declare function appendCustomDecorator(instance: any, method: any): () => any;
+export declare function appendCustomDecorator(instance: any, method: any): (...args: any[]) => any;

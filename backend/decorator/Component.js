@@ -22,15 +22,13 @@ function Component() {
          */
         for (let methodName of Object.getOwnPropertyNames(constructor.prototype)) {
             const originalMethod = instance[methodName];
-            let method = instance[methodName];
             // 스케줄 등록 및 취소 함수 추가
-            appendSchedule(instance, method);
+            appendSchedule(instance, originalMethod);
             // 커스텀 데코레이터 기능 추가
-            method = appendCustomDecorator(instance, method);
+            instance[methodName] = appendCustomDecorator(instance, originalMethod);
             // 캐시 기능 추가 (데코레이터 추가 후 메소드가 변경되므로 원래 메소드의 메타데이터 삽입)
             const cachingMetadata = Reflect.getMetadata(ZumDecoratorType_1.ZumDecoratorType.Caching, originalMethod);
-            method = appendCache(instance, method, cachingMetadata);
-            instance[methodName] = method;
+            instance[methodName] = appendCache(instance, instance[methodName], cachingMetadata);
         }
         /**
          * post constructor와 같은 후처리 데코레이터 적용
@@ -114,7 +112,6 @@ function appendCache(instance, method, cachingOption) {
     const cache = CachingOption.cache || Caching_1.globalCache;
     const _function = method;
     const conditionFunction = ((_a = CachingOption.unless) === null || _a === void 0 ? void 0 : _a.bind(instance)) || (() => false);
-    console.log('sdfisdf', _function.toString());
     // auto refresh
     if (CachingOption === null || CachingOption === void 0 ? void 0 : CachingOption.refreshCron) {
         // 갱신 함수
@@ -135,7 +132,7 @@ function appendCache(instance, method, cachingOption) {
             refreshFunc();
         }
     }
-    return function () {
+    return nameFunction(method.name, function () {
         var _a;
         const cacheKey = CachingOption.key || `${(_a = instance === null || instance === void 0 ? void 0 : instance.constructor) === null || _a === void 0 ? void 0 : _a.name}_${method.name}_` + [...arguments].toString();
         const cachingValue = cache.get(cacheKey);
@@ -146,7 +143,7 @@ function appendCache(instance, method, cachingOption) {
         // 캐시된 값이 없으면
         const value = _function.call(instance, ...arguments);
         return deepFreeze_1.default(checkCacheCondition_1.default(cacheKey, value, conditionFunction, CachingOption));
-    };
+    });
 }
 exports.appendCache = appendCache;
 /**
@@ -158,7 +155,7 @@ function appendCustomDecorator(instance, method) {
     var _a, _b;
     const beforeDecoratorFunction = (_a = Reflect.getMetadata(ZumDecoratorType_1.ZumDecoratorType.CustomBefore, method)) === null || _a === void 0 ? void 0 : _a.bind(instance);
     const afterDecoratorFunction = (_b = Reflect.getMetadata(ZumDecoratorType_1.ZumDecoratorType.CustomAfter, method)) === null || _b === void 0 ? void 0 : _b.bind(instance);
-    return function () {
+    return nameFunction(method.name, function () {
         let args = [...arguments];
         // before hook
         if (beforeDecoratorFunction) {
@@ -180,7 +177,10 @@ function appendCustomDecorator(instance, method) {
         }
         // return original result
         return result;
-    };
+    });
 }
 exports.appendCustomDecorator = appendCustomDecorator;
+function nameFunction(name, body) {
+    return { [name](...args) { return body(...args); } }[name];
+}
 //# sourceMappingURL=Component.js.map

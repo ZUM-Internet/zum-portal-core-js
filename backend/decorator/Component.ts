@@ -21,19 +21,16 @@ export function Component() {
      */
     for (let methodName of Object.getOwnPropertyNames(constructor.prototype)) {
       const originalMethod = instance[methodName];
-      let method = instance[methodName];
 
       // 스케줄 등록 및 취소 함수 추가
-      appendSchedule(instance, method);
+      appendSchedule(instance, originalMethod);
 
       // 커스텀 데코레이터 기능 추가
-      method = appendCustomDecorator(instance, method);
+      instance[methodName] = appendCustomDecorator(instance, originalMethod);
 
       // 캐시 기능 추가 (데코레이터 추가 후 메소드가 변경되므로 원래 메소드의 메타데이터 삽입)
       const cachingMetadata = Reflect.getMetadata(ZumDecoratorType.Caching, originalMethod);
-      method = appendCache(instance, method, cachingMetadata);
-
-      instance[methodName] = method;
+      instance[methodName] = appendCache(instance, instance[methodName], cachingMetadata);
     }
 
     /**
@@ -144,7 +141,7 @@ export function appendCache(instance, method, cachingOption) {
     }
   }
 
-  return function () {
+  return nameFunction(method.name, function () {
     const cacheKey: string = CachingOption.key || `${instance?.constructor?.name}_${method.name}_` + [...arguments].toString();
     const cachingValue: any = cache.get(cacheKey);
 
@@ -156,7 +153,7 @@ export function appendCache(instance, method, cachingOption) {
     // 캐시된 값이 없으면
     const value = _function.call(instance, ...arguments);
     return deepFreeze(checkCacheCondition(cacheKey, value, conditionFunction, CachingOption));
-  };
+  });
 }
 
 
@@ -169,18 +166,18 @@ export function appendCustomDecorator(instance, method) {
   const beforeDecoratorFunction = Reflect.getMetadata(ZumDecoratorType.CustomBefore, method)?.bind(instance);
   const afterDecoratorFunction = Reflect.getMetadata(ZumDecoratorType.CustomAfter, method)?.bind(instance);
 
-  return function () {
+  return nameFunction(method.name, function () {
     let args = [...arguments];
 
     // before hook
     if (beforeDecoratorFunction) {
       let next = false;
       beforeDecoratorFunction.call(instance,
-                                    (...beforeResult) => {
-                                      next = true;
-                                      beforeResult.length ? args = [...beforeResult] : ''
-                                    },
-                                    ...args)
+        (...beforeResult) => {
+          next = true;
+          beforeResult.length ? args = [...beforeResult] : ''
+        },
+        ...args)
       if (!next) return;
     }
 
@@ -196,11 +193,17 @@ export function appendCustomDecorator(instance, method) {
     // return original result
     return result;
 
-  };
+  });
 
 
 
 }
+
+
+function nameFunction(name, body) {
+  return {[name](...args) {return body(...args)}}[name]
+}
+
 
 
 
