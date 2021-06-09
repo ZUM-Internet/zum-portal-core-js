@@ -20,7 +20,15 @@ export function Component() {
      * schedule, cache와 같은 선처리 데코레이터 적용
      */
     for (let methodName of Object.getOwnPropertyNames(constructor.prototype)) {
-      const originalMethod = instance[methodName];
+      const method = instance[methodName];
+
+      // 스케줄 등록 및 취소 함수 추가
+      appendSchedule(instance, method);
+
+      // 캐시 기능 추가
+      instance[method.name] = appendCache(instance, method);
+
+      /*const originalMethod = instance[methodName];
 
       // 스케줄 등록 및 취소 함수 추가
       appendSchedule(instance, originalMethod);
@@ -30,7 +38,7 @@ export function Component() {
 
       // 캐시 기능 추가 (데코레이터 추가 후 메소드가 변경되므로 원래 메소드의 메타데이터 삽입)
       const cachingMetadata = Reflect.getMetadata(ZumDecoratorType.Caching, originalMethod);
-      instance[methodName] = appendCache(instance, instance[methodName], cachingMetadata);
+      instance[methodName] = appendCache(instance, instance[methodName], cachingMetadata);*/
     }
 
     /**
@@ -111,8 +119,10 @@ export function appendSchedule(instance, method, scheduleOption?) {
  * @param method
  * @param cachingOption
  */
-export function appendCache(instance, method, cachingOption) {
-  let CachingOption = callWithInstance(cachingOption, instance);
+// export function appendCache(instance, method, cachingOption) {
+//   let CachingOption = callWithInstance(cachingOption, instance);
+export function appendCache(instance, method, cachingOption?) {
+  let CachingOption = callWithInstance(cachingOption || Reflect.getMetadata(ZumDecoratorType.Caching, method), instance);
   if (!CachingOption) return method;
 
   const cache = CachingOption.cache || globalCache;
