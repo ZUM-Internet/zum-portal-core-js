@@ -151,7 +151,8 @@ export function appendCache(instance, method, cachingOption?) {
     }
   }
 
-  return nameFunction(method.name, function () {
+  // return nameFunction(method.name, );
+  return function () {
     const cacheKey: string = CachingOption.key || `${instance?.constructor?.name}_${method.name}_` + [...arguments].toString();
     const cachingValue: any = cache.get(cacheKey);
 
@@ -163,7 +164,7 @@ export function appendCache(instance, method, cachingOption?) {
     // 캐시된 값이 없으면
     const value = _function.call(instance, ...arguments);
     return deepFreeze(checkCacheCondition(cacheKey, value, conditionFunction, CachingOption));
-  });
+  }
 }
 
 
@@ -204,8 +205,6 @@ export function appendCustomDecorator(instance, method) {
     return result;
 
   });
-
-
 
 }
 

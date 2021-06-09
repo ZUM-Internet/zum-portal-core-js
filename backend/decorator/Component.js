@@ -142,7 +142,8 @@ function appendCache(instance, method, cachingOption) {
             refreshFunc();
         }
     }
-    return nameFunction(method.name, function () {
+    // return nameFunction(method.name, );
+    return function () {
         var _a;
         const cacheKey = CachingOption.key || `${(_a = instance === null || instance === void 0 ? void 0 : instance.constructor) === null || _a === void 0 ? void 0 : _a.name}_${method.name}_` + [...arguments].toString();
         const cachingValue = cache.get(cacheKey);
@@ -153,7 +154,7 @@ function appendCache(instance, method, cachingOption) {
         // 캐시된 값이 없으면
         const value = _function.call(instance, ...arguments);
         return deepFreeze_1.default(checkCacheCondition_1.default(cacheKey, value, conditionFunction, CachingOption));
-    });
+    };
 }
 exports.appendCache = appendCache;
 /**
