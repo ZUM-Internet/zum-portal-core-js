@@ -25,12 +25,13 @@ function checkCacheCondition(cacheKey, value, unlessFunction, CachingOption) {
     const cache = CachingOption.cache || Caching_1.globalCache;
     if (value instanceof Promise) { // 결과가 Promise인 경우
         return new Promise(resolve => {
+            const prevValue = cache.get(cacheKey);
             // 저장되어있는 캐시가 null인 경우 우선 데이터를 삽입하고 수정한다
-            if (!cache.get(cacheKey)) {
+            if (!prevValue) {
                 cache.set(cacheKey, value.then((v) => __awaiter(this, void 0, void 0, function* () {
                     if (unlessFunction(v)) { // unless === true 일 시 캐시 제거
-                        cache.set(cacheKey, null);
-                        return null;
+                        cache.set(cacheKey, prevValue);
+                        return prevValue;
                     }
                     return v;
                 })), CachingOption.ttl || 0);
