@@ -19,15 +19,14 @@ export default function checkCacheCondition(cacheKey: string, value: any,
 
   if (value instanceof Promise) { // 결과가 Promise인 경우
     return new Promise(resolve => {
-      const prevValue = cache.get(cacheKey);
 
       // 저장되어있는 캐시가 null인 경우 우선 데이터를 삽입하고 수정한다
-      if (!prevValue) {
+      if (!cache.get(cacheKey)) {
         cache.set(cacheKey,
           value.then(async v => {
             if (unlessFunction(v)) { // unless === true 일 시 캐시 제거
-              cache.set(cacheKey, prevValue);
-              return prevValue;
+              cache.set(cacheKey, null);
+              return null;
             }
             return v;
           }),
