@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Sentry = require("@sentry/node");
+exports.logger = void 0;
 const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
 function getTimestamp() {
     var _a, _b;
@@ -9,22 +9,21 @@ function getTimestamp() {
 /**
  * 서비스인프라팀에서 관리하는 로그 양식에 맞추기 위해 winston 제거
  */
-exports.default = {
+exports.logger = {
     info(...args) {
-        return console.info(getTimestamp(), '[info]', ...args);
+        console.info(getTimestamp(), '[info]', ...args);
     },
     debug(...args) {
-        return console.debug(getTimestamp(), '[debug]', ...arguments);
+        console.debug(getTimestamp(), '[debug]', ...args);
     },
     log(...args) {
-        return console.log(getTimestamp(), '[log]', ...args);
+        console.log(getTimestamp(), '[log]', ...args);
     },
     warn(...args) {
-        return console.warn(getTimestamp(), '[warn]', ...args);
+        console.warn(getTimestamp(), '[warn]', ...args);
     },
     error(...args) {
         console.error(getTimestamp(), '[error]', ...args);
-        Sentry.captureMessage(JSON.stringify(args));
     }
 };
 //# sourceMappingURL=Logger.js.map

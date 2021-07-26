@@ -16,6 +16,7 @@
       "./types/**/*.ts"
     ],
     "exclude": [
-      "./**/*.d.ts"
+      "./**/*.d.ts",
+      "backend.origin"
     ]
 }

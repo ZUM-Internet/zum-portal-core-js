@@ -1,6 +1,6 @@
 // @ts-nocheck
 import {NextFunction, Request, Response} from "express";
-import logger from "../util/Logger";
+import {logger} from "../util";
 
 /**
  * 특정 URL 접속시 에러를 반환하는 메소드

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Logger_1 = require("../util/Logger");
+const util_1 = require("../util");
 /**
  * 특정 URL 접속시 에러를 반환하는 메소드
  * @param req
@@ -12,13 +12,13 @@ function default_1(req, res, next) {
     const { type, message } = req.params;
     const logMessage = `Client ip: ${clientIp}\nLevel: ${type}\nMessage: ${message}`;
     if (type === 'info') {
-        Logger_1.default.info(logMessage);
+        util_1.logger.info(logMessage);
     }
     else if (type === 'warn') {
-        Logger_1.default.warn(logMessage);
+        util_1.logger.warn(logMessage);
     }
     else {
-        Logger_1.default.error(logMessage);
+        util_1.logger.error(logMessage);
     }
     res.send(logMessage);
 }
