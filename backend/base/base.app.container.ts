@@ -6,8 +6,8 @@ import * as ejs from 'ejs';
 import {NestFactory} from "@nestjs/core";
 import {NestExpressApplication} from "@nestjs/platform-express";
 
-import {CoTracker, NoCacheHtml, ErrorResponse} from "./middleware";
-import {getVersion} from "./util";
+import {CoTracker, NoCacheHtml, ErrorResponse} from "../middleware";
+import {getVersion} from "../util";
 
 // 와탭 모니터링 에이전트 등록
 if (process.env.ENABLE_WHATAP === 'true') {
@@ -19,9 +19,9 @@ export abstract class BaseAppContainer {
   /**
    * Express App 컨테이너
    */
-  async setup(AppModule: any, dirname: string = './backend') {
+  async setup(AppModule: any) {
 
-    const RESOURCE_PATH = join(process.env.INIT_CWD, process.env.BASE_PATH || '', dirname, '../resources');
+    const RESOURCE_PATH = join(process.env.INIT_CWD, process.env.BASE_PATH || '', 'resources');
     const STATIC_PATH = join(RESOURCE_PATH, './static');
     const TEMPLATE_PATH = join(RESOURCE_PATH, './templates');
 

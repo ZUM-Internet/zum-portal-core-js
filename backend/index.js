@@ -13,4 +13,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./util"), exports);
 __exportStar(require("./ssr"), exports);
 __exportStar(require("./middleware"), exports);
+__exportStar(require("./base"), exports);
 //# sourceMappingURL=index.js.map

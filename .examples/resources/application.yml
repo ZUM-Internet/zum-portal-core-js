@@ -1,13 +1,5 @@
 default:
-  sentry:
-#    dsn: 'https://b31b56d0ecd846eab9b6153797a594d1@o345995.ingest.sentry.io/5374955'
-#    request: ''
-#    serverName: true
-#    transaction: ''
-#    user: ''
-#    ip: false
-#    version: false
-#    flushTimeout: 1000
+  port: 8000
 
 development:
 

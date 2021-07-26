@@ -15,8 +15,8 @@ const path_1 = require("path");
 const express = require("express");
 const ejs = require("ejs");
 const core_1 = require("@nestjs/core");
-const middleware_1 = require("./middleware");
-const util_1 = require("./util");
+const middleware_1 = require("../middleware");
+const util_1 = require("../util");
 // 와탭 모니터링 에이전트 등록
 if (process.env.ENABLE_WHATAP === 'true') {
     require('whatap').NodeAgent;
@@ -25,9 +25,9 @@ class BaseAppContainer {
     /**
      * Express App 컨테이너
      */
-    setup(AppModule, dirname = './backend') {
+    setup(AppModule) {
         return __awaiter(this, void 0, void 0, function* () {
-            const RESOURCE_PATH = path_1.join(process.env.INIT_CWD, process.env.BASE_PATH || '', dirname, '../resources');
+            const RESOURCE_PATH = path_1.join(process.env.INIT_CWD, process.env.BASE_PATH || '', 'resources');
             const STATIC_PATH = path_1.join(RESOURCE_PATH, './static');
             const TEMPLATE_PATH = path_1.join(RESOURCE_PATH, './templates');
             // express 객체 생성 및 컨테이너 등록
@@ -79,4 +79,4 @@ class BaseAppContainer {
     }
 }
 exports.BaseAppContainer = BaseAppContainer;
-//# sourceMappingURL=BaseAppContainer.js.map
+//# sourceMappingURL=base.app.container.js.map
