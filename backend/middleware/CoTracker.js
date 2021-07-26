@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.CoTracker = void 0;
 // 쿠키 기본 옵션
 const COOKIE_OPTION = {
     domain: 'zum.com',
@@ -17,7 +18,7 @@ const validate = (cocode, couid) => couid && cocode && cocode.length >= 4;
  * @param res
  * @param next
  */
-function default_1(req, res, next) {
+function CoTracker(req, res, next) {
     // cocode 획득
     let { cocode, couid } = req.headers;
     if (!validate(cocode, couid)) {
@@ -31,5 +32,5 @@ function default_1(req, res, next) {
     res.cookie(`_COUID`, `${cocode}|${couid}`, COOKIE_OPTION);
     return next();
 }
-exports.default = default_1;
+exports.CoTracker = CoTracker;
 //# sourceMappingURL=CoTracker.js.map

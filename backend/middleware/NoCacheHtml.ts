@@ -7,7 +7,7 @@ import {NextFunction, Request, Response} from "express";
  * @param res
  * @param next
  */
-export default function (req: Request, res: Response, next: NextFunction) {
+export function NoCacheHtml (req: Request, res: Response, next: NextFunction) {
   res.header("Cache-Control", "no-cache, no-store, must-revalidate");
   res.header("Pragma", "no-cache");
   res.header("Expires", "0");

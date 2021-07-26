@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ErrorResponse = void 0;
 const util_1 = require("../util");
 /**
  * 특정 URL 접속시 에러를 반환하는 메소드
@@ -7,7 +8,7 @@ const util_1 = require("../util");
  * @param res
  * @param next
  */
-function default_1(req, res, next) {
+function ErrorResponse(req, res, next) {
     const clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     const { type, message } = req.params;
     const logMessage = `Client ip: ${clientIp}\nLevel: ${type}\nMessage: ${message}`;
@@ -22,5 +23,5 @@ function default_1(req, res, next) {
     }
     res.send(logMessage);
 }
-exports.default = default_1;
+exports.ErrorResponse = ErrorResponse;
 //# sourceMappingURL=ErrorResponse.js.map

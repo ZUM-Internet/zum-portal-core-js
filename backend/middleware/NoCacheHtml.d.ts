@@ -5,4 +5,4 @@ import { NextFunction, Request, Response } from "express";
  * @param res
  * @param next
  */
-export default function (req: Request, res: Response, next: NextFunction): void;
+export declare function NoCacheHtml(req: Request, res: Response, next: NextFunction): void;

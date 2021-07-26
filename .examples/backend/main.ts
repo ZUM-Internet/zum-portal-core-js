@@ -1,8 +1,11 @@
-import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import {BaseAppContainer} from "../../backend";
+import {NestExpressApplication} from "@nestjs/platform-express";
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  await app.listen(8080);
+class AppContainer extends BaseAppContainer {
+  async listen (app: NestExpressApplication) {
+    await app.listen(8080);
+  }
 }
-bootstrap();
+
+new AppContainer().setup(AppModule);
