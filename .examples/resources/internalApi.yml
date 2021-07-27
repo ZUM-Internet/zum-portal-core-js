@@ -1,0 +1,8 @@
+default:
+  app-api:
+    base: https://appapi.zum.com/api
+    chrome-extension-contents: /chrome-extension/contents
+
+development:
+
+production:

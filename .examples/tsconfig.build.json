@@ -1,4 +1,4 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": ["dist", "frontend", "backend.origin", "backend_vanilla.origin", "**/*spec.ts"]
+  "exclude": ["dist", "frontend", "**/*spec.ts"]
 }
