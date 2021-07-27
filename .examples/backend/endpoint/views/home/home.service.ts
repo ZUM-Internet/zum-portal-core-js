@@ -74,7 +74,7 @@ export class HomeService {
 
   @Cron('0/15 * * * * *')
   public async ssr(): Promise<void> {
-    await this.cacheManager.set(SSR_RESULT, await this.getHtmlBySSR(), { ttl: 30 });
+    await this.cacheManager.set(SSR_RESULT, await this.getHtmlBySSR(), { ttl: 0 });
   }
 
   public get ssrHTML(): Promise<string> {
