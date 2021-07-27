@@ -40,9 +40,9 @@ export class HomeService {
   // SSR은 CPU 사용이 큰 작업이므로 캐싱을 고려할 것
   public async getRenderedHtml(): Promise<string> {
     try {
-      if (process.env.NODE_ENV !== 'production') {
-        return this.emptyHtml;
-      }
+      // if (process.env.NODE_ENV !== 'production') {
+      //   return this.emptyHtml;
+      // }
       console.time('start vue.js ssr rendering');
 
       // Vue.js SSR 수행 후 만들어진 HTML 반환
