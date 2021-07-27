@@ -1,16 +1,19 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import {ConfigModule, ConfigService} from "@nestjs/config";
 import {ymlConfiguration} from "../../backend";
 
+import {HomeModule} from "./endpoint/views/home/home.module";
+
+const Config = ConfigModule.forRoot({
+  load: [ymlConfiguration('application.yml')],
+  isGlobal: true
+});
+
+const Modules = [HomeModule];
+
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      load: [ymlConfiguration('application.yml')]
-    })
-  ],
-  controllers: [AppController],
-  providers: [AppService, ConfigService],
+  imports: [Config, ...Modules],
+  controllers: [],
+  providers: [ConfigService],
 })
 export class AppModule {}
