@@ -10,7 +10,7 @@ export class HomeController {
 
   @Get()
   getHome(): Promise<string> {
-    return this.homeService.getRenderedHtml();
+    return this.homeService.ssrHTML;
   }
 
 }

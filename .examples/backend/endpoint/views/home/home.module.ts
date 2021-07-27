@@ -1,10 +1,10 @@
-import {Module} from "@nestjs/common";
+import {CacheModule, Module} from "@nestjs/common";
 import {HomeController} from "./home.controller";
 import {HomeService} from "./home.service";
 import {ConfigModule} from "@nestjs/config";
 
 @Module({
-  imports: [ConfigModule],
+  imports: [ConfigModule, CacheModule.register()],
   providers: [HomeService],
   controllers: [HomeController],
 })
