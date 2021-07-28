@@ -19,8 +19,7 @@
     "backend/**",
     "frontend/**",
     "types/**",
-    "banner.js",
-    "index.js"
+    "banner.js"
   ],
   "repository": {
     "type": "git",
