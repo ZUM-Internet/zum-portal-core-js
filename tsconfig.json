@@ -11,8 +11,9 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "noImplicitAny": true,
-    "typeRoots": ["./node_modules/@types", "./typings"]
+    "esModuleInterop": true,
+    "typeRoots": ["./node_modules/@types", "./types"]
   },
-  "include": ["./backend/**/*.ts", "./types/**/*.ts", "typings"],
+  "include": ["./backend/**/*.ts", "./types/**/*.ts"],
   "exclude": ["backend.origin", "node_modules"]
 }
