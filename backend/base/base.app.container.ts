@@ -1,13 +1,13 @@
-import * as cookieParser from 'cookie-parser'
-import {join} from 'path';
-import * as express from "express";
-import {ErrorRequestHandler, NextFunction, Request, Response} from "express";
-import * as ejs from 'ejs';
-import {NestFactory} from "@nestjs/core";
-import {NestExpressApplication} from "@nestjs/platform-express";
+import cookieParser from "cookie-parser";
+import { join } from "path";
+import express from "express";
+import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
+import ejs from "ejs";
+import { NestFactory } from "@nestjs/core";
+import { NestExpressApplication } from "@nestjs/platform-express";
 
-import {CoTracker, NoCacheHtml, ErrorResponse} from "../middleware";
-import {getVersion} from "../util";
+import { CoTracker, NoCacheHtml, ErrorResponse } from "../middleware";
+import { getVersion } from "../util";
 
 // 와탭 모니터링 에이전트 등록
 if (process.env.ENABLE_WHATAP === 'true') {
