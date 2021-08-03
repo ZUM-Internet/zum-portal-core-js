@@ -1,11 +1,6 @@
 .idea
-/node_modules/
-/.idea/workspace.xml
-/.idea/vcs.xml
-/.idea/modules.xml
-/.idea/inspectionProfiles/
-/.idea/misc.xml
-/.idea/.gitignore
-/.idea/codeStyles/
-/logs/
-/dist/
+*.origin
+node_modules
+.idea
+logs
+dist

@@ -20,7 +20,7 @@ const validate = (cocode, couid) => couid && cocode && cocode.length >= 4;
  * @param res
  * @param next
  */
-export default function (req: Request, res: Response, next: NextFunction) {
+export function CoTracker (req: Request, res: Response, next: NextFunction) {
   // cocode 획득
   let {cocode, couid} = req.headers;
   if (!validate(cocode, couid)) {
