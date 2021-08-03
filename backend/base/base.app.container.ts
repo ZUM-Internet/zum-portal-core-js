@@ -15,7 +15,6 @@ if (process.env.ENABLE_WHATAP === 'true') {
 }
 
 export abstract class BaseAppContainer {
-
   /**
    * Express App 컨테이너
    */
@@ -32,9 +31,9 @@ export abstract class BaseAppContainer {
 
     /** 에셋 폴더 및 템플릿 엔진 등록 **/
     /**===========================**/
-    ejs.delimiter = '?';
-    ejs.open = '?';
-    ejs.close = '?';
+    (ejs as any).delimiter = "?";
+    (ejs as any).openDelimiter = "?";
+    (ejs as any).closeDelimiter = "?";
 
     // static 폴더 URL 및 헤더 설정
     app.useStaticAssets(STATIC_PATH)
@@ -68,25 +67,31 @@ export abstract class BaseAppContainer {
     // --------------------------------------------
     app.use(CoTracker); // cotracker 미들웨어
     app.use(NoCacheHtml); // HTML 캐시 미적용
-    app.use('/state/version', (req, res) => res.send(getVersion())); // 버전 응답
-    app.use('/state/log/:type/:message', ErrorResponse); // 에러 로그 응답 미들웨어
+    app.use("/state/version", (req: Request, res: Response) =>
+      res.send(getVersion())
+    ); // 버전 응답
+    app.use("/state/log/:type/:message", ErrorResponse); // 에러 로그 응답 미들웨어
     // --------------------------------------------
 
-
     // Express 글로벌 예외 처리
-    app.use((err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {
+    app.use(
+      (
+        err: ErrorRequestHandler,
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ) => {
+        if (req.originalUrl === "/favicon.ico") {
+          // 파비콘 요청인 경우 No Contents 전송
+          return res.sendStatus(204);
+        }
 
-      if (req.originalUrl === '/favicon.ico') { // 파비콘 요청인 경우 No Contents 전송
-        return res.sendStatus(204);
+        res.sendStatus(500);
       }
-
-      res.sendStatus(500);
-    });
+    );
 
     await this.listen(app);
-
   }
 
   abstract listen(app: NestExpressApplication): Promise<void>;
-
 }

@@ -1,22 +1,18 @@
 {
-    "compilerOptions": {
-        "sourceMap": true,
-        "target": "es6",
-        "module": "commonjs",
-        "outDir": "./",
-        "baseUrl": "./",
-        "types": ["reflect-metadata"],
-        "moduleResolution": "node",
-        "declaration": true,
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true
-    },
-    "include": [
-      "./backend/**/*.ts",
-      "./types/**/*.ts"
-    ],
-    "exclude": [
-      "./**/*.d.ts",
-      "backend.origin"
-    ]
+  "compilerOptions": {
+    "sourceMap": true,
+    "target": "es6",
+    "module": "commonjs",
+    "outDir": "./",
+    "baseUrl": "./",
+    "types": ["reflect-metadata"],
+    "moduleResolution": "node",
+    "declaration": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "noImplicitAny": true,
+    "typeRoots": ["./node_modules/@types", "./typings"]
+  },
+  "include": ["./backend/**/*.ts", "./types/**/*.ts", "typings"],
+  "exclude": ["backend.origin", "node_modules"]
 }
