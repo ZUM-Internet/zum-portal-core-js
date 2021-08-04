@@ -31,9 +31,6 @@ export abstract class BaseAppContainer {
 
     /** 에셋 폴더 및 템플릿 엔진 등록 **/
     /**===========================**/
-    (ejs as any).delimiter = "?";
-    (ejs as any).openDelimiter = "?";
-    (ejs as any).closeDelimiter = "?";
 
     // static 폴더 URL 및 헤더 설정
     app.useStaticAssets(STATIC_PATH)
@@ -53,6 +50,9 @@ export abstract class BaseAppContainer {
     // 템플릿 폴더 및 엔진 설정
     app.set('views', TEMPLATE_PATH);
     app.set('view engine', 'ejs');
+    app.set("view options", {
+      delimiter: "?",
+    });
     app.engine('html', ejs.renderFile);
 
     /**===========================**/
