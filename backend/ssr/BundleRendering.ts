@@ -1,4 +1,4 @@
-import { createCookieJar as _createCookieJar, jsdom } from "jsdom";
+import { JSDOM, CookieJar } from "jsdom";
 import { BundleRenderer } from "vue-server-renderer";
 import { renderingUserAgent } from "./RenderingUserAgent";
 
@@ -14,7 +14,7 @@ export async function bundleRendering(
   renderer: BundleRenderer,
   RenderingOption: RenderingOption
 ): Promise<string> {
-  global.document = jsdom(``, {
+  const jsdom = new JSDOM(``, {
     url: RenderingOption.projectDomain,
     userAgent:
       RenderingOption?.userAgent.toLowerCase() ||
@@ -22,7 +22,8 @@ export async function bundleRendering(
     cookieJar: RenderingOption.cookieJar,
   });
 
-  global.window = document.defaultView;
+  global.window = jsdom.window;
+  global.document = window.document;
   global.location = window.location;
   global.navigator = window.navigator;
   global.localStorage = {
@@ -33,10 +34,10 @@ export async function bundleRendering(
       this[key] = value;
     },
   };
-  global.window.resizeTo(
-    RenderingOption?.windowSize?.width || 375,
-    RenderingOption?.windowSize?.height || 812
-  );
+  // global.window.resizeTo(
+  //   RenderingOption?.windowSize?.width || 375,
+  //   RenderingOption?.windowSize?.height || 812
+  // );
 
   // Window 객체에 바인드
   for (let field in RenderingOption?.windowObjects) {
@@ -65,7 +66,10 @@ export async function bundleRendering(
  * @param domain 쿠키를 적용할 도메인
  * @param cookieObject 쿠키 객체
  */
-export function createCookieJar(domain: string, cookieObject: object): object {
+export function createCookieJar(
+  domain: string,
+  cookieObject: Record<string, string>
+): CookieJar {
   // 쿠키 문자열 생성
   let cookieString = "";
   for (let [key, value] of Object.entries(cookieObject)) {
@@ -73,7 +77,7 @@ export function createCookieJar(domain: string, cookieObject: object): object {
   }
 
   // CookieJar 객체 생성
-  const cookieJar = _createCookieJar();
+  const cookieJar = new CookieJar();
   cookieJar.setCookie(
     cookieString, // 쿠키 문자열
     domain, // 쿠키를 적용할 도메인
@@ -90,7 +94,7 @@ export interface RenderingOption {
   /* JSDOM 설정 */
   projectDomain: string; // 쿠키 및 URL 도메인
   userAgent?: string; // 설정할 user agent
-  cookieJar: object; // jsdom cookie jar
+  cookieJar: CookieJar; // jsdom cookie jar
   windowSize?: { width: number; height: number }; // jsdom 윈도우 사이즈. 없으면 모바일임
 
   /* Vue SSR Renderer 설정 */
