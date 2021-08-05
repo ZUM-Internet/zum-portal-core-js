@@ -38,11 +38,7 @@ export async function bundleRendering(
   };
 
   // 모바일 사이즈로 리사이즈
-  global.window.innerWidth = width;
-  global.window.innerHeight = height;
-  global.window.outerWidth = width;
-  global.window.outerHeight = height;
-  global.window.dispatchEvent(new window.Event("resize"));
+  resizeTo(global.window, width, height);
 
   // Window 객체에 바인드
   for (let field in RenderingOption?.windowObjects) {
@@ -63,6 +59,19 @@ export async function bundleRendering(
   // JSDOM close 이후 결과 반환
   global.window.close();
   return result;
+}
+
+/**
+ * JSDOM에서 구현되지 않았기 때문에 추가된 window.resizeTo() 폴리필 함수
+ *
+ * @see https://github.com/agilgur5/window-resizeto/blob/master/src/index.ts
+ */
+function resizeTo(window: any, width: number, height: number) {
+  window.innerWidth = width;
+  window.innerHeight = height;
+  window.outerWidth = width;
+  window.outerHeight = height;
+  window.dispatchEvent(new window.Event("resize"));
 }
 
 /**
