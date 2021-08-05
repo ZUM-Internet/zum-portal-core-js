@@ -14,15 +14,17 @@ export async function bundleRendering(
   renderer: BundleRenderer,
   RenderingOption: RenderingOption
 ): Promise<string> {
-  const jsdom = new JSDOM(``, {
+  const { window } = new JSDOM(``, {
     url: RenderingOption.projectDomain,
     userAgent:
       RenderingOption?.userAgent.toLowerCase() ||
       renderingUserAgent.mobile.android,
     cookieJar: RenderingOption.cookieJar,
   });
+  const width = RenderingOption?.windowSize?.width || 375;
+  const height = RenderingOption?.windowSize?.height || 812;
 
-  global.window = jsdom.window;
+  global.window = window;
   global.document = window.document;
   global.location = window.location;
   global.navigator = window.navigator;
@@ -34,10 +36,13 @@ export async function bundleRendering(
       this[key] = value;
     },
   };
-  // global.window.resizeTo(
-  //   RenderingOption?.windowSize?.width || 375,
-  //   RenderingOption?.windowSize?.height || 812
-  // );
+
+  // 모바일 사이즈로 리사이즈
+  global.window.innerWidth = width;
+  global.window.innerHeight = height;
+  global.window.outerWidth = width;
+  global.window.outerHeight = height;
+  global.window.dispatchEvent(new window.Event("resize"));
 
   // Window 객체에 바인드
   for (let field in RenderingOption?.windowObjects) {
