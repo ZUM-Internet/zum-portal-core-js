@@ -74,11 +74,12 @@ export class HomeService {
 
   @Cron('0/15 * * * * *')
   public async ssr(): Promise<void> {
-    await this.cacheManager.set(SSR_RESULT, await this.getHtmlBySSR(), { ttl: 0 });
+    await this.cacheManager.set(SSR_RESULT, await this.getHtmlBySSR(), {
+      ttl: Infinity,
+    });
   }
 
   public get ssrHTML(): Promise<string> {
     return this.cacheManager.get(SSR_RESULT);
   }
-
 }
