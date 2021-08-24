@@ -1,5 +1,5 @@
 import {Injectable} from "@nestjs/common";
-import Axios, {AxiosPromise} from "axios";
+import Axios, { AxiosPromise, Method } from "axios";
 import deepmerge = require("deepmerge");
 
 /**
@@ -60,7 +60,7 @@ export class ZumProvisionAdapter {
    * @param option 그 외 HTTP request 옵션
    */
   private request<T>(
-    method: string,
+    method: Method,
     {
       version,
       typePredicate = Boolean,
@@ -81,6 +81,7 @@ export class ZumProvisionAdapter {
     }
 
     return Axios(deepmerge(option, {
+      method,
       timeout: 1500,
       headers: Boolean(version) ? {Accept: `application/vnd.zum.resource-${version}+json`} : {},
     }))
