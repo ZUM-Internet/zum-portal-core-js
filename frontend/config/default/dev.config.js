@@ -2,11 +2,15 @@ const {createProxyMiddleware} = require('http-proxy-middleware');
 const proxyConfig = require('./_proxyConfig');
 const frontSrcPath = global.ZUM_OPTION.frontSrcPath;
 const page = require(frontSrcPath + '/vue.page');
+const useSSL = Boolean(process.env.SSL);
+const port = useSSL ? 443 : Number(process.env.DEV_PORT || 3000);
+const host = process.env.DEV_HOST || 'localhost'
 
 module.exports = {
 
   devServer: {
-    port: 3000,
+    host: host,
+    port: port,
     open: true,
     disableHostCheck: true,
 
@@ -26,7 +30,7 @@ module.exports = {
         target: 'http://localhost:8080',
         changeOrigin: true,
         selfHandleResponse: true,
-        onProxyRes: proxyConfig(page, 'localhost:3000', 'localhost:8080'),
+        onProxyRes: proxyConfig(page, `${host}:${port}`, 'localhost:8080'),
       });
 
       // 프록시 처리
