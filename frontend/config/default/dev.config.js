@@ -13,6 +13,7 @@ module.exports = {
     port: port,
     open: true,
     disableHostCheck: true,
+    https: useSSL,
 
     /**
      * Webpack Dev Server에 리버스 프록시 기능을 구현하는 메소드
@@ -30,7 +31,7 @@ module.exports = {
         target: 'http://localhost:8080',
         changeOrigin: true,
         selfHandleResponse: true,
-        onProxyRes: proxyConfig(page, `${host}:${port}`, 'localhost:8080'),
+        onProxyRes: proxyConfig(page, `localhost:${port}`, 'localhost:8080'),
       });
 
       // 프록시 처리
