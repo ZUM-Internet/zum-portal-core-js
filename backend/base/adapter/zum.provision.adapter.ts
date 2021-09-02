@@ -12,6 +12,7 @@ export interface AdapterOption<T> {
   data?: object, // 요청 데이터
   headers?: object, // 요청 헤더
   stub?: object // publish 모드에서 사용할 stub 데이터
+  timeout?: number // timeout 지정
   typePredicate?: (value: T) => any | boolean // 응답 데이터 타입 체크 함수
 }
 
@@ -82,7 +83,7 @@ export class ZumProvisionAdapter {
 
     return Axios(deepmerge(option, {
       method,
-      timeout: 1500,
+      timeout: option.timeout || 1500,
       headers: Boolean(version) ? {Accept: `application/vnd.zum.resource-${version}+json`} : {},
     }))
       .then(response => {
