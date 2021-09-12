@@ -1,0 +1,60 @@
+{
+  "name": "zum-portal-core-js-backend",
+  "version": "1.0.0",
+  "description": "NestJS 백엔드 코어 프로젝트",
+  "author": "황준일 <junil@zuminternet.com>, 이도경 <dogyeong@zuminternet.com>, 천재민 <karl@zuminternet.com>, 위정훈 <wiii@zuminternet.com>",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "nest build"
+  },
+  "files": [
+    "dist/**"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project.git"
+  },
+  "engines": {
+    "node": ">= 8.10.59"
+  },
+  "publishConfig": {
+    "registry": "http://ci-portal.zuminternet.com/nexus/repository/zum-portal-core-js-backend/"
+  },
+  "dependencies": {
+    "@nestjs/cli": "~8.0.0",
+    "@nestjs/common": "~8.0.0",
+    "@nestjs/config": "~1.0.1",
+    "@nestjs/core": "~8.0.0",
+    "@nestjs/platform-express": "~8.0.0",
+    "@nestjs/schedule": "~1.0.0",
+    "@nestjs/schematics": "~8.0.0",
+    "@nestjs/testing": "~8.0.0",
+    "@types/cache-manager": "~3.4.2",
+    "@types/cookie-parser": "~1.4.2",
+    "@types/cron": "~1.7.3",
+    "@types/ejs": "~3.0.7",
+    "@types/express": "~4.17.13",
+    "@types/js-cookie": "~2.2.6",
+    "@types/jsdom": "~16.2.13",
+    "@types/node": "~16.0.0",
+    "@types/supertest": "~2.0.11",
+    "@types/vue": "~2.0.0",
+    "axios": "~0.21.1",
+    "cache-manager": "~3.4.4",
+    "cookie-parser": "~1.4.4",
+    "deepmerge": "~4.2.2",
+    "ejs": "~3.1.5",
+    "jsdom": "~16.7.0",
+    "node-yaml-config": "~0.0.5",
+    "reflect-metadata": "~0.1.13",
+    "rimraf": "~3.0.2",
+    "rxjs": "~7.2.0",
+    "supertest": "~6.1.3",
+    "ts-loader": "~9.2.3",
+    "ts-node": "~10.0.0",
+    "tsconfig-paths": "~3.10.1",
+    "typescript": "~4.3.5",
+    "vue-server-renderer": "~2.6.13",
+    "whatap": "~0.4.35"
+  }
+}

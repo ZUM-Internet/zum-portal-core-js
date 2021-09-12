@@ -3,17 +3,19 @@
     "sourceMap": true,
     "target": "es6",
     "module": "commonjs",
-    "outDir": "./",
+    "outDir": "./dist",
     "baseUrl": "./",
-    "types": ["reflect-metadata"],
     "moduleResolution": "node",
     "declaration": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "noImplicitAny": true,
     "esModuleInterop": true,
-    "typeRoots": ["./node_modules/@types", "./types"]
+    "removeComments": true,
+    "incremental": true,
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
-  "include": ["./backend/**/*.ts", "./types/**/*.ts"],
-  "exclude": ["backend.origin", "node_modules"]
+  "exclude": ["node_modules", "dist"]
 }

@@ -1,5 +1,5 @@
 import { AxiosStatic } from 'Axios';
-import { CookiesStatic } from 'js-cookie';
+import { CookiesStatic } from "js-cookie";
 
 export declare const Axios: AxiosStatic;
 export declare const Cookies: CookiesStatic;

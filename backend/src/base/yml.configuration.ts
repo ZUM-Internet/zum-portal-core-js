@@ -1,6 +1,5 @@
-import { readFileSync } from 'fs';
 import { join } from 'path';
-import * as yamlConfig from 'node-yaml-config';
+const yamlConfig = require('node-yaml-config');
 
 /**
  * YML 파일을 읽어와서 사용하기 위한 설정 함수

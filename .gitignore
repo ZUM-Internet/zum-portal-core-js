@@ -1,6 +1,7 @@
+*.iml
+.vscode
 .idea
 *.origin
 node_modules
-.idea
 logs
 dist
