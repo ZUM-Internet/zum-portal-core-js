@@ -6,8 +6,8 @@ import ejs from "ejs";
 import { NestFactory } from "@nestjs/core";
 import { NestExpressApplication } from "@nestjs/platform-express";
 
-import { CoTracker, NoCacheHtml, ErrorResponse } from "../middleware";
-import { getVersion } from "../util";
+import { CoTracker, NoCacheHtml, ErrorResponse } from "@/middleware";
+import { getVersion } from "@/util";
 
 // 와탭 모니터링 에이전트 등록
 if (process.env.ENABLE_WHATAP === 'true') {
