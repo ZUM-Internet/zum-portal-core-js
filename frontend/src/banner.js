@@ -13,7 +13,9 @@ const banner = `
                                                                                                   
 `;
 
-if (process.env.ZUM_FRONT_MODE !== 'ssr') {
-  console.log(chalk.blueBright(banner));
-  console.log();
+export const printBanner = () => {
+  if (process.env.ZUM_FRONT_MODE !== 'ssr') {
+    console.log(chalk.blueBright(banner));
+    console.log();
+  }
 }

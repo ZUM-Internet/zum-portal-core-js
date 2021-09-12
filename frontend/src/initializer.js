@@ -5,7 +5,6 @@
  *
  **********************************************************
  */
-import './monkeypatch';
 
 
 var $vm;
@@ -22,6 +21,10 @@ export function initializer(initFunction) {
   } catch (e) {
     exceptionHandler(initFunction, e);
   }
+}
+
+export function monkeypatch () {
+  require('./monkeypatch');
 }
 
 

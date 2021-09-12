@@ -1,0 +1,36 @@
+{
+  "name": "zum-portal-core-js-example",
+  "version": "1.0.0",
+  "repository": "https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project.git",
+  "description": "core 설정을 활용하기 위한 예제 프로젝트",
+  "author": "황준일 <junil@zuminternet.com>, 이도경 <dogyeong@zuminternet.com>, 천재민 <karl@zuminternet.com>, 위정훈 <wiii@zuminternet.com>",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "lerna:dev": "lerna run start:dev --parallel",
+    "lerna:dev-stub": "lerna run start:dev-stub --parallel",
+    "lerna:build": "lerna run build --parallel",
+    "start": "lerna run start",
+    "start:qa": "lerna run start:qa",
+    "start:stub": "lerna run start:stub",
+    "frontend:dev": "lerna run frontend:dev",
+    "frontend:dev:ssl": "lerna run frontend:dev:ssl",
+    "frontend:publish": "lerna run frontend:publish",
+    "frontend:build": "lerna run frontend:build",
+    "frontend:build:csr": "lerna run frontend:build:csr",
+    "backend:build": "lerna run backend:build",
+    "backend:debug": "lerna run backend:debug",
+    "backend:prod": "lerna run backend:prod",
+    "backend:qa": "lerna run backend:qa",
+    "backend:dev": "lerna run backend:dev",
+    "backend:dev-stub": "lerna run backend:dev-stub"
+  },
+  "devDependencies": {
+    "lerna": "~4.0.0"
+  }
+}

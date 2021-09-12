@@ -5,17 +5,16 @@
     "module": "commonjs",
     "outDir": "./dist",
     "baseUrl": "./",
+    "paths": {
+      "@domain": ["domain"]
+    },
+    "types": ["reflect-metadata"],
     "moduleResolution": "node",
-    "declaration": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "noImplicitAny": false,
-    "esModuleInterop": true,
     "allowJs": true
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.js"
-  ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "./node_modules/**"
+  ]
 }

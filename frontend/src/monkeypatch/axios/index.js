@@ -10,6 +10,8 @@
  *
  **********************************************************
  */
+
+
 if (process.env.NODE_ENV !== 'production' && process.env.ZUM_FRONT_MODE === 'publish') {
   var regex = /^.*\/\/[^\/]+:?[0-9]?\//i;
   var methods = ['request', 'get', 'delete', 'head', 'options', 'post', 'put', 'patch'];

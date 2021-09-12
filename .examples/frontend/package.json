@@ -1,0 +1,23 @@
+{
+  "name": "zum-portal-core-js-frontend-example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "frontend:publish": "cross-env ZUM_FRONT_MODE=publish vue-cli-service serve",
+    "frontend:dev": "cross-env ZUM_FRONT_MODE=dev vue-cli-service serve",
+    "frontend:build": "cross-env vue-cli-service build --no-clean && cross-env ZUM_FRONT_MODE=ssr BASE_PATH=.examples vue-cli-service build --no-clean"
+  },
+  "dependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.8.3",
+    "@babel/plugin-transform-modules-commonjs": "^7.9.6",
+    "@vue/cli-plugin-babel": "~3.12.1",
+    "@vue/cli-plugin-typescript": "~3.12.1",
+    "@vue/cli-service": "~3.12.1",
+    "typescript": "^4.4.3",
+    "zum-portal-core-js-frontend": "^1.0.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  }
+}

@@ -1,1 +1,1 @@
-export { default as ABTest } from "./ABTest";
+export * from "./ABTest";
