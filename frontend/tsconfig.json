@@ -3,7 +3,7 @@
     "sourceMap": true,
     "target": "es6",
     "module": "commonjs",
-    "outDir": "./",
+    "outDir": "./dist",
     "baseUrl": "./",
     "moduleResolution": "node",
     "declaration": true,
@@ -11,8 +11,12 @@
     "emitDecoratorMetadata": true,
     "noImplicitAny": true,
     "esModuleInterop": true,
+    "allowJs": true,
     "typeRoots": ["./node_modules/@types", "./types"]
   },
-  "include": ["./types/**/*.ts"],
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.js"
+  ],
   "exclude": ["node_modules"]
 }

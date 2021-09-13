@@ -4,6 +4,7 @@ const rimraf = require('rimraf'); // 쉘 파일 제거 명령 수행 라이브�
 
 // 노드가 optional chaining을 지원하지 않으므로 기본값을 설정한다.
 const INIT_CWD = path.join(process.env.INIT_CWD, process.env.BASE_PATH || '');
+
 global.ZUM_OPTION = merge({
   frontSrcPath: path.join(INIT_CWD, 'src'),
   resourcePath: path.join(INIT_CWD, '../resources'),
@@ -26,7 +27,7 @@ const getDefaultCliOption = require('./default/_getDefaultCliOption');
  * @param projectConfigurer 프로젝트에서 고유하게 사용되는 설정
  * @returns { {} } Vue Cli3 옵션
  */
-module.exports = (projectConfigurer) => {
+export function modeConfigurer (projectConfigurer) {
 
   /**
    * 설정을 적용하는 함수

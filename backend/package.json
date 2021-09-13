@@ -19,7 +19,7 @@
     "node": ">= 8.10.59"
   },
   "publishConfig": {
-    "registry": "http://ci-portal.zuminternet.com/nexus/repository/zum-portal-core-js-backend/"
+    "registry": "http://ci-portal.zuminternet.com/nexus/repository/zum-portal-core-backend/"
   },
   "dependencies": {
     "@nestjs/cli": "~8.0.0",

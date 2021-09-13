@@ -6,13 +6,6 @@
   "scripts": {
     "build": "tsc"
   },
-  "files": [
-    "config/**",
-    "monkeypatch/**",
-    "types/**",
-    "index.js",
-    "banner.js"
-  ],
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -22,13 +15,15 @@
     "node": ">= 8.10.59"
   },
   "publishConfig": {
-    "registry": "http://ci-portal.zuminternet.com/nexus/repository/zum-portal-core-js-frontend/"
+    "registry": "http://ci-portal.zuminternet.com/nexus/repository/zum-portal-core-frontend/"
   },
   "dependencies": {
     "@types/js-cookie": "~2.2.7",
-    "@vue/cli-plugin-babel": "~4.1.2",
-    "@vue/cli-plugin-typescript": "~4.1.1",
-    "@vue/cli-service": "~3.12.1",
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-typescript": "~4.5.0",
+    "@vue/cli-plugin-vuex": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
     "axios": "~0.21.1",
     "chalk": "~4.1.2",
     "cookie-parser": "~1.4.4",
