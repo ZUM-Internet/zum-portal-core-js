@@ -12,11 +12,11 @@
 module.exports = {
 
   abtest: { // 메인
-    entry: '.examples/frontend/abtest/main.js',
-    ssrEntry: '.examples/frontend/abtest/ssr_main.js',
-    template: 'templates/index.html', // 원본 템플릿 파일
+    entry: 'src/abtest/main.js',
+    ssrEntry: 'src/abtest/ssr_main.js',
+    template: '../templates/index.html', // 원본 템플릿 파일
     publishTemplate: 'stub/index.html', // 퍼블리시 모드에서 사용할 템플릿 파일
-    filename: 'templates/dist/index.html', // 빌드 후 템플릿 파일
+    filename: '../templates/dist/index.html', // 빌드 후 템플릿 파일
     path: ['/*'] // dev 모드 프록시에 적용할 path
   },
 

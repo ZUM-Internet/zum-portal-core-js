@@ -26,7 +26,7 @@ const getDefaultCliOption = require('./default/_getDefaultCliOption');
  * @param projectConfigurer 프로젝트에서 고유하게 사용되는 설정
  * @returns { {} } Vue Cli3 옵션
  */
-export const modeConfigurer = (projectConfigurer) => {
+module.exports = (projectConfigurer) => {
 
   /**
    * 설정을 적용하는 함수

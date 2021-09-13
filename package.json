@@ -1,0 +1,14 @@
+{
+  "name": "zum-portal-core",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project.git",
+  "description": "줌 프론트엔드 프로젝트를 위한 Core 패키지",
+  "author": "황준일 <junil@zuminternet.com>, 이도경 <dogyeong@zuminternet.com>, 천재민 <karl@zuminternet.com>, 위정훈 <wiii@zuminternet.com>",
+  "license": "MIT",
+  "private": "true",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ]
+}

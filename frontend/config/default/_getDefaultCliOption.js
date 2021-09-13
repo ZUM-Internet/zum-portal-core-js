@@ -45,30 +45,6 @@ module.exports = function getDefaultCliOption() {
       config.resolve.alias.set('@', frontSrcPath);
       config.plugins.delete('progress');
 
-
-      // ts 플러그인이 있을 때 타입스크립트 적용
-      try {
-        require('typescript') && require('@vue/cli-plugin-typescript');
-
-        config.plugins.delete('fork-ts-checker');
-        config.module.rule('ts')
-            .use('ts-loader').loader('ts-loader')
-            .tap((options) => {
-              if (options) {
-                options.appendTsSuffixTo = [/\.ts\.vue$/];
-                options.appendTsxSuffixTo = [/\.tsx\.vue$/];
-                options.transpileOnly = true;
-                options.configFile = 'tsconfig.frontend.json';
-              }
-              return options;
-            });
-
-      } catch (e) {
-        console.info('Webpack can not find @vue/cli-plugin-typescript. will skip setting ts-loader.');
-      }
-
-
-
       // minify 설정
       config.optimization.minimizer([
         new TerserPlugin({
