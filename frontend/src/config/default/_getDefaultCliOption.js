@@ -15,7 +15,7 @@ const page = require(path.join(global.ZUM_OPTION.frontSrcPath, '/vue.page')); //
  *
  * @returns {{}} Vue-CLI3 기본 설정값
  */
-module.exports = function getDefaultCliOption() {
+export function getDefaultCliOption() {
 
   // src/styles의 모든 스타일시트를 import하도록 구분 생성
   const cssImportOption = [`@import "@/styles/index";`];
