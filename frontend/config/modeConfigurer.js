@@ -4,7 +4,7 @@ const { ProjectOptions } = require("@vue/cli-service");
 const { sync } = require("rimraf");
 
 const { getVuePages, getZumOptions } = require("./options"); // 쉘 파일 제거 명령 수행 라이브러리
-const { getDefaultCliOption } = require("./default/_getDefaultCliOption"); // 웹팩 기본 설정 획득
+const getDefaultCliOption = require("./default/_getDefaultCliOption"); // 웹팩 기본 설정 획득
 
 /**
  * 글로벌 환경변수와 모드별 환경변수를 합치는 함수
