@@ -1,17 +1,18 @@
 <template>
-  <div>
-    <slot :name="selectedVariant" />
-  </div>
+  <div v-if="!disabled">
+    <slot :name="group || defaultGroup" />
+</div>
 </template>
 
 <script>
-export default {
+  export default {
   name: 'ABTest',
 
   props: {
-    selectedVariant: { type: String, required: true, },
-    variants: { type: Array, required: true, },
-  }
+  disabled: {type: Boolean, default: () => false},
+  group: { type: String, required: false, },
+  defaultGroup: {type: String, default: () => 'A'}
+},
 
 }
 </script>

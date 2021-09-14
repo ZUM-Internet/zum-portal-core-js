@@ -5,9 +5,30 @@ Express-Core Project
 1. (node-schedule)[https://github.com/node-schedule/node-schedule], (node-cache)[https://github.com/node-cache/node-cache] 등의 라이브러리를 이용하여
 포털 개발팀에서 자주 사용되는 패턴을 간단하게 사용하는 것을 목표로 한다.  
 
+
+## process.env 플래그
+1. ENABLE_WHATAP: 'true' | null  
+와탭 모니터링 에이전트 실행 (세부 옵션은 (공식 가이드)[https://docs.whatap.io/kr/agent_node/] 참조)
+2. ZUM_BACK_MODE: 'publish' | 'deploy'  
+줌 어댑터에서 stub 파일 사용 여부 결정
+3. ZUM_FRONT_MODE: 'ssr' | null  
+프론트엔드 번들링 시 ssr 플러그인 삽입 여부 결정
+4.  BASE_PATH: string
+실행할 프로젝트 기본 디렉토리 
+
 ---
 
 ## 1. 변경 내역
+
+- 1.1.2
+  - ENABLE_WHATAP 플래그 추가. 'true' 입력시 와탭 모니터링 에이전트 실행
+  - 커스텀 데코레이터 기능 재개발
+    - 장애 발생으로 제거하였던 기능으로 재개발 진행 (Component.ts 파일 수정)
+  - 프론트엔드 AB테스트 컴포넌트 '그룹'으로 수정
+
+- 1.1.1
+  - 
+
 - 1.1.0
   - 미들웨어 함수(람다) 사용 가능하도록 추가
   - 바닐라 Node.js express에서 사용 가능하도록 exporting
@@ -187,7 +208,7 @@ class AppContainer extends BaseAppContainer {
     1. `@Middleware`: 핸들러에 미들웨어를 삽입한다.
 1. `@Component`: 기능을 담당하는 클래스임을 표기한다. 설정시 singleton 객체로 등록된다.
     1. `@PostConstructor`: 생성자 실행 이후 실행되는 메소드. 생성자에서 불가능한 async 작업 등을 수행한다.
-    1. `@Caching`: 해당 메소드의 반환값을 캐시한다. 결과값은 deepFreeze 상태로 변경이 불가능하다.
+    1. `@Caching`: 해당 메소드의 반환값을 캐시한다. 결과값은 deepFreeze 상태로 변경이 불가능하다. 캐시 키의 기본값은 메소드명이므로 같은 메소드명을 사용 시에는 키를 직접 작성해야한다.
     1. `@Scheduled`: 해당 메소드를 일정 시간마다 실행한다.
     1. `@Inject`: Component의 constructor에서 사용 가능한 데코레이터로 파라미터에 해당하는 객체를 주입받는다.
     1. `@Yml`: Component의 constructor에서 사용 가능한 데코레이터로 파일명에 해당하는 yml 객체를 주입받는다.
