@@ -1,14 +1,15 @@
 import {
   bundleRendering,
   CACHE_MANAGER,
-  ConfigService, createCookieJar,
+  ConfigService,
+  createCookieJar,
   Cron,
   Inject,
   Injectable,
   renderingUserAgent,
   Cache
 } from "@zum-portal-core/backend";
-import {BundleRenderer, createBundleRenderer} from "vue-server-renderer";
+import { BundleRenderer, createBundleRenderer } from "vue-server-renderer";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -42,6 +43,7 @@ export class HomeService {
       runInNewContext: false,
       clientManifest: clientManifest,
       template: html,
+      inject: false, // 템플릿에 직접 inject처리
     });
 
     this.ssr();
@@ -51,9 +53,9 @@ export class HomeService {
   // SSR은 CPU 사용이 큰 작업이므로 캐싱을 고려할 것
   private async getHtmlBySSR(): Promise<string> {
     try {
-      if (process.env.NODE_ENV !== 'production') {
-        return this.defaultHtml;
-      }
+      // if (process.env.NODE_ENV !== 'production') {
+      //   return this.defaultHtml;
+      // }
       console.time('start vue.js ssr rendering');
 
       // Vue.js SSR 수행 후 만들어진 HTML 반환
@@ -71,6 +73,7 @@ export class HomeService {
 
     } catch (e) {
       console.error(e);
+      console.timeEnd('start vue.js ssr rendering');
 
       // 에러 발생시 프론트엔드에서 Vue.js를 기동할 수 있도록 기본 html 구문을 전송할 것
       return this.defaultHtml;
