@@ -15,7 +15,7 @@ export function getPageConfig(vuePages: ZumVuePages) {
   const mode = process.env.ZUM_FRONT_MODE;
 
   Object.entries(vuePages)
-        .filter(([, v]) => !v.template)
+        .filter(([, v]) => v.template)
         .forEach(([, page]) => {
 
           page.template = path.join(resourcePath, page.template);
