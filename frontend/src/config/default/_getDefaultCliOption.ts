@@ -19,7 +19,6 @@ export function getDefaultCliOption(): ProjectOptions {
   const pages = getVuePages();
 
   // src/styles의 모든 스타일시트를 import하도록 구분 생성
-  const cssImportOption: string[] = [`@import "@/styles/index";`];
 
   return {
     productionSourceMap: false,
@@ -28,7 +27,7 @@ export function getDefaultCliOption(): ProjectOptions {
     css: { // CSS 설정
       loaderOptions: {
         sass: {
-          data: cssImportOption
+          prependData: `@import "@/styles/index";`
         }
       },
       extract: !process.env.ZUM_FRONT_MODE,  // 빌드시에만 추출
