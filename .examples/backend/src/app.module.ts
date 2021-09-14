@@ -1,8 +1,4 @@
-import {Module} from '@nestjs/common';
-import {ConfigModule} from "@nestjs/config";
-import {ScheduleModule} from "@nestjs/schedule";
-import {ymlConfiguration} from "../../backend";
-
+import { ConfigModule, Module, ScheduleModule, ymlConfiguration } from "@zum-portal-core/backend";
 import {HomeModule} from "./endpoint/views/home/home.module";
 import {AbtestModule} from "./endpoint/apis/abtest/abtest.module";
 import {ContentsModule} from "./endpoint/apis/contents/contents.module";

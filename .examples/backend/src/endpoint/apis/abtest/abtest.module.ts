@@ -1,4 +1,4 @@
-import {MiddlewareConsumer, Module, NestModule} from "@nestjs/common";
+import {MiddlewareConsumer, Module, NestModule} from "@zum-portal-core/backend";
 import {AbtestController} from "./abtest.controller";
 import {setupVariants} from "../../../middleware/setup.variatns";
 

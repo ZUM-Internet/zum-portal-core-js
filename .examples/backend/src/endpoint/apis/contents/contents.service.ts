@@ -1,6 +1,4 @@
-import {Injectable} from "@nestjs/common";
-import {ZumProvisionAdapter} from "../../../../../backend";
-import {ConfigService} from "@nestjs/config";
+import { ConfigService, Injectable, ZumProvisionAdapter } from "@zum-portal-core/backend";
 
 @Injectable()
 export class ContentsService {

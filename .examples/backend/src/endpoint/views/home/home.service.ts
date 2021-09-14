@@ -1,11 +1,16 @@
-import {CACHE_MANAGER, Inject, Injectable} from "@nestjs/common";
+import {
+  bundleRendering,
+  CACHE_MANAGER,
+  ConfigService, createCookieJar,
+  Cron,
+  Inject,
+  Injectable,
+  renderingUserAgent,
+  Cache
+} from "@zum-portal-core/backend";
 import {BundleRenderer, createBundleRenderer} from "vue-server-renderer";
 import * as fs from "fs";
 import * as path from "path";
-import {ConfigService} from "@nestjs/config";
-import {renderingUserAgent, bundleRendering, createCookieJar} from "../../../../../backend";
-import {Cron} from "@nestjs/schedule";
-import {Cache} from "cache-manager";
 
 const RESOURCES_PATH = path.join(process.env.INIT_CWD, process.env.BASE_PATH || '', 'resources');
 const TEMPLATES_PATH = path.join(RESOURCES_PATH, 'templates');

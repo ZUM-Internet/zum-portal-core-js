@@ -1,7 +1,5 @@
-import { AppModule } from './app.module';
-import {BaseAppContainer} from "../../backend";
-import {NestExpressApplication} from "@nestjs/platform-express";
-import {ConfigService} from "@nestjs/config";
+import { BaseAppContainer, ConfigService, NestExpressApplication } from "@zum-portal-core/backend";
+import { AppModule } from "./app.module";
 
 class AppContainer extends BaseAppContainer {
   async listen (app: NestExpressApplication) {

@@ -1,4 +1,4 @@
-import {Controller, Get, Inject} from '@nestjs/common';
+import { Controller, Get } from "@zum-portal-core/backend";
 import {HomeService} from "./home.service";
 
 @Controller()

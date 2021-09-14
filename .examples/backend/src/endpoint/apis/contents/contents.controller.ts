@@ -1,4 +1,4 @@
-import {Controller, Get} from "@nestjs/common";
+import {Controller, Get} from "@zum-portal-core/backend";
 import {ContentsService} from "./contents.service";
 
 @Controller()
