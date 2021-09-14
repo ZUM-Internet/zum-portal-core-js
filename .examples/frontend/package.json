@@ -11,10 +11,14 @@
   "dependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.8.3",
     "@babel/plugin-transform-modules-commonjs": "^7.9.6",
-    "@vue/cli-service": "~3.12.1",
-    "zum-portal-core-js-frontend": "~1.0.0"
+    "@zum-portal-core/banner": "1.0.0",
+    "@zum-portal-core/frontend": "1.0.0-beta",
+    "typescript": "^4.4.3",
+    "webpack": "~4.46.0"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3"
+    "@vue/cli-service": "~4.5.0",
+    "cross-env": "^7.0.3",
+    "terser-webpack-plugin": "^5.2.4"
   }
 }

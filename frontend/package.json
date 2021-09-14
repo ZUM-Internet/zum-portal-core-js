@@ -1,12 +1,12 @@
 {
   "name": "@zum-portal-core/frontend",
-  "version": "1.0.0",
+  "version": "1.0.0-beta",
   "description": "Vue.js 환경설정을 위한 코어 프로젝트",
   "author": "황준일 <junil@zuminternet.com>, 이도경 <dogyeong@zuminternet.com>, 천재민 <karl@zuminternet.com>, 위정훈 <wiii@zuminternet.com>",
   "scripts": {
-    "build": "tsc"
+    "frontend:build": "tsc"
   },
-  "main": "index.js",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project.git"
@@ -34,9 +34,9 @@
     "fetch-jsonp": "~1.1.3",
     "http-proxy-middleware": "~1.0.6",
     "js-cookie": "~2.2.1",
-    "node-sass": "~4.14.1",
+    "node-sass": "~6.0.1",
     "rimraf": "~3.0.2",
-    "sass-loader": "~7.3.1",
+    "sass-loader": "~8.0.2",
     "terser-webpack-plugin": "~2.3.2",
     "typescript": "~4.4.3",
     "vue": "~2.6.13",

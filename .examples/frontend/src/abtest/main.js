@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import App from './App';
-import { monkeypatch } from 'zum-portal-core-js-frontend';
+import { handleDevtool } from '@zum-portal-core/frontend';
 
-monkeypatch();
+handleDevtool();
 
 new Vue({
   el: '#app',

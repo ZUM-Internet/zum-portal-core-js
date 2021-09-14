@@ -16,7 +16,7 @@ export function getPageConfig(vuePages: ZumVuePages) {
 
   Object.entries(vuePages)
         .filter(([, v]) => !v.template)
-        .forEach(([key, page]) => {
+        .forEach(([, page]) => {
 
           page.template = path.join(resourcePath, page.template);
 

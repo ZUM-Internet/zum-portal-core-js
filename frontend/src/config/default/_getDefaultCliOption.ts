@@ -5,8 +5,8 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 import { getZumOptions, getVuePages } from "../options";
 import { ProjectOptions } from "@vue/cli-service";
-
-const getPageConfig = require('./_getPageConfig');
+import { getPageConfig } from "./_getPageConfig";
+import deepmerge from "deepmerge";
 
 // 프론트엔드 src 폴더
 const {frontSrcPath, resourcePath} = getZumOptions();
@@ -35,35 +35,20 @@ export function getDefaultCliOption(): ProjectOptions {
       extract: !process.env.ZUM_FRONT_MODE,  // 빌드시에만 추출
     },
 
-    configureWebpack: {
-      resolve: {
-        alias: {
-          '#': resourcePath,
-          '@': frontSrcPath,
-        }
-      },
-      optimization: {
-        minimize: true,
-        minimizer: [
-          new TerserPlugin({
-            extractComments: true,
-            terserOptions: {ie8: false}
-          })
-        ]
-      },
-      output: {
-        jsonpFunction: 'zumPortalJsonp'
-      },
-      plugins: [
-        new DefinePlugin({
-          'process.env': JSON.stringify(process.env)
-        })
-      ],
-    },
-
     chainWebpack(config) {
 
       config.plugins.delete('progress');
+      config.resolve.alias.set('#', resourcePath);
+      config.resolve.alias.set('@', frontSrcPath);
+
+      // minify 설정
+      config.optimization.minimizer('terser').use(
+        new TerserPlugin({
+          extractComments: true,
+          terserOptions: { ie8: false }
+        })
+      );
+
 
       if (process.env.ZUM_FRONT_MODE === 'ssr') {
         /** SSR 빌드 진행시에만 적용 **/
@@ -88,7 +73,12 @@ export function getDefaultCliOption(): ProjectOptions {
           .end()
       }
 
-      return config;
+      return config.output.jsonpFunction('zumPortalJsonp').end()
+                   .plugin('define').use(DefinePlugin, [{
+                     'process.env': JSON.stringify(process.env)
+                   }]).end()
+
+
     },
   };
 };
