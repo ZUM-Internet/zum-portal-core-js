@@ -10,27 +10,5 @@
   "workspaces": [
     "frontend",
     "backend"
-  ],
-  "scripts": {
-    "lerna:dev": "lerna run start:dev --parallel",
-    "lerna:dev-stub": "lerna run start:dev-stub --parallel",
-    "lerna:build": "lerna run build --parallel",
-    "start": "lerna run start",
-    "start:qa": "lerna run start:qa",
-    "start:stub": "lerna run start:stub",
-    "frontend:dev": "lerna run frontend:dev",
-    "frontend:dev:ssl": "lerna run frontend:dev:ssl",
-    "frontend:publish": "lerna run frontend:publish",
-    "frontend:build": "lerna run frontend:build",
-    "frontend:build:csr": "lerna run frontend:build:csr",
-    "backend:build": "lerna run backend:build",
-    "backend:debug": "lerna run backend:debug",
-    "backend:prod": "lerna run backend:prod",
-    "backend:qa": "lerna run backend:qa",
-    "backend:dev": "lerna run backend:dev",
-    "backend:dev-stub": "lerna run backend:dev-stub"
-  },
-  "devDependencies": {
-    "lerna": "~4.0.0"
-  }
+  ]
 }

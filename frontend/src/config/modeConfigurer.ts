@@ -6,10 +6,6 @@ import { sync } from 'rimraf';
 import { getVuePages, getZumOptions } from "./options"; // 쉘 파일 제거 명령 수행 라이브러리
 import { getDefaultCliOption } from "./default/_getDefaultCliOption"; // 웹팩 기본 설정 획득
 
-// 프론트엔드 src 폴더 정의
-const {resourcePath, outputPath} = getZumOptions();
-const pages = getVuePages();
-
 /**
  * 글로벌 환경변수와 모드별 환경변수를 합치는 함수
  *
@@ -17,6 +13,10 @@ const pages = getVuePages();
  * @returns { {} } Vue Cli3 옵션
  */
 export function modeConfigurer (projectConfigurer: ProjectOptions): ProjectOptions {
+
+  // 프론트엔드 src 폴더 정의
+  const {resourcePath, outputPath} = getZumOptions();
+  const pages = getVuePages();
 
   /**
    * 설정을 적용하는 함수

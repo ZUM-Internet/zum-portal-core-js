@@ -1,4 +1,4 @@
-import webpack, { DefinePlugin } from 'webpack';
+import { DefinePlugin } from 'webpack';
 import VueSSRServerPlugin from 'vue-server-renderer/server-plugin';
 import VueSSRClientPlugin from 'vue-server-renderer/client-plugin';
 const TerserPlugin = require('terser-webpack-plugin');
@@ -6,11 +6,6 @@ const TerserPlugin = require('terser-webpack-plugin');
 import { getZumOptions, getVuePages } from "../options";
 import { ProjectOptions } from "@vue/cli-service";
 import { getPageConfig } from "./_getPageConfig";
-import deepmerge from "deepmerge";
-
-// 프론트엔드 src 폴더
-const {frontSrcPath, resourcePath} = getZumOptions();
-const pages = getVuePages();
 
 /**
  * CSS 및 ChainWebpack이 설정된 기본 옵션을 가져오는 함수
@@ -18,6 +13,10 @@ const pages = getVuePages();
  * @returns {{}} Vue-CLI3 기본 설정값
  */
 export function getDefaultCliOption(): ProjectOptions {
+
+  // 프론트엔드 src 폴더
+  const {frontSrcPath, resourcePath} = getZumOptions();
+  const pages = getVuePages();
 
   // src/styles의 모든 스타일시트를 import하도록 구분 생성
   const cssImportOption: string[] = [`@import "@/styles/index";`];
