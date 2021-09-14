@@ -1,16 +1,9 @@
 {
   "name": "@zum-portal-core/backend",
-  "version": "1.0.0",
+  "version": "1.0.0-beta-1",
   "description": "NestJS 백엔드 코어 프로젝트",
   "author": "황준일 <junil@zuminternet.com>, 이도경 <dogyeong@zuminternet.com>, 천재민 <karl@zuminternet.com>, 위정훈 <wiii@zuminternet.com>",
-  "scripts": {
-    "prebuild": "rimraf dist",
-    "build": "nest build"
-  },
-  "main": "dist/index.js",
-  "files": [
-    "dist/**"
-  ],
+  "main": "src/index.ts",
   "repository": {
     "type": "git",
     "url": "https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project.git"
