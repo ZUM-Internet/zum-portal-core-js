@@ -1995,10 +1995,10 @@
   resolved "http://ci-portal.zuminternet.com/nexus/repository/zum-portal-npm/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@zum-portal-core/backend@1.0.0-beta-4":
-  version "1.0.0-beta-4"
-  resolved "http://ci-portal.zuminternet.com/nexus/repository/zum-portal-npm/@zum-portal-core/backend/-/backend-1.0.0-beta-4.tgz#c9f2ad2c170eb89b7085943ec32b2dcef85f8fe0"
-  integrity sha512-8wrUgRQbs91jKU1gHE09JMOxi4zUJ4NXUMrXCayT+4v922F5114ROzkJ7CO06rVzYP5RpXRYp8XiiQvsHMWOdw==
+"@zum-portal-core/backend@1.0.0-beta-7":
+  version "1.0.0-beta-7"
+  resolved "http://ci-portal.zuminternet.com/nexus/repository/zum-portal-npm/@zum-portal-core/backend/-/backend-1.0.0-beta-7.tgz#f18aaf1211237b043a07c33415d86944f8234c07"
+  integrity sha512-ZOIoSe38vLLWbXdQO3mfrfHb1me/3frSrQ7KWqljtgEZ42HYmVElZ7BpSelu9UgjBzFr0jZ1GN3zuax7Gxf73A==
   dependencies:
     "@nestjs/cli" "~8.0.0"
     "@nestjs/common" "~8.0.0"

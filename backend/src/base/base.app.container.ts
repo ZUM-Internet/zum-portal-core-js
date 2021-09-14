@@ -1,8 +1,8 @@
-import cookieParser from "cookie-parser";
+import * as cookieParser from "cookie-parser";
 import { join } from "path";
-import express from "express";
 import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
-import ejs from "ejs";
+import * as express from "express";
+import * as ejs from "ejs";
 import { NestFactory } from "@nestjs/core";
 import { NestExpressApplication } from "@nestjs/platform-express";
 
@@ -20,9 +20,9 @@ export abstract class BaseAppContainer {
    */
   async setup(AppModule: any) {
 
-    const RESOURCE_PATH = join(process.env.INIT_CWD, '..resources');
-    const STATIC_PATH = join(RESOURCE_PATH, './static');
-    const TEMPLATE_PATH = join(RESOURCE_PATH, './templates');
+    const RESOURCE_PATH = join(process.env.INIT_CWD, '../resources');
+    const STATIC_PATH = join(RESOURCE_PATH, 'static');
+    const TEMPLATE_PATH = join(RESOURCE_PATH, 'templates');
 
     // express 객체 생성 및 컨테이너 등록
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -33,6 +33,7 @@ export abstract class BaseAppContainer {
     /**===========================**/
 
     // static 폴더 URL 및 헤더 설정
+    console.log({ STATIC_PATH });
     app.useStaticAssets(STATIC_PATH);
     app.use('/static', express.static(STATIC_PATH, {
       cacheControl: true,

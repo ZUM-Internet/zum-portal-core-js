@@ -8,7 +8,7 @@ export class HomeController {
     private readonly homeService: HomeService
   ) {}
 
-  @Get()
+  @Get("/*")
   getHome(): Promise<string> {
     return this.homeService.ssrHTML;
   }

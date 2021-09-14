@@ -52,7 +52,7 @@ export class HomeService {
   private async getHtmlBySSR(): Promise<string> {
     try {
       if (process.env.NODE_ENV !== 'production') {
-        return this.emptyHtml;
+        return this.defaultHtml;
       }
       console.time('start vue.js ssr rendering');
 

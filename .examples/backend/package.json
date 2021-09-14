@@ -12,7 +12,7 @@
     "start:prod": "node dist/main"
   },
   "dependencies": {
-    "@zum-portal-core/backend": "1.0.0-beta-4"
+    "@zum-portal-core/backend": "1.0.0-beta-7"
   },
   "devDependencies": {
     "cross-env": "^7.0.3"
