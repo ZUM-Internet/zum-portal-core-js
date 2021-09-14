@@ -28,6 +28,7 @@ module.exports = {
 
         if (mode === 'publish') {
           page.template = path.join(resourcePath, page.publishTemplate);
+          delete page.filename;
         }
 
       })

@@ -9,7 +9,6 @@ export const HttpMethod = {
 }
 
 export class RestClient {
-  client;
 
   constructor (baseURL = "/", config) {
     this.client = axios.create({...config, baseURL});
