@@ -1,0 +1,52 @@
+{
+  "name": "@zum-portal-core/frontend",
+  "version": "1.0.0",
+  "description": "Vue.js 환경설정을 위한 코어 프로젝트",
+  "author": "황준일 <junil@zuminternet.com>, 이도경 <dogyeong@zuminternet.com>, 천재민 <karl@zuminternet.com>, 위정훈 <wiii@zuminternet.com>",
+  "scripts": {
+    "build": "tsc"
+  },
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project.git"
+  },
+  "engines": {
+    "node": ">= 8.10.59"
+  },
+  "publishConfig": {
+    "registry": "http://ci-portal.zuminternet.com/nexus/repository/zum-portal-core-frontend/"
+  },
+  "dependencies": {
+    "@types/js-cookie": "~2.2.7",
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-typescript": "~4.5.0",
+    "@vue/cli-plugin-vuex": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "axios": "~0.21.1",
+    "chalk": "~4.1.2",
+    "cookie-parser": "~1.4.4",
+    "core-js": "~3.6.5",
+    "cross-env": "~7.0.3",
+    "deepmerge": "~4.2.2",
+    "express": "~4.17.1",
+    "fetch-jsonp": "~1.1.3",
+    "http-proxy-middleware": "~1.0.6",
+    "js-cookie": "~2.2.1",
+    "node-sass": "~6.0.1",
+    "rimraf": "~3.0.2",
+    "sass-loader": "~8.0.2",
+    "terser-webpack-plugin": "~2.3.2",
+    "typescript": "~4.4.3",
+    "vue": "~2.6.13",
+    "vue-loader": "~15.9.6",
+    "vue-router": "~3.4.9",
+    "vue-server-renderer": "~2.6.13",
+    "vue-template-compiler": "~2.6.13",
+    "vuex": "~3.6.0"
+  },
+  "devDependencies": {
+    "@types/rimraf": "^3.0.2"
+  }
+}

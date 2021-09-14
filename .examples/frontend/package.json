@@ -1,0 +1,21 @@
+{
+  "name": "zum-portal-core-js-frontend-example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "frontend:publish": "cross-env ZUM_FRONT_MODE=publish vue-cli-service serve",
+    "frontend:dev": "cross-env ZUM_FRONT_MODE=dev vue-cli-service serve",
+    "frontend:build": "cross-env vue-cli-service build --no-clean && cross-env ZUM_FRONT_MODE=ssr vue-cli-service build --no-clean"
+  },
+  "dependencies": {
+    "@zum-portal-core/banner": "1.0.0",
+    "@zum-portal-core/frontend": "1.0.0",
+    "typescript": "^4.4.3",
+    "webpack": "~4.46.0"
+  },
+  "devDependencies": {
+    "@vue/cli-service": "~4.5.0",
+    "cross-env": "^7.0.3"
+  }
+}
