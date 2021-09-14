@@ -33,7 +33,6 @@ export abstract class BaseAppContainer {
     /**===========================**/
 
     // static 폴더 URL 및 헤더 설정
-    console.log({ STATIC_PATH });
     app.useStaticAssets(STATIC_PATH);
     app.use('/static', express.static(STATIC_PATH, {
       cacheControl: true,
