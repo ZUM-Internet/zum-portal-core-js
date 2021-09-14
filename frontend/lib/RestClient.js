@@ -1,6 +1,6 @@
-const axios = require("axios");
+import axios from "axios";
 
-const HttpMethod = {
+export const HttpMethod = {
   GET: 'GET',
   PUT: 'PUT',
   POST: 'POST',
@@ -8,7 +8,7 @@ const HttpMethod = {
   DELETE: 'DELETE',
 }
 
-class RestClient {
+export class RestClient {
   client;
 
   constructor (baseURL = "/", config) {
@@ -45,7 +45,3 @@ class RestClient {
   }
 }
 
-module.exports = {
-  HttpMethod,
-  RestClient,
-}

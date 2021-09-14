@@ -12,7 +12,7 @@ const { getPageConfig } = require("./_getPageConfig");
  *
  * @returns {ProjectOptions} Vue-CLI3 기본 설정값
  */
-export function getDefaultCliOption() {
+module.getDefaultCliOption = () => {
 
   // 프론트엔드 src 폴더
   const {frontSrcPath, resourcePath} = getZumOptions();

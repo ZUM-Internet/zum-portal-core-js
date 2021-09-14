@@ -1,9 +1,5 @@
-import { RestClient } from "./base";
+import { RestClient } from "./RestClient";
 
-const apiClient = new RestClient(
+export const apiClient = new RestClient(
   process.env.ZUM_FRONT_MODE === 'publish' ? "/stub" : '/'
 );
-
-module.exports = {
-  apiClient
-};

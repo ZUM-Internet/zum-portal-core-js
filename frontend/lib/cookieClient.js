@@ -1,8 +1,8 @@
-const Cookies = require('js-cookie');
+import Cookies from "js-cookie";
 
 const NUMBER_REGEXP = /^\d+$/;
 
-const cookieClient = {
+export const cookieClient = {
   get(key) {
     const value = Cookies.get(key);
     // Number 파싱
@@ -23,5 +23,3 @@ const cookieClient = {
     });
   },
 };
-
-module.exports = { cookieClient };
