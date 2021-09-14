@@ -6,7 +6,7 @@ const yamlConfig = require('node-yaml-config');
  * @param filename
  */
 export function ymlConfiguration (filename: string) {
-  const RESOURCE_PATH = join(process.env.INIT_CWD, process.env.BASE_PATH || '', 'resources');
+  const RESOURCE_PATH = join(process.env.INIT_CWD, '../resources');
 
   return () => {
     const yamlPath = join(RESOURCE_PATH, filename);

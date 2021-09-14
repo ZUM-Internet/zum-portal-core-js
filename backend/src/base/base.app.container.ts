@@ -20,7 +20,7 @@ export abstract class BaseAppContainer {
    */
   async setup(AppModule: any) {
 
-    const RESOURCE_PATH = join(process.env.INIT_CWD, process.env.BASE_PATH || '', 'resources');
+    const RESOURCE_PATH = join(process.env.INIT_CWD, '..resources');
     const STATIC_PATH = join(RESOURCE_PATH, './static');
     const TEMPLATE_PATH = join(RESOURCE_PATH, './templates');
 
@@ -33,7 +33,7 @@ export abstract class BaseAppContainer {
     /**===========================**/
 
     // static 폴더 URL 및 헤더 설정
-    app.useStaticAssets(STATIC_PATH)
+    app.useStaticAssets(STATIC_PATH);
     app.use('/static', express.static(STATIC_PATH, {
       cacheControl: true,
       maxAge: 3600 * 1000,

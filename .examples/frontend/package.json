@@ -11,8 +11,8 @@
   "dependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.8.3",
     "@babel/plugin-transform-modules-commonjs": "^7.9.6",
-    "@zum-portal-core/banner": "file:../../banner",
-    "@zum-portal-core/frontend": "file:../../frontend",
+    "@zum-portal-core/banner": "1.0.0",
+    "@zum-portal-core/frontend": "1.0.0",
     "typescript": "^4.4.3",
     "webpack": "~4.46.0"
   },

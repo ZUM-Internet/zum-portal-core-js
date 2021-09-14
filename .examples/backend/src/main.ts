@@ -1,4 +1,4 @@
-import { BaseAppContainer, ConfigService, NestExpressApplication } from "@zum-portal-core/backend";
+import { ConfigService, NestExpressApplication, BaseAppContainer } from "@zum-portal-core/backend";
 import { AppModule } from "./app.module";
 
 class AppContainer extends BaseAppContainer {

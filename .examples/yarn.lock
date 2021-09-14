@@ -1995,10 +1995,10 @@
   resolved "http://ci-portal.zuminternet.com/nexus/repository/zum-portal-npm/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@zum-portal-core/backend@1.0.0-beta-1":
-  version "1.0.0-beta-1"
-  resolved "http://ci-portal.zuminternet.com/nexus/repository/zum-portal-npm/@zum-portal-core/backend/-/backend-1.0.0-beta-1.tgz#1dac634598336edf5790a335a4e0399781ef020a"
-  integrity sha512-CAF2OcDwZ1Zyzm5r3KMddKk8+gI+09b1OqZai8xbBzAnESbdN2WTzmmTpRz1OUNmRUwokqF0ZGrc8Rl5mp7sFQ==
+"@zum-portal-core/backend@1.0.0-beta-4":
+  version "1.0.0-beta-4"
+  resolved "http://ci-portal.zuminternet.com/nexus/repository/zum-portal-npm/@zum-portal-core/backend/-/backend-1.0.0-beta-4.tgz#c9f2ad2c170eb89b7085943ec32b2dcef85f8fe0"
+  integrity sha512-8wrUgRQbs91jKU1gHE09JMOxi4zUJ4NXUMrXCayT+4v922F5114ROzkJ7CO06rVzYP5RpXRYp8XiiQvsHMWOdw==
   dependencies:
     "@nestjs/cli" "~8.0.0"
     "@nestjs/common" "~8.0.0"
@@ -2036,13 +2036,17 @@
     vue-server-renderer "~2.6.13"
     whatap "~0.4.35"
 
-"@zum-portal-core/banner@file:../banner":
+"@zum-portal-core/banner@1.0.0":
   version "1.0.0"
+  resolved "http://ci-portal.zuminternet.com/nexus/repository/zum-portal-npm/@zum-portal-core/banner/-/banner-1.0.0.tgz#fdccbc7dc0363f4fba8c3df792824c9779165059"
+  integrity sha512-zLbokHKpSpwD3FQV4E8tsoc6ZQked9SlxPaFOsSx137EZg1r5Av/rocu3axViJ5WK1/OSQ1GPBgNd5XLgqEYTw==
   dependencies:
     chalk "^4.1.2"
 
-"@zum-portal-core/frontend@file:../frontend":
+"@zum-portal-core/frontend@1.0.0":
   version "1.0.0"
+  resolved "http://ci-portal.zuminternet.com/nexus/repository/zum-portal-npm/@zum-portal-core/frontend/-/frontend-1.0.0.tgz#0f94205e6c77cddac09dc46ff9ef3be902464cab"
+  integrity sha512-KehlNR0f9jH0iM9IApQ9kYyXvhS7Q3b2kVRGRrr1g3IlT8o2h2TvVaJSJo6yF3ofSfilKeB3x/QVsDbbtEdUaA==
   dependencies:
     "@types/js-cookie" "~2.2.7"
     "@vue/cli-plugin-babel" "~4.5.0"

@@ -12,7 +12,7 @@ import {BundleRenderer, createBundleRenderer} from "vue-server-renderer";
 import * as fs from "fs";
 import * as path from "path";
 
-const RESOURCES_PATH = path.join(process.env.INIT_CWD, process.env.BASE_PATH || '', 'resources');
+const RESOURCES_PATH = path.join(process.env.INIT_CWD, '../resources');
 const TEMPLATES_PATH = path.join(RESOURCES_PATH, 'templates');
 const SSR_RESULT = 'SSR_RESULT';
 
