@@ -167,7 +167,7 @@ production:
 
 #### 2) 프론트엔드
 1. `vue.config.js`
-**modeConfigurer**: 프론트엔드의 dev/publish 모드 등 기본 설정을 적용하는 함수
+**index**: 프론트엔드의 dev/publish 모드 등 기본 설정을 적용하는 함수
   - `publicPath`: 프론트엔드 Vue.js 라우터의 기본 URL을 지정
   
 0. path shortcut

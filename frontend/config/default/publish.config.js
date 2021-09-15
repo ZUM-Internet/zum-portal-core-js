@@ -36,9 +36,13 @@ module.exports = {
       /**
        * /stub으로 요청된 데이터 처리
        */
-      app.get(`*stub/:stubPath(*)`, (req, res) => {
-        const data = require(path.join(stubPath, `${req.params.stubPath}.json`));
-        return res.send(data);
+      app.get(`*stub/:stubPath(*)`, (req, res, next) => {
+        try {
+          const data = require(path.join(stubPath, `${req.params.stubPath}.json`));
+          return res.send(data);
+        } catch (e) {
+          next();
+        }
       });
 
 

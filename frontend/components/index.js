@@ -1,1 +1,3 @@
-export { default as ABTest } from "./ABTest";
+module.exports = {
+  ABTest: require('./ABTest.vue'),
+}
