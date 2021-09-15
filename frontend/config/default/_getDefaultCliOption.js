@@ -1,4 +1,4 @@
-const { DefinePlugin } = require('webpack');
+const { DefinePlugin, ProvidePlugin } = require('webpack');
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -72,11 +72,8 @@ module.exports = () => {
       }
 
       return config.output.jsonpFunction('zumPortalJsonp').end()
-                   .plugin('define').use(DefinePlugin, [{
-                     'process.env': JSON.stringify(process.env)
-                   }]).end()
-
-
+                   .plugin('provide').use(ProvidePlugin, [{ Axios: 'axios/dist/axios.min.js' }]).end()
+                   .plugin('define').use(DefinePlugin, [{ 'process.env': JSON.stringify(process.env) }]).end()
     },
   };
 }
