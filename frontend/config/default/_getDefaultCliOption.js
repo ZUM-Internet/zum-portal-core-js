@@ -1,25 +1,24 @@
-import { DefinePlugin } from 'webpack';
-import VueSSRServerPlugin from 'vue-server-renderer/server-plugin';
-import VueSSRClientPlugin from 'vue-server-renderer/client-plugin';
+const { DefinePlugin, ProvidePlugin } = require('webpack');
+const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
+const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
-import { getZumOptions, getVuePages } from "../options";
-import { ProjectOptions } from "@vue/cli-service";
-import { getPageConfig } from "./_getPageConfig";
+const { getZumOptions, getVuePages } = require("../options");
+const { ProjectOptions } = require("@vue/cli-service");
+const { getPageConfig } = require("./_getPageConfig");
 
 /**
  * CSS 및 ChainWebpack이 설정된 기본 옵션을 가져오는 함수
  *
- * @returns {{}} Vue-CLI3 기본 설정값
+ * @returns {ProjectOptions} Vue-CLI3 기본 설정값
  */
-export function getDefaultCliOption(): ProjectOptions {
+module.exports = () => {
 
   // 프론트엔드 src 폴더
   const {frontSrcPath, resourcePath} = getZumOptions();
   const pages = getVuePages();
 
   // src/styles의 모든 스타일시트를 import하도록 구분 생성
-  const cssImportOption: string[] = [`@import "@/styles/index";`];
 
   return {
     productionSourceMap: false,
@@ -28,7 +27,7 @@ export function getDefaultCliOption(): ProjectOptions {
     css: { // CSS 설정
       loaderOptions: {
         sass: {
-          data: cssImportOption
+          prependData: `@import "@/styles/index";`
         }
       },
       extract: !process.env.ZUM_FRONT_MODE,  // 빌드시에만 추출
@@ -73,11 +72,8 @@ export function getDefaultCliOption(): ProjectOptions {
       }
 
       return config.output.jsonpFunction('zumPortalJsonp').end()
-                   .plugin('define').use(DefinePlugin, [{
-                     'process.env': JSON.stringify(process.env)
-                   }]).end()
-
-
+                   .plugin('provide').use(ProvidePlugin, [{ Axios: 'axios/dist/axios.min.js' }]).end()
+                   .plugin('define').use(DefinePlugin, [{ 'process.env': JSON.stringify(process.env) }]).end()
     },
   };
-};
+}
