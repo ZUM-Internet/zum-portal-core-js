@@ -26,9 +26,10 @@ module.exports = {
           page.entry = page.ssrEntry;
         }
 
+        delete page.filename;
+
         if (mode === 'publish') {
           page.template = path.join(resourcePath, page.publishTemplate);
-          delete page.filename;
         }
 
       })
