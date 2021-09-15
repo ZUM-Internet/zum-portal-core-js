@@ -13,7 +13,7 @@ const { resourcePath } = getZumOptions();
  */
 module.exports = {
   getPageConfig (vuePages) {
-    const mode = process.env.ZUM_FRONT_MODE;
+    const {ZUM_FRONT_MODE: mode, NODE_ENV: nodeEnv} = process.env;
 
     Object.entries(vuePages)
       .filter(([, v]) => v.template)
@@ -24,9 +24,13 @@ module.exports = {
         // SSR 모드인 경우 파일명 세팅 SSR 삽입
         if (mode === 'ssr') {
           page.entry = page.ssrEntry;
+          return;
         }
 
-        delete page.filename;
+        // 빌드가 아닐땐 filename 제거
+        if (nodeEnv !== 'production') {
+          delete page.filename;
+        }
 
         if (mode === 'publish') {
           page.template = path.join(resourcePath, page.publishTemplate);

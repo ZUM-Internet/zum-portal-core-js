@@ -12,7 +12,7 @@ const getDefaultCliOption = require("./default/_getDefaultCliOption"); // 웹팩
  * @param projectConfigurer 프로젝트에서 고유하게 사용되는 설정
  * @returns { ProjectOptions } Vue Cli3 옵션
  */
-function modeConfigurer (projectConfigurer) {
+function index (projectConfigurer) {
 
   // 프론트엔드 src 폴더 정의
   const {resourcePath, outputPath} = getZumOptions();
@@ -72,4 +72,4 @@ function modeConfigurer (projectConfigurer) {
 
 }
 
-module.exports = { modeConfigurer };
+module.exports = { modeConfigurer: index };
