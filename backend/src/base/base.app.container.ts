@@ -62,7 +62,7 @@ export abstract class BaseAppContainer {
 
     // body parser
     app.use(express.json());
-    app.use(express.urlencoded({extended: true}));
+    app.use(express.urlencoded({extended: true, limit: 1024 * 1024 * 5})); // post size 5mb 용량 제한
 
     // --------------------------------------------
     app.use(CoTracker); // cotracker 미들웨어
