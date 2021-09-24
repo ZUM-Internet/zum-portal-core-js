@@ -3,13 +3,12 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as glob from 'glob';
 
-// 도커 컨테이너 이미지 빌드 시간
-console.log(
-  process.env.INIT_CWD,
-  path.join(process.env.INIT_CWD, 'container_image_tag.txt'),
-)
+const containerImagePath = path.join(process.env.INIT_CWD, '../container_image_tag.txt');
 
-const containerImageTag = glob.sync(path.join(process.env.INIT_CWD, 'container_image_tag.txt'))
+// 도커 컨테이너 이미지 빌드 시간
+console.log(process.env.INIT_CWD, containerImagePath);
+
+const containerImageTag = glob.sync(containerImagePath)
                               .map(src => fs.readFileSync(src))
                               .join('');
 
