@@ -10,6 +10,7 @@
   "workspaces": [
     "backend",
     "frontend",
-    "banner"
+    "banner",
+    "eslint-config-zum"
   ]
 }
