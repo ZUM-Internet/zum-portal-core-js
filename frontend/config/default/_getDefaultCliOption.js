@@ -2,6 +2,7 @@ const { DefinePlugin, ProvidePlugin } = require('webpack');
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const { join } = require('path');
 
 const { getZumOptions, getVuePages } = require("../options");
 const { ProjectOptions } = require("@vue/cli-service");
@@ -71,9 +72,12 @@ module.exports = () => {
           .end()
       }
 
+      const APP_VERSION = require(join(process.cwd(), "../package.json")).version;
+
+
       return config.output.jsonpFunction('zumPortalJsonp').end()
                    .plugin('provide').use(ProvidePlugin, [{ Axios: 'axios/dist/axios.min.js' }]).end()
-                   .plugin('define').use(DefinePlugin, [{ 'process.env': JSON.stringify(process.env) }]).end()
+                   .plugin('define').use(DefinePlugin, [{ 'process.env': JSON.stringify({ ...process.env, APP_VERSION }) }]).end()
     },
   };
 }

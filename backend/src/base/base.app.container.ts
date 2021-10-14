@@ -7,7 +7,7 @@ import { NestFactory } from "@nestjs/core";
 import { NestExpressApplication } from "@nestjs/platform-express";
 
 import { CoTracker, NoCacheHtml, ErrorResponse } from "../middleware";
-import { getVersion } from "../util";
+import { getVersion, logger } from "../util";
 
 // 와탭 모니터링 에이전트 등록
 if (process.env.ENABLE_WHATAP === 'true') {
@@ -62,7 +62,7 @@ export abstract class BaseAppContainer {
 
     // body parser
     app.use(express.json());
-    app.use(express.urlencoded({extended: true}));
+    app.use(express.urlencoded({extended: true, limit: 1024 * 1024 * 5})); // post size 5mb 용량 제한
 
     // --------------------------------------------
     app.use(CoTracker); // cotracker 미들웨어
@@ -85,6 +85,8 @@ export abstract class BaseAppContainer {
           // 파비콘 요청인 경우 No Contents 전송
           return res.sendStatus(204);
         }
+
+        logger.error("internal server error", err);
 
         res.sendStatus(500);
       }
