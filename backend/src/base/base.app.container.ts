@@ -18,9 +18,9 @@ export abstract class BaseAppContainer {
   /**
    * Express App 컨테이너
    */
-  async setup(AppModule: any) {
+  async setup(AppModule: any, option: any = {}) {
 
-    const RESOURCE_PATH = join(process.env.INIT_CWD, '../resources');
+    const RESOURCE_PATH = join(process.env.INIT_CWD, option?.resourcesPath || '../resources');
     const STATIC_PATH = join(RESOURCE_PATH, 'static');
     const TEMPLATE_PATH = join(RESOURCE_PATH, 'templates');
 
