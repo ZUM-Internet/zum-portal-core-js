@@ -1,9 +1,12 @@
 {
   "name": "@zum-portal-core/eslint-config-zum",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "index.js",
   "license": "MIT",
   "author": "dogyeong <dogyeong@zuminternet.com>",
+  "publishConfig": {
+    "registry": "http://ci-portal.zuminternet.com/nexus/repository/eslint-config-zum/"
+  },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^4.32.0",
     "@typescript-eslint/parser": "^4.32.0",
