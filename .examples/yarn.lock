@@ -1995,15 +1995,15 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@zum-portal-core/backend@link:../backend":
+"@zum-portal-core/backend@link:../packages/backend":
   version "0.0.0"
   uid ""
 
-"@zum-portal-core/banner@link:../banner":
+"@zum-portal-core/banner@link:../packages/banner":
   version "0.0.0"
   uid ""
 
-"@zum-portal-core/frontend@link:../frontend":
+"@zum-portal-core/frontend@link:../packages/frontend":
   version "0.0.0"
   uid ""
 

@@ -12,8 +12,8 @@
     "start:prod": "node dist/main"
   },
   "dependencies": {
-    "@zum-portal-core/backend": "link:../../backend",
-    "@zum-portal-core/banner": "link:../../banner"
+    "@zum-portal-core/backend": "link:../../packages/backend",
+    "@zum-portal-core/banner": "link:../../packages/banner"
   },
   "devDependencies": {
     "cross-env": "^7.0.3"

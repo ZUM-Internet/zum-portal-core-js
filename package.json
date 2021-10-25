@@ -7,10 +7,5 @@
   "author": "황준일 <junil@zuminternet.com>, 이도경 <dogyeong@zuminternet.com>, 천재민 <karl@zuminternet.com>, 위정훈 <wiii@zuminternet.com>",
   "license": "MIT",
   "private": "true",
-  "workspaces": [
-    "backend",
-    "frontend",
-    "banner",
-    "eslint-config-zum"
-  ]
+  "workspaces": ["packages/*"]
 }
