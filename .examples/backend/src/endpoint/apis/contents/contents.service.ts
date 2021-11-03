@@ -1,4 +1,5 @@
 import { ConfigService, Injectable, ZumProvisionAdapter } from "@zum-portal-core/backend";
+import { ZumCache } from "../../../../../../packages/backend/src/base/zum-cache/zum-cache.decorator";
 
 @Injectable()
 export class ContentsService {
@@ -11,11 +12,12 @@ export class ContentsService {
     this.APP_API_PATH = configService.get('app-api');
   }
 
+  @ZumCache({ cron: "*/10 * * * * *", logger: console.log })
   public async getContents () {
     const { base, ['chrome-extension-contents']: chromeExtensionContents } = this.APP_API_PATH;
     const { data } = await this.adapter.get({
       url: base + chromeExtensionContents
     });
-    return data;
+    return Math.random() * 10 > 3 ? data : null;
   }
 }
