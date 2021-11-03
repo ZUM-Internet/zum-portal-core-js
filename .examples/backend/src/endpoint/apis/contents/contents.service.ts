@@ -1,5 +1,9 @@
-import { ConfigService, Injectable, ZumProvisionAdapter } from "@zum-portal-core/backend";
-import { ZumCache } from "../../../../../../packages/backend/src/base/zum-cache/zum-cache.decorator";
+import {
+  ConfigService,
+  Injectable,
+  ZumCache,
+  ZumProvisionAdapter
+} from "@zum-portal-core/backend";
 
 @Injectable()
 export class ContentsService {
