@@ -5,8 +5,8 @@ import ejs from 'ejs';
 import { NestFactory } from '@nestjs/core';
 import { HttpStatus } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { CoTracker, NoCacheHtml, ErrorResponse } from '../middleware';
-import { getVersion, logger } from '../util';
+import { CoTracker, NoCacheHtml, ErrorResponse, getVersion } from '../middleware';
+import { logger } from '../util';
 import { setYmlResourcePath } from './yml.configuration';
 
 // 와탭 모니터링 에이전트 등록
@@ -78,7 +78,7 @@ export abstract class BaseAppContainer {
     // --------------------------------------------
     app.use(CoTracker); // cotracker 미들웨어
     app.use(NoCacheHtml); // HTML 캐시 미적용
-    app.use('/state/version', (req: Request, res: Response) => res.send(getVersion())); // 버전 응답
+    app.use('/state/version', getVersion); // 버전 응답
     app.use('/state/log/:type/:message', ErrorResponse); // 에러 로그 응답 미들웨어
     // --------------------------------------------
 
