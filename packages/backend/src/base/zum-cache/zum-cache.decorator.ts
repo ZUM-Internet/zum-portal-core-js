@@ -1,7 +1,4 @@
-import {
-  applyDecorators,
-  SetMetadata
-} from "@nestjs/common";
+import { applyDecorators, SetMetadata } from '@nestjs/common';
 
 export const ZUM_CACHE_NAME = 'ZUM_CACHE_NAME';
 
@@ -10,13 +7,9 @@ export interface ZumCacheOptions {
   key?: string;
   ttl?: number;
   validate?: (value: any) => boolean;
-  logger?: Function
+  logger?: (...args: any) => any;
 }
 
-export function ZumCache(
-  options: ZumCacheOptions = {}
-): MethodDecorator {
-  return applyDecorators(
-    SetMetadata(ZUM_CACHE_NAME, options),
-  )
+export function ZumCache(options: ZumCacheOptions = {}): MethodDecorator {
+  return applyDecorators(SetMetadata(ZUM_CACHE_NAME, options));
 }

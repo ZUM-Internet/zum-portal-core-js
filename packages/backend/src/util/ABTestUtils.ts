@@ -1,14 +1,17 @@
-import {Request, Response} from 'express';
-import {CookieOptions} from "express-serve-static-core";
+import { Request, Response } from 'express';
+import { CookieOptions } from 'express-serve-static-core';
 
 const ABTEST_COOKIE_NAME = '_ABTEST_VARIANT';
 
 // [variant 키]: [생성 비율(0.x ~ 1)]
-type VariantValue = Record<string, number>;
+type VariantValue = {
+  [key: string]: number;
+};
 
 // [테스트명]: [생성할 variant]
-type Variant = Record<string, VariantValue>
-
+type Variant = {
+  [testName: string]: VariantValue;
+};
 
 /**
  * AB테스트 대상값인 variant에 따라 테스트명별로 쿠키를 생성한다.
@@ -24,17 +27,15 @@ export function putVariantCookies(
   req: Request,
   res: Response,
   variant: Variant,
-  cookieOptions: CookieOptions = {}
+  cookieOptions: CookieOptions = {},
 ): void {
-
-  const cookieValue = JSON.parse(req.cookies[ABTEST_COOKIE_NAME] || null) || {};
+  const cookies = req.cookies as Record<string, any>;
+  const cookieValue = (JSON.parse(cookies[ABTEST_COOKIE_NAME] || null) || {}) as Record<string, any>;
 
   // 테스트별로 쿠키 값 객체에 랜덤 생성하여 추가
-  for (const [testName, variantValues] of Object.entries(variant)) {
+  Object.entries(variant).forEach(([testName, variantValues]) => {
     // 이미 쿠키에 선언되어 있는 경우 제외
-    if (cookieValue?.[testName]) {
-      continue;
-    }
+    if (cookieValue?.[testName]) return;
 
     // 랜덤하게 Variant 타깃 생성
     const total = Object.values(variantValues).reduce((acc, cur) => acc + cur, 0);
@@ -43,23 +44,20 @@ export function putVariantCookies(
     let targetKey = Object.keys(variantValues)[0];
     let fixValue = 0;
 
-    for (const [key, value] of Object.entries(variantValues)) {
+    Object.entries(variantValues).some(([key, value]) => {
       if (seed <= fixValue + value) {
         targetKey = key;
-        break;
+        return true;
       }
       fixValue += value;
-    }
-
+      return false;
+    });
     cookieValue[testName] = targetKey;
-  }
+  });
 
   // 쿠키 설정
-  res.cookie(
-    ABTEST_COOKIE_NAME,
-    JSON.stringify(cookieValue),
-    {
-      ...cookieOptions,
-      // 추가적인 옵션은 여기에 작성
-    });
+  res.cookie(ABTEST_COOKIE_NAME, JSON.stringify(cookieValue), {
+    ...cookieOptions,
+    // 추가적인 옵션은 여기에 작성
+  });
 }

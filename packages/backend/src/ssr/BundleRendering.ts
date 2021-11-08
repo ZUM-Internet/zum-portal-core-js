@@ -1,8 +1,31 @@
-import { JSDOM, CookieJar } from "jsdom";
-import { BundleRenderer } from "vue-server-renderer";
-import { renderingUserAgent } from "./RenderingUserAgent";
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+import { JSDOM, CookieJar } from 'jsdom';
+import { BundleRenderer } from 'vue-server-renderer';
+import { renderingUserAgent } from './RenderingUserAgent';
 
 declare const global: Record<any, any>;
+
+interface LocalStorage {
+  [key: string]: any;
+  getItem: (key: string) => any;
+  setItem: (key: string, value: any) => void;
+}
+
+/**
+ * JSDOM에서 구현되지 않았기 때문에 추가된 window.resizeTo() 폴리필 함수
+ *
+ * @see https://github.com/agilgur5/window-resizeto/blob/master/src/index.ts
+ */
+function resizeTo(window: any, width: number, height: number) {
+  window.innerWidth = width;
+  window.innerHeight = height;
+  window.outerWidth = width;
+  window.outerHeight = height;
+  window.dispatchEvent(new window.Event('resize'));
+}
 
 /**
  * Vue SSR 번들 렌더링 함수
@@ -12,13 +35,11 @@ declare const global: Record<any, any>;
  */
 export async function bundleRendering(
   renderer: BundleRenderer,
-  RenderingOption: RenderingOption
+  RenderingOption: RenderingOption,
 ): Promise<string> {
   const { window } = new JSDOM(``, {
     url: RenderingOption.projectDomain,
-    userAgent:
-      RenderingOption?.userAgent.toLowerCase() ||
-      renderingUserAgent.mobile.android,
+    userAgent: RenderingOption?.userAgent.toLowerCase() || renderingUserAgent.mobile.android,
     cookieJar: RenderingOption.cookieJar,
   });
   const width = RenderingOption?.windowSize?.width || 375;
@@ -35,24 +56,21 @@ export async function bundleRendering(
     setItem(key: string, value: any) {
       this[key] = value;
     },
-  };
+  } as LocalStorage;
 
   // 모바일 사이즈로 리사이즈
   resizeTo(global.window, width, height);
 
   // Window 객체에 바인드
-  for (let field in RenderingOption?.windowObjects) {
-    if (!RenderingOption.windowObjects.hasOwnProperty(field)) continue;
-    global.window[field] = RenderingOption.windowObjects[field];
-  }
+  Object.entries(RenderingOption?.windowObjects).forEach(([field, value]) => {
+    global.window[field] = value;
+  });
 
   // Vue SSR
-  let result = "";
+  let result = '';
   try {
-    result = await renderer.renderToString(
-      RenderingOption.rendererContext || {}
-    );
-  } catch (e) {
+    result = await renderer.renderToString(RenderingOption.rendererContext || {});
+  } catch (e: any) {
     throw new Error(`There is an error when SSR bundleRendering ${e}`);
   }
 
@@ -62,33 +80,17 @@ export async function bundleRendering(
 }
 
 /**
- * JSDOM에서 구현되지 않았기 때문에 추가된 window.resizeTo() 폴리필 함수
- *
- * @see https://github.com/agilgur5/window-resizeto/blob/master/src/index.ts
- */
-function resizeTo(window: any, width: number, height: number) {
-  window.innerWidth = width;
-  window.innerHeight = height;
-  window.outerWidth = width;
-  window.outerHeight = height;
-  window.dispatchEvent(new window.Event("resize"));
-}
-
-/**
  * JSDOM에서 사용 가능한 CookieJar 객체를 생성하는 함수
  *
  * @param domain 쿠키를 적용할 도메인
  * @param cookieObject 쿠키 객체
  */
-export function createCookieJar(
-  domain: string,
-  cookieObject: Record<string, string>
-): CookieJar {
+export function createCookieJar(domain: string, cookieObject: Record<string, string>): CookieJar {
   // 쿠키 문자열 생성
-  let cookieString = "";
-  for (let [key, value] of Object.entries(cookieObject)) {
+  let cookieString = '';
+  Object.entries(cookieObject).forEach(([key, value]) => {
     cookieString += `${key}=${value}; `;
-  }
+  });
 
   // CookieJar 객체 생성
   const cookieJar = new CookieJar();
@@ -96,7 +98,7 @@ export function createCookieJar(
     cookieString, // 쿠키 문자열
     domain, // 쿠키를 적용할 도메인
     {}, // 옵션
-    () => {} // 콜백
+    () => {}, // 콜백
   );
   return cookieJar;
 }

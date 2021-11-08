@@ -3,7 +3,7 @@ const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
 function getTimestamp() {
   return `${new Date(Date.now() - timezoneOffset)
     .toISOString()
-    ?.replace(/[a-zA-Z]/g, " ")
+    ?.replace(/[a-zA-Z]/g, ' ')
     ?.trimRight()}`;
 }
 
@@ -12,22 +12,22 @@ function getTimestamp() {
  */
 export const logger = {
   info(...args: any[]) {
-    console.info(getTimestamp(), "[info]", ...args);
+    console.info(getTimestamp(), '[info]', ...args);
   },
 
   debug(...args: any[]) {
-    console.debug(getTimestamp(), "[debug]", ...args);
+    console.debug(getTimestamp(), '[debug]', ...args);
   },
 
   log(...args: any[]) {
-    console.log(getTimestamp(), "[log]", ...args);
+    console.log(getTimestamp(), '[log]', ...args);
   },
 
   warn(...args: any[]) {
-    console.warn(getTimestamp(), "[warn]", ...args);
+    console.warn(getTimestamp(), '[warn]', ...args);
   },
 
   error(...args: any[]) {
-    console.error(getTimestamp(), "[error]", ...args);
+    console.error(getTimestamp(), '[error]', ...args);
   },
 };

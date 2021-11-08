@@ -1,8 +1,7 @@
-import * as cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 import { join } from 'path';
-import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
-import * as express from 'express';
-import * as ejs from 'ejs';
+import express, { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
+import ejs from 'ejs';
 import { NestFactory } from '@nestjs/core';
 import { HttpStatus } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -12,7 +11,7 @@ import { setYmlResourcePath } from './yml.configuration';
 
 // 와탭 모니터링 에이전트 등록
 if (process.env.ENABLE_WHATAP === 'true') {
-  require('whatap').NodeAgent;
+  import('whatap').then(({ NodeAgent }) => NodeAgent as unknown).catch(() => {});
 }
 
 interface AppSetupOption {
@@ -38,8 +37,8 @@ export abstract class BaseAppContainer {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
     app.set('trust proxy', true);
 
-    /** 에셋 폴더 및 템플릿 엔진 등록 **/
-    /**===========================**/
+    /** 에셋 폴더 및 템플릿 엔진 등록 * */
+    /** ===========================* */
 
     // static 폴더 URL 및 헤더 설정
     app.useStaticAssets(STATIC_PATH);
@@ -49,7 +48,7 @@ export abstract class BaseAppContainer {
         cacheControl: true,
         maxAge: 3600 * 1000,
         etag: false,
-      })
+      }),
     );
 
     // favicon, robots 등록. sitemap은 동적 생성할 가능성이 있어 제외함(직접등록)
@@ -67,7 +66,7 @@ export abstract class BaseAppContainer {
     });
     app.engine('html', ejs.renderFile);
 
-    /**===========================**/
+    /** ===========================* */
 
     // cookie parser
     app.use(cookieParser());
@@ -87,7 +86,8 @@ export abstract class BaseAppContainer {
     app.use((err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {
       if (req.originalUrl === '/favicon.ico') {
         // 파비콘 요청인 경우 No Contents 전송
-        return res.sendStatus(HttpStatus.NO_CONTENT);
+        res.sendStatus(HttpStatus.NO_CONTENT);
+        return;
       }
 
       logger.error('internal server error', err);
