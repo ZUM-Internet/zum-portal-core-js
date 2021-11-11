@@ -26,7 +26,6 @@
     "@nestjs/platform-express": "~8.0.0",
     "@nestjs/schedule": "~1.0.0",
     "@nestjs/schematics": "~8.0.0",
-    "@nestjs/testing": "~8.0.0",
     "axios": "~0.21.1",
     "cache-manager": "~3.4.4",
     "cookie-parser": "~1.4.4",
@@ -42,6 +41,7 @@
     "whatap": "~0.4.35"
   },
   "devDependencies": {
+    "@nestjs/testing": "^8.2.0",
     "@types/cache-manager": "~3.4.2",
     "@types/cookie-parser": "~1.4.2",
     "@types/cron": "~1.7.3",
