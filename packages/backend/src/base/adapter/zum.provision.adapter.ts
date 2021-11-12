@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import Axios, { AxiosPromise, Method, AxiosRequestConfig } from 'axios';
+import Axios, { AxiosPromise, AxiosRequestConfig } from 'axios';
 import deepmerge = require('deepmerge');
 
 /**
@@ -59,7 +59,7 @@ export class ZumProvisionAdapter {
    */
   // eslint-disable-next-line class-methods-use-this
   private request<T>(
-    method: Method,
+    method: 'get' | 'post' | 'delete' | 'put',
     { version, typePredicate = Boolean, ...option }: AdapterOption<T>,
   ): AxiosPromise<T> {
     // publish모드이며 stub 데이터를 설정한 경우 지정된 값을 반환
@@ -74,16 +74,17 @@ export class ZumProvisionAdapter {
       }) as AxiosPromise<T>;
     }
 
-    return Axios(
+    return Axios[method](
+      option.url,
       deepmerge(option, {
-        method,
         timeout: option.timeout || 60000,
         headers: version ? { Accept: `application/vnd.zum.resource-${version}+json` } : {},
       }),
     ).then((response) => {
+      const { data, statusText, status } = response;
+
       // 타입 체크 시도
-      if (typePredicate && !typePredicate(response.data)) {
-        const { status, statusText, data } = response;
+      if (typePredicate && !typePredicate(data)) {
         throw new Error(
           `\n[Type Check Error!] ` +
             `There is an error when Axios fetching ${option.url}. Response can not pass type check!\n` +
