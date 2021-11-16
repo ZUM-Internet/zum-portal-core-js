@@ -47,12 +47,11 @@ export class ZumCacheModule implements OnModuleInit {
   }
 
   registerAllCache() {
-    const {discovery, cacheManager, scanner, reflector} = this;
-    [...discovery.getControllers(), ...discovery.getProviders()]
+    this.discovery.getProviders()
       .filter((wrapper) => wrapper.isDependencyTreeStatic())
-      .filter(({instance}) => instance && Object.getPrototypeOf(instance))
-      .forEach(({instance}) => {
-        scanner.scanFromPrototype(
+      .filter(({ instance }) => instance && Object.getPrototypeOf(instance))
+      .forEach(({ instance }) => {
+        this.scanner.scanFromPrototype(
           instance,
           Object.getPrototypeOf(instance),
           this.registerCacheAndJob(instance)
@@ -61,7 +60,7 @@ export class ZumCacheModule implements OnModuleInit {
   }
 
   registerCacheAndJob(instance) {
-    const {cacheManager, reflector} = this;
+    const { cacheManager, reflector } = this;
     return key => {
       const methodRef = instance[key];
       const metadata: ZumCacheOptions = reflector.get(ZUM_CACHE_NAME, methodRef);
@@ -85,10 +84,10 @@ export class ZumCacheModule implements OnModuleInit {
         const cacheKey = cacheKeyPrefix + cacheKeySuffix;
         const cached = await cacheManager.get(cacheKey);
 
-        logger({cacheKey});
+        logger({ cacheKey });
 
         if (Boolean(cached)) {
-          logger({cached})
+          logger({ cached })
           return cached;
         }
 
@@ -98,9 +97,9 @@ export class ZumCacheModule implements OnModuleInit {
           return cached;
         }
 
-        logger({data});
+        logger({ data });
 
-        await cacheManager.set(cacheKey, data, {ttl});
+        await cacheManager.set(cacheKey, data, { ttl });
         return data;
       }
 
@@ -122,15 +121,15 @@ export class ZumCacheModule implements OnModuleInit {
     validate: Function,
     logger: Function
   ) {
-    const {cacheManager} = this;
+    const { cacheManager } = this;
     const handleTick = async () => {
       const cached = await cacheManager.get(cacheKey);
       const jobData = await job();
-      logger({cacheKey, jobData});
+      logger({ cacheKey, jobData });
       await cacheManager.set(
         cacheKey,
         validate(jobData) ? jobData : cached,
-        {ttl: Infinity}
+        { ttl: Infinity }
       )
       return jobData;
     }

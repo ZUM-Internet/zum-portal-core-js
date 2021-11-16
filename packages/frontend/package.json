@@ -1,6 +1,6 @@
 {
   "name": "@zum-portal-core/frontend",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Vue.js 환경설정을 위한 코어 프로젝트",
   "author": "황준일 <junil@zuminternet.com>, 이도경 <dogyeong@zuminternet.com>, 천재민 <karl@zuminternet.com>, 위정훈 <wiii@zuminternet.com>",
   "repository": {
@@ -21,18 +21,18 @@
     "@vue/cli-service": "~4.5.0",
     "axios": "~0.21.1",
     "cookie-parser": "~1.4.4",
-    "core-js": "~3.6.5",
     "deepmerge": "~4.2.2",
     "express": "~4.17.1",
     "js-cookie": "~2.2.1",
+    "core-js": "^3.6.5",
     "node-sass": "^4.14.0",
     "terser-webpack-plugin": "~2.3.2",
-    "vue": "~2.6.13",
+    "vue": "^2.6.11",
     "vue-loader": "~15.9.6",
-    "vue-router": "~3.4.9",
+    "vue-router": "^3.2.0",
     "vue-server-renderer": "~2.6.13",
-    "vue-template-compiler": "~2.6.13",
-    "vuex": "~3.6.0"
+    "vue-template-compiler": "^2.6.11",
+    "vuex": "^3.4.0"
   },
   "devDependencies": {
     "@types/rimraf": "^3.0.2",
