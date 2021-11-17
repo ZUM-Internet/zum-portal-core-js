@@ -4,4 +4,5 @@ module.exports = {
   transformIgnorePatterns: ['<rootDir>/node_modules/'],
   testMatch: ['**/__test__/**/*.spec.ts'],
   moduleFileExtensions: ['ts', 'js', 'json'],
+  verbose: true,
 };
