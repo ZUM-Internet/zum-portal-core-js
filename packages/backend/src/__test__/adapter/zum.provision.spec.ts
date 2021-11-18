@@ -1,30 +1,11 @@
 import { Test } from '@nestjs/testing';
-import axios, { AxiosRequestConfig } from 'axios';
-import { ZumProvisionAdapter } from '../../base/adapter/zum.provision.adapter';
+import axios from 'axios';
+import { ZumProvisionAdapter } from '../../index';
+import { mockAPI, API_URL, API_VERSION } from './mock-api';
 
 jest.mock('axios');
 
-const API_URL = 'https://test.zum.com';
-const API_VERSION = '1.0';
 const mockedAxios = axios as jest.Mocked<typeof axios>;
-
-// FAKE API
-const validateRequest = (url: string, headers: Record<string, string>) =>
-  url === 'https://test.zum.com' && headers.Accept === 'application/vnd.zum.resource-1.0+json';
-
-const mockAPI = (url: string, { headers, params, data }: AxiosRequestConfig) => {
-  if (!validateRequest(url, headers)) return Promise.reject({ status: 404 });
-
-  return Promise.resolve({
-    status: 200,
-    data: {
-      message: 'success',
-      params,
-      headers,
-      data,
-    },
-  });
-};
 
 mockedAxios.get.mockImplementation(mockAPI);
 mockedAxios.post.mockImplementation(mockAPI);
