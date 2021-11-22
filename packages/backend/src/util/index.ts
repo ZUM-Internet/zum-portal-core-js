@@ -1,3 +1,2 @@
-export * from "./ABTestUtils";
-export * from "./Logger";
-export * from "./VersionManagement";
+export * from './ABTestUtils';
+export * from './Logger';

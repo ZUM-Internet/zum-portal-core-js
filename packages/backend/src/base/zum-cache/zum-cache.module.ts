@@ -1,30 +1,30 @@
-import {
-  DiscoveryModule,
-  DiscoveryService,
-  MetadataScanner,
-  Reflector
-} from "@nestjs/core";
-import { CronJob } from "cron";
-import {
-  CACHE_MANAGER,
-  CacheModule,
-  DynamicModule,
-  Inject,
-  Module,
-  OnModuleInit,
-} from "@nestjs/common";
-import { Cache } from "cache-manager";
+import { DiscoveryModule, DiscoveryService, MetadataScanner, Reflector } from '@nestjs/core';
+import { CronJob } from 'cron';
+import { CACHE_MANAGER, CacheModule, DynamicModule, Inject, Module, OnModuleInit } from '@nestjs/common';
+import { Cache } from 'cache-manager';
+import { ZUM_CACHE_NAME, ZumCacheOptions } from './zum-cache.decorator';
 
-import {
-  ZUM_CACHE_NAME,
-  ZumCacheOptions
-} from "./zum-cache.decorator";
+type AnyFunction = (...args: any[]) => any;
+
+interface RegisterCronProps {
+  cron: string;
+  cacheKey: string;
+  job: () => any;
+  validate: (data: any) => boolean;
+  logger: AnyFunction;
+  ttl: number;
+}
+
+interface OverrideMethodProps {
+  instance: Record<any, any>;
+  originMethod: AnyFunction;
+  methodName: string;
+  cronCacheKey: string;
+  cacheOption: ZumCacheOptions;
+}
 
 @Module({
-  imports: [
-    DiscoveryModule,
-    CacheModule.register(),
-  ],
+  imports: [DiscoveryModule, CacheModule.register()],
 })
 export class ZumCacheModule implements OnModuleInit {
   constructor(
@@ -32,110 +32,116 @@ export class ZumCacheModule implements OnModuleInit {
     private readonly scanner: MetadataScanner,
     private readonly reflector: Reflector,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
-  ) {
-  }
+  ) {}
 
   static forRoot(): DynamicModule {
     return {
       module: ZumCacheModule,
-      global: true
-    }
+      global: true,
+    };
   }
 
   onModuleInit() {
     this.registerAllCache();
   }
 
-  registerAllCache() {
-    this.discovery.getProviders()
+  private registerAllCache() {
+    this.discovery
+      .getProviders()
       .filter((wrapper) => wrapper.isDependencyTreeStatic())
       .filter(({ instance }) => instance && Object.getPrototypeOf(instance))
       .forEach(({ instance }) => {
         this.scanner.scanFromPrototype(
           instance,
           Object.getPrototypeOf(instance),
-          this.registerCacheAndJob(instance)
+          this.registerCacheAndJob(instance),
         );
       });
   }
 
-  registerCacheAndJob(instance) {
-    const { cacheManager, reflector } = this;
-    return key => {
-      const methodRef = instance[key];
-      const metadata: ZumCacheOptions = reflector.get(ZUM_CACHE_NAME, methodRef);
-      if (!metadata) return;
+  private static generateCronCacheKey(instance: Record<any, any>, methodName: string) {
+    return `${instance.constructor.name}.${methodName}`;
+  }
 
-      const {
-        ttl = Infinity,
-        cron,
-        key: customKey,
-        validate = Boolean,
-        logger = () => null
-      } = metadata;
+  private static generateCacheKey(key: string | undefined, args: unknown[]) {
+    const keyBody = key ?? (args.length ? JSON.stringify(args) : '');
+    return keyBody ? `(${keyBody})` : '';
+  }
 
-      const cacheKeyPrefix = `${instance.constructor.name}.${key}`;
-      const originMethod = (...args: unknown[]) => methodRef.call(instance, ...args);
+  private overrideMethod({
+    instance,
+    originMethod,
+    methodName,
+    cronCacheKey,
+    cacheOption,
+  }: OverrideMethodProps) {
+    const { ttl = Infinity, key, logger = () => null, validate = Boolean } = cacheOption;
 
-      instance[key] = async (...args: unknown[]) => {
-        const key = customKey ? customKey :
-          args.length ? JSON.stringify(args) : null;
-        const cacheKeySuffix = key ? `(${key})` : '';
-        const cacheKey = cacheKeyPrefix + cacheKeySuffix;
-        const cached = await cacheManager.get(cacheKey);
+    instance[methodName] = async (...args: unknown[]) => {
+      const cacheKey = cronCacheKey + ZumCacheModule.generateCacheKey(key, args);
+      const cachedData = await this.cacheManager.get(cacheKey);
 
-        logger({ cacheKey });
+      logger({ cacheKey });
 
-        if (Boolean(cached)) {
-          logger({ cached })
-          return cached;
-        }
-
-        const data = await originMethod(...args);
-
-        if (!validate(data)) {
-          return cached;
-        }
-
-        logger({ data });
-
-        await cacheManager.set(cacheKey, data, { ttl });
-        return data;
+      if (cachedData) {
+        logger({ cachedData });
+        return cachedData;
       }
 
+      const originMethodResult = (await originMethod(...args)) as unknown;
+
+      if (!validate(originMethodResult)) {
+        return cachedData;
+      }
+
+      logger({ originMethodResult });
+
+      this.cacheManager.set(cacheKey, originMethodResult, { ttl }).catch(() => {
+        logger('An error occurred while saving the cache in method execution');
+      });
+
+      return originMethodResult;
+    };
+  }
+
+  private registerCacheAndJob(instance: Record<any, any>) {
+    return (methodName: string) => {
+      const methodRef = instance[methodName] as AnyFunction;
+      const metadata: ZumCacheOptions = this.reflector.get(ZUM_CACHE_NAME, methodRef);
+
+      if (!metadata) return;
+
+      const { cron, validate = Boolean, logger = () => null, ttl = Infinity } = metadata;
+      const cronCacheKey = ZumCacheModule.generateCronCacheKey(instance, methodName);
+      const originMethod: AnyFunction = methodRef.bind(instance);
+
+      this.overrideMethod({ instance, originMethod, methodName, cronCacheKey, cacheOption: metadata });
+
       if (!cron) return;
-      this.registerCron(
-        cron,
-        cacheKeyPrefix,
-        originMethod,
-        validate,
-        logger
-      );
-    }
+
+      this.registerCron({ cron, cacheKey: cronCacheKey, job: originMethod, validate, logger, ttl });
+    };
   }
 
-  registerCron(
-    cron: string,
-    cacheKey: string,
-    job: Function,
-    validate: Function,
-    logger: Function
-  ) {
-    const { cacheManager } = this;
+  private registerCron({ cron, cacheKey, validate, job, logger, ttl }: RegisterCronProps) {
     const handleTick = async () => {
-      const cached = await cacheManager.get(cacheKey);
-      const jobData = await job();
+      const cachedData = await this.cacheManager.get(cacheKey);
+      const jobData = (await job()) as unknown;
+
       logger({ cacheKey, jobData });
-      await cacheManager.set(
-        cacheKey,
-        validate(jobData) ? jobData : cached,
-        { ttl: Infinity }
-      )
+
+      this.cacheManager.set(cacheKey, validate(jobData) ? jobData : cachedData, { ttl }).catch(() => {
+        logger('An error occurred while saving the cache in cron');
+      });
+
       return jobData;
-    }
+    };
 
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     new CronJob(cron, handleTick).start();
-    handleTick();
-  }
 
+    handleTick().catch(() => {
+      logger('An error occurred in first handleTick');
+    });
+  }
 }

@@ -1,5 +1,9 @@
 import { join } from 'path';
-const yamlConfig = require('node-yaml-config');
+import * as yamlConfig from 'node-yaml-config';
+
+interface YmalConfig {
+  load: (filename: string, env?: string) => Record<string, any>;
+}
 
 let RESOURCE_PATH = join(process.env.INIT_CWD, '../resources');
 
@@ -14,6 +18,6 @@ export function setYmlResourcePath(path: string) {
 export function ymlConfiguration(filename: string) {
   return () => {
     const yamlPath = join(RESOURCE_PATH, filename);
-    return yamlConfig.load(yamlPath) as Record<string, any>;
+    return (yamlConfig as YmalConfig).load(yamlPath);
   };
 }
