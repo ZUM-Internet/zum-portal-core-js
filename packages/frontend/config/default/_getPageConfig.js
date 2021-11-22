@@ -17,13 +17,18 @@ module.exports = {
 
     Object.entries(vuePages)
       .filter(([, v]) => v.template)
-      .forEach(([, page]) => {
+      .forEach(([key, page]) => {
 
         page.template = path.join(resourcePath, page.template);
 
         // SSR 모드인 경우 파일명 세팅 SSR 삽입
         if (mode === 'ssr') {
           page.entry = page.ssrEntry;
+
+          // ssrEntry가 없을 경우, 아예 ssr build에서 제외하기
+          if (page.entry === undefined) {
+            delete vuePages[key];
+          }
           return;
         }
 
