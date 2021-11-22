@@ -9,8 +9,8 @@
     "frontend:build": "cross-env vue-cli-service build --no-clean && cross-env ZUM_FRONT_MODE=ssr vue-cli-service build --no-clean"
   },
   "dependencies": {
-    "@zum-portal-core/banner": "1.0.0",
-    "@zum-portal-core/frontend": "1.0.0",
+    "@zum-portal-core/frontend": "*",
+    "@zum-portal-core/banner": "*",
     "typescript": "^4.4.3",
     "webpack": "~4.46.0"
   },
