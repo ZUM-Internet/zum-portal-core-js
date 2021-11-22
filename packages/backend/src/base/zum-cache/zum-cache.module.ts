@@ -95,7 +95,9 @@ export class ZumCacheModule implements OnModuleInit {
 
       logger({ originMethodResult });
 
-      await this.cacheManager.set(cacheKey, originMethodResult, { ttl });
+      this.cacheManager.set(cacheKey, originMethodResult, { ttl }).catch(() => {
+        logger('An error occurred while saving the cache in method execution');
+      });
 
       return originMethodResult;
     };

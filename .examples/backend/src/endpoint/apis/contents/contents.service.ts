@@ -20,6 +20,7 @@ export class ContentsService {
     const { data } = await this.adapter.get({
       url: base + chromeExtensionContents,
     });
+
     return Math.random() * 10 > 3 ? data : null;
   }
 }
