@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { INestApplication } from 'src/common';
 import { ZumCache, ZumCacheModule, ZumCacheOptions, ZUM_CACHE_NAME } from '../../index';
-import { cronServiceFactory, CronTestService } from './cron.service';
+import { cronServiceFactory, CronTestService, CronServiceFactoryProps } from './cron.service';
 
 /** ms 단위 */
 const Time = {
@@ -36,8 +36,8 @@ describe('zum-cache module', () => {
   let app: INestApplication;
   let cronService: CronTestService;
 
-  beforeEach(async () => {
-    const CronServiceClass = cronServiceFactory();
+  async function createApplication(options?: CronServiceFactoryProps) {
+    const CronServiceClass = cronServiceFactory(options);
     const moduleRef = await Test.createTestingModule({
       imports: [ZumCacheModule.forRoot()],
       providers: [CronServiceClass],
@@ -45,6 +45,10 @@ describe('zum-cache module', () => {
 
     app = moduleRef.createNestApplication();
     cronService = app.get<CronTestService>(CronServiceClass);
+  }
+
+  beforeEach(async () => {
+    await createApplication();
     jest.useFakeTimers();
   });
 
@@ -72,8 +76,8 @@ describe('zum-cache module', () => {
 
     jest.advanceTimersByTime(Time.ONE_HOUR);
 
-    // advanceTimersByTime으로 인해 cron의 setTimeout 콜백들이 micro-task queue에 추가된다
-    // 큐에 추가된 콜백들을 전부 실행시킨다
+    // CronJob에 전달한 콜백은 async함수라서 비동기적으로 실행된다
+    // micro-task queue에 추가된 콜백을 동기적으로 실행시키기 위해 await을 한번 해준다
     await Promise.resolve();
 
     // 앱이 초기화되고 기본적으로 한번 실행되기 때문에 1 더해준다
@@ -131,14 +135,7 @@ describe('zum-cache module', () => {
   it('설정한 validator대로 유효성 검사를 할 수 있어야 한다', async () => {
     // 짝수만 유효성 검사를 통과하도록 설정
     const cacheOptions = { validate: (val: any) => Number.isInteger(val) && val % 2 === 0 };
-    const CronServiceClass = cronServiceFactory(cacheOptions);
-    const moduleRef = await Test.createTestingModule({
-      imports: [ZumCacheModule.forRoot()],
-      providers: [CronServiceClass],
-    }).compile();
-
-    app = moduleRef.createNestApplication();
-    cronService = app.get<CronTestService>(CronServiceClass);
+    await createApplication(cacheOptions);
 
     const cachableValue = 2;
     const nonCachableValue = 3;
@@ -155,14 +152,7 @@ describe('zum-cache module', () => {
 
   it('cron 스케줄러가 실행될 때 옵션으로 전달한 logger함수를 cacheKey, jobData를 파라미터로 전달하여 호출해야 한다', async () => {
     const logger = jest.fn();
-    const CronServiceClass = cronServiceFactory({ logger });
-    const moduleRef = await Test.createTestingModule({
-      imports: [ZumCacheModule.forRoot()],
-      providers: [CronServiceClass],
-    }).compile();
-
-    app = moduleRef.createNestApplication();
-    cronService = app.get<CronTestService>(CronServiceClass);
+    await createApplication({ logger });
 
     const cachableValue = 'LOGGER_CACHE_TEST_RESULT';
 
