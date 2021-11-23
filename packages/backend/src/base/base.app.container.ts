@@ -75,8 +75,13 @@ export abstract class BaseAppContainer {
       '/static',
       express.static(this.STATIC_PATH, {
         cacheControl: true,
-        maxAge: 3600 * 1000,
+        maxAge: '1h',
         etag: false,
+        setHeaders(res, path) {
+          if (path.endsWith('.js') || path.endsWith('.css')) {
+            res.setHeader('Cache-Control', 'public, max-age=31536000');
+          }
+        },
       }),
     );
 
