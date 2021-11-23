@@ -138,10 +138,6 @@ export class ZumCacheModule implements OnModuleInit {
     };
 
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    new CronJob(cron, handleTick).start();
-
-    handleTick().catch(() => {
-      logger('An error occurred in first handleTick');
-    });
+    new CronJob({ cronTime: cron, onTick: handleTick, runOnInit: true }).start();
   }
 }
