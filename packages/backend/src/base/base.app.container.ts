@@ -5,7 +5,7 @@ import ejs from 'ejs';
 import { NestFactory } from '@nestjs/core';
 import { HttpStatus } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { CoTracker, NoCacheHtml, ErrorResponse, getVersion } from '../middleware';
+import { NoCacheHtml, ErrorResponse, getVersion } from '../middleware';
 import { logger } from '../util';
 import { setYmlResourcePath } from './yml.configuration';
 
@@ -92,7 +92,6 @@ export abstract class BaseAppContainer {
 
   private registerCustomMiddleware() {
     this.app
-      .use(CoTracker) // cotracker 미들웨어
       .use(NoCacheHtml) // HTML 캐시 미적용
       .use('/state/version', getVersion) // 버전 응답
       .use('/state/log/:type/:message', ErrorResponse); // 에러 로그 응답 미들웨어
