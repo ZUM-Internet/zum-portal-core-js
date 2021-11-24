@@ -9,12 +9,14 @@ export interface CronTestService {
   fetchEveryHour: () => any;
 }
 
+export type CronServiceFactoryProps = Omit<ZumCacheOptions, 'cron'>;
+
 export function cronServiceFactory({
   key,
   ttl,
   logger,
   validate,
-}: Omit<ZumCacheOptions, 'cron'> = {}): new () => any {
+}: CronServiceFactoryProps = {}): new () => any {
   class CronTestService {
     public minuteCount = 0;
 
