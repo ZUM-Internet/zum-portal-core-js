@@ -1,106 +1,21 @@
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-import { JSDOM, CookieJar } from 'jsdom';
+import { JSDOM, CookieJar, DOMWindow } from 'jsdom';
 import { BundleRenderer } from 'vue-server-renderer';
 import { renderingUserAgent } from './RenderingUserAgent';
 
-declare const global: Record<any, any>;
+declare const global: {
+  [key: string]: any;
+  [key: number]: any;
+  window: DOMWindow;
+  document: Document;
+  location: Location;
+  navigator: Navigator;
+  localStorage: LocalStorage;
+};
 
 interface LocalStorage {
   [key: string]: any;
   getItem: (key: string) => any;
   setItem: (key: string, value: any) => void;
-}
-
-/**
- * JSDOM에서 구현되지 않았기 때문에 추가된 window.resizeTo() 폴리필 함수
- *
- * @see https://github.com/agilgur5/window-resizeto/blob/master/src/index.ts
- */
-function resizeTo(window: any, width: number, height: number) {
-  window.innerWidth = width;
-  window.innerHeight = height;
-  window.outerWidth = width;
-  window.outerHeight = height;
-  window.dispatchEvent(new window.Event('resize'));
-}
-
-/**
- * Vue SSR 번들 렌더링 함수
- *
- * @param renderer 번들 렌더러
- * @param RenderingOption 렌더링 옵션
- */
-export async function bundleRendering(
-  renderer: BundleRenderer,
-  RenderingOption: RenderingOption,
-): Promise<string> {
-  const { window } = new JSDOM(``, {
-    url: RenderingOption.projectDomain,
-    userAgent: RenderingOption?.userAgent.toLowerCase() || renderingUserAgent.mobile.android,
-    cookieJar: RenderingOption.cookieJar,
-  });
-  const width = RenderingOption?.windowSize?.width || 375;
-  const height = RenderingOption?.windowSize?.height || 812;
-
-  global.window = window;
-  global.document = window.document;
-  global.location = window.location;
-  global.navigator = window.navigator;
-  global.localStorage = {
-    getItem(key: string) {
-      return this[key] || null;
-    },
-    setItem(key: string, value: any) {
-      this[key] = value;
-    },
-  } as LocalStorage;
-
-  // 모바일 사이즈로 리사이즈
-  resizeTo(global.window, width, height);
-
-  // Window 객체에 바인드
-  Object.entries(RenderingOption?.windowObjects).forEach(([field, value]) => {
-    global.window[field] = value;
-  });
-
-  // Vue SSR
-  let result = '';
-  try {
-    result = await renderer.renderToString(RenderingOption.rendererContext || {});
-  } catch (e: any) {
-    throw new Error(`There is an error when SSR bundleRendering ${e}`);
-  }
-
-  // JSDOM close 이후 결과 반환
-  global.window.close();
-  return result;
-}
-
-/**
- * JSDOM에서 사용 가능한 CookieJar 객체를 생성하는 함수
- *
- * @param domain 쿠키를 적용할 도메인
- * @param cookieObject 쿠키 객체
- */
-export function createCookieJar(domain: string, cookieObject: Record<string, string>): CookieJar {
-  // 쿠키 문자열 생성
-  let cookieString = '';
-  Object.entries(cookieObject).forEach(([key, value]) => {
-    cookieString += `${key}=${value}; `;
-  });
-
-  // CookieJar 객체 생성
-  const cookieJar = new CookieJar();
-  cookieJar.setCookie(
-    cookieString, // 쿠키 문자열
-    domain, // 쿠키를 적용할 도메인
-    {}, // 옵션
-    () => {}, // 콜백
-  );
-  return cookieJar;
 }
 
 /**
@@ -116,4 +31,84 @@ export interface RenderingOption {
   /* Vue SSR Renderer 설정 */
   windowObjects: Record<string, any>;
   rendererContext: Record<string, any>; // Vue SSR 렌더러에 삽입할 컨텍스트
+}
+
+/**
+ * JSDOM에서 구현되지 않았기 때문에 추가된 window.resizeTo() 폴리필 함수
+ *
+ * @see https://github.com/agilgur5/window-resizeto/blob/master/src/index.ts
+ */
+function resizeTo(window: DOMWindow, width: number, height: number) {
+  type R = Record<any, any>;
+
+  (window as R).innerWidth = width;
+  (window as R).innerHeight = height;
+  (window as R).outerWidth = width;
+  (window as R).outerHeight = height;
+
+  window.dispatchEvent(new window.Event('resize'));
+}
+
+function createLocalStorage(): LocalStorage {
+  const storage = {};
+
+  return {
+    getItem(key: string): any {
+      return storage[key] || null;
+    },
+    setItem(key: string, value: any) {
+      storage[key] = value;
+    },
+  };
+}
+
+/**
+ * Vue SSR 번들 렌더링 함수
+ *
+ * @param renderer 번들 렌더러
+ * @param RenderingOption 렌더링 옵션
+ */
+export async function bundleRendering(
+  renderer: BundleRenderer,
+  {
+    projectDomain,
+    userAgent = '',
+    cookieJar,
+    windowSize: { width, height } = { width: 375, height: 812 },
+    windowObjects,
+    rendererContext,
+  }: RenderingOption,
+) {
+  const { window } = new JSDOM(``, {
+    url: projectDomain,
+    userAgent: userAgent.toLowerCase() || renderingUserAgent.mobile.android,
+    cookieJar,
+  });
+
+  global.window = window;
+  global.document = window.document;
+  global.location = window.location;
+  global.navigator = window.navigator;
+  global.localStorage = createLocalStorage();
+
+  // 입력받은 윈도우 사이즈로 리사이즈
+  resizeTo(global.window, width, height);
+
+  // Window 객체에 바인드
+  Object.entries(windowObjects).forEach(([field, value]) => {
+    global.window[field] = value;
+  });
+
+  // Vue SSR 시작
+  let result = '';
+
+  try {
+    result = await renderer.renderToString(rendererContext);
+  } catch (err: any) {
+    throw new Error(`There is an error when SSR bundleRendering ${err as string}`);
+  } finally {
+    global.window.close();
+  }
+
+  return result;
 }
