@@ -1,9 +1,7 @@
-import { CookieJar } from 'jsdom';
+import { CookieJar, toughCookie } from 'jsdom';
 
-export function createCookieStringFromObject(cookieObject: Record<string, string>) {
-  return Object.entries(cookieObject)
-    .map(([key, value]) => `${key}=${value};`)
-    .join(' ');
+export function parseCookiesFromObject(cookieObject: Record<string, string>) {
+  return Object.entries(cookieObject).map(([key, value]) => toughCookie.Cookie.parse(`${key}=${value}`));
 }
 
 /**
@@ -13,8 +11,8 @@ export function createCookieStringFromObject(cookieObject: Record<string, string
  * @param cookieObject 쿠키 객체
  */
 export function createCookieJar(domain: string, cookieObject: Record<string, string>) {
-  const cookieString = createCookieStringFromObject(cookieObject);
+  const cookies = parseCookiesFromObject(cookieObject);
   const cookieJar = new CookieJar();
 
-  return cookieJar.setCookie(cookieString, domain);
+  return Promise.all(cookies.map((cookie) => cookieJar.setCookie(cookie, domain))).then(() => cookieJar);
 }
