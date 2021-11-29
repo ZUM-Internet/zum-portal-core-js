@@ -8,10 +8,13 @@
 ### 1. 패키지 설치
 
 ```bash
-# 호환되는 peerDependencies 설치를 위해 install-peerdeps 패키지를 사용합니다
-# 자동으로 eslint, typescript를 같이 설치해줍니다
+# eslint, typescript를 같이 설치해줍니다
 
-npx install-peerdeps -D @zum-portal-core/eslint-config-zum
+# yarn
+yarn add @zum-portal-core/eslint-config-zum eslint@^7.2.0 typescript -D
+
+# npm
+npm i -D @zum-portal-core/eslint-config-zum eslint@^7.2.0 typescript
 ```
 
 ### 2. eslint 설정 파일 생성
