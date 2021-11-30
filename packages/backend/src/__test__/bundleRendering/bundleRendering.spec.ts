@@ -66,7 +66,7 @@ describe('bundleRendering', () => {
 
   it('SSR할 때 전달한 컨텍스트 객체가 renderer.renderToString()의 파라미터로 전달되어야 한다', async () => {
     const domain = 'https://test.com';
-    const rendererContext = { path: '/about' };
+    const rendererContext = { path: '/about', foo: 1234 };
     const cookieJar = new CookieJar();
     const renderOption = {
       projectDomain: domain,
