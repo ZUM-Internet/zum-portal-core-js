@@ -1,0 +1,13 @@
+image: node:14.17.1
+
+stages:
+  - test
+
+test:
+  stage: test
+  script:
+    - cd packages/backend
+    - yarn
+    - yarn test --ci
+  tags:
+    - kubernetes
