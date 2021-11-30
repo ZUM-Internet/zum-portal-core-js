@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { CookieOptions } from 'express-serve-static-core';
 
-const ABTEST_COOKIE_NAME = '_ABTEST_VARIANT';
+export const ABTEST_COOKIE_NAME = '_ABTEST_VARIANT';
 
 // [variant 키]: [생성 비율(0.x ~ 1)]
 type VariantValue = {
@@ -20,7 +20,7 @@ type Variant = {
  * @param res 미들웨어 응답
  * @param variant {테스트명: {키: 생성 비율(0.x ~ 1)}} 형태의 값
  *        ex) {example1: { a: 0.1, b: 0.9 }}
- *        ex) {example2: { a: 0.1, b: 0.2, c: 0.3, d: 0.4` }}
+ *        ex) {example2: { a: 0.1, b: 0.2, c: 0.3, d: 0.4 }}
  * @param cookieOptions 쿠키 설정 옵션
  */
 export function putVariantCookies(

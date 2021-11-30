@@ -1,2 +1,2 @@
-export * from './ABTestUtils';
+export * from './abTestUtils';
 export * from './logger';
