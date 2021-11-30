@@ -6,8 +6,11 @@ stages:
 test:
   stage: test
   only:
-    - merge_requests
+    - develop
+    - master
+    - changes:
+        - packages/backend/**/*
   script:
-    - echo "?"
+    - yarn test --ci
   tags:
     - kubernetes
