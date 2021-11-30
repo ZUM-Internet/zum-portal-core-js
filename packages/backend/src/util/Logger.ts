@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
 
 function getTimestamp() {
@@ -30,4 +31,6 @@ export const logger = {
   error(...args: any[]) {
     console.error(getTimestamp(), '[error]', ...args);
   },
+
+  getTimestamp, // 테스트를 위해 export
 };
