@@ -8,8 +8,6 @@ test:
   only:
     - develop
     - master
-    - changes:
-        - packages/backend/**/*
   script:
     - yarn test --ci
   tags:
