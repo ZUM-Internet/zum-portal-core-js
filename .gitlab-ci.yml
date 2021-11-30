@@ -5,9 +5,6 @@ stages:
 
 test:
   stage: test
-  only:
-    - develop
-    - master
   script:
     - yarn test --ci
   tags:
