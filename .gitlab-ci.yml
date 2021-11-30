@@ -6,7 +6,6 @@ stages:
 backend-test:
   stage: test
   only:
-    - merge_requests
     - develop
     - master
   script:
