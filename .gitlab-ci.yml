@@ -5,6 +5,10 @@ stages:
 
 test:
   stage: test
+  only:
+    refs:
+      - master
+      - develop
   script:
     - cd packages/backend
     - yarn
