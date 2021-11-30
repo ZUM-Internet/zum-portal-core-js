@@ -5,8 +5,6 @@ stages:
 
 test:
   stage: test
-  only:
-    - develop
   script:
     - cd packages/backend
     - yarn test --ci
