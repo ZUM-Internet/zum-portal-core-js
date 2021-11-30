@@ -155,7 +155,7 @@ module.exports = {
     // 템플릿에서 컴포넌트는 파스칼 케이스로 사용해야 한다
     'vue/component-name-in-template-casing': [
       'error',
-      'PascalCase',
+      'kebab-case',
       {
         registeredComponentsOnly: true,
         ignores: [],
