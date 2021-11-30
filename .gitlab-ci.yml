@@ -3,12 +3,9 @@ image: node:14.17.1
 stages:
   - test
 
-backend-test:
+test:
   stage: test
-  only:
-    - develop
-    - master
   script:
-    - yarn test --ci
+    - echo "?"
   tags:
     - kubernetes
