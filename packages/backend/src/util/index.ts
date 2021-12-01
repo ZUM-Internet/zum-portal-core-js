@@ -1,2 +1,2 @@
-export * from './abTestUtils';
-export * from './logger';
+export { putVariantCookies } from './abTestUtils';
+export { logger } from './logger';
