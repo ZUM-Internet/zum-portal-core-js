@@ -63,8 +63,5 @@ export function putVariantCookies(
   });
 
   // 쿠키 설정
-  res.cookie(ABTEST_COOKIE_NAME, JSON.stringify(cookieRecord), {
-    ...cookieOptions,
-    // 추가적인 옵션은 여기에 작성
-  });
+  res.cookie(ABTEST_COOKIE_NAME, JSON.stringify(cookieRecord), cookieOptions);
 }
