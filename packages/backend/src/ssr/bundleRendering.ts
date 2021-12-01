@@ -1,6 +1,6 @@
 import { JSDOM, CookieJar, DOMWindow } from 'jsdom';
 import { BundleRenderer } from 'vue-server-renderer';
-import { renderingUserAgent } from './RenderingUserAgent';
+import { renderingUserAgent } from './renderingUserAgent';
 
 declare const global: {
   [key: string]: any;

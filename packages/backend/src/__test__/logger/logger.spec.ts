@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { logger } from '../../index';
+import { logger, getTimestamp } from '../../util/logger';
 
 describe('logger', () => {
   afterEach(() => {
@@ -10,11 +10,11 @@ describe('logger', () => {
     it('호출되면 타임스탬프를 반환해야 한다', () => {
       jest.useFakeTimers().setSystemTime(new Date('2020-01-01T08:00').getTime());
 
-      expect(logger.getTimestamp()).toEqual('2020-01-01 08:00:00.000');
+      expect(getTimestamp()).toEqual('2020-01-01 08:00:00.000');
 
       jest.useFakeTimers().setSystemTime(new Date('2021-12-25T11:30').getTime());
 
-      expect(logger.getTimestamp()).toEqual('2021-12-25 11:30:00.000');
+      expect(getTimestamp()).toEqual('2021-12-25 11:30:00.000');
     });
   });
 
