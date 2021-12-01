@@ -9,6 +9,9 @@ test:
     refs:
       - master
       - develop
+  except:
+    - push
+    - tags
   script:
     - cd packages/backend
     - yarn
