@@ -8,7 +8,6 @@ test:
   except:
     - pushes
     - tags
-    - branches
   script:
     - cd packages/backend
     - yarn
