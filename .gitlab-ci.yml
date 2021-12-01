@@ -7,8 +7,7 @@ test:
   stage: test
   only:
     refs:
-      - master
-      - develop
+      - merge_requests
   except:
     - push
     - tags
