@@ -6,7 +6,6 @@ stages:
 test:
   stage: test
   except:
-    - pushes
     - tags
   script:
     - cd packages/backend
