@@ -5,12 +5,10 @@ stages:
 
 test:
   stage: test
-  only:
-    refs:
-      - merge_requests
   except:
-    - push
+    - pushes
     - tags
+    - branches
   script:
     - cd packages/backend
     - yarn
