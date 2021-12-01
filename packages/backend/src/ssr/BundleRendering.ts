@@ -12,7 +12,7 @@ declare const global: {
   localStorage: LocalStorage;
 };
 
-interface LocalStorage {
+export interface LocalStorage {
   [key: string]: any;
   getItem: (key: string) => any;
   setItem: (key: string, value: any) => void;
@@ -29,8 +29,8 @@ export interface RenderingOption {
   windowSize?: { width: number; height: number }; // jsdom 윈도우 사이즈. 없으면 모바일임
 
   /* Vue SSR Renderer 설정 */
-  windowObjects: Record<string, any>;
-  rendererContext: Record<string, any>; // Vue SSR 렌더러에 삽입할 컨텍스트
+  windowObjects?: Record<string, any>;
+  rendererContext?: Record<string, any>; // Vue SSR 렌더러에 삽입할 컨텍스트
 }
 
 /**
@@ -75,8 +75,8 @@ export async function bundleRendering(
     userAgent = '',
     cookieJar,
     windowSize: { width, height } = { width: 375, height: 812 },
-    windowObjects,
-    rendererContext,
+    windowObjects = {},
+    rendererContext = {},
   }: RenderingOption,
 ) {
   const { window } = new JSDOM(``, {

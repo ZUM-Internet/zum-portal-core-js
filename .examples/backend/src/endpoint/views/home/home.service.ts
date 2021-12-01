@@ -7,11 +7,11 @@ import {
   Inject,
   Injectable,
   renderingUserAgent,
-  Cache
-} from "@zum-portal-core/backend";
-import { BundleRenderer, createBundleRenderer } from "vue-server-renderer";
-import * as fs from "fs";
-import * as path from "path";
+  Cache,
+} from '@zum-portal-core/backend';
+import { BundleRenderer, createBundleRenderer } from 'vue-server-renderer';
+import * as fs from 'fs';
+import * as path from 'path';
 
 const RESOURCES_PATH = path.join(process.env.INIT_CWD, '../resources');
 const TEMPLATES_PATH = path.join(RESOURCES_PATH, 'templates');
@@ -19,16 +19,14 @@ const SSR_RESULT = 'SSR_RESULT';
 
 @Injectable()
 export class HomeService {
-
   private readonly renderer: BundleRenderer;
   private readonly emptyHtml: string;
   private readonly defaultHtml: string;
 
   constructor(
     private readonly configService: ConfigService,
-    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {
-
     // 개발시 사용될 기본 HTML
     this.emptyHtml = fs.readFileSync(path.join(TEMPLATES_PATH, '/index.html'), 'utf-8');
     this.defaultHtml = fs.readFileSync(path.join(TEMPLATES_PATH, '/dist/index.html'), 'utf-8');
@@ -47,7 +45,6 @@ export class HomeService {
     });
 
     this.ssr();
-
   }
 
   // SSR은 CPU 사용이 큰 작업이므로 캐싱을 고려할 것
@@ -63,14 +60,13 @@ export class HomeService {
       const html = await bundleRendering(this.renderer, {
         projectDomain: domain,
         userAgent: renderingUserAgent.desktop.windowChrome,
-        cookieJar: createCookieJar(domain, {}), // 쿠키 jar 생성
+        cookieJar: await createCookieJar(domain, {}), // 쿠키 jar 생성
         windowObjects: {},
-        rendererContext: {path: '/'},
+        rendererContext: { path: '/' },
       });
       console.timeEnd('start vue.js ssr rendering');
 
       return html;
-
     } catch (e) {
       console.error(e);
       console.timeEnd('start vue.js ssr rendering');
