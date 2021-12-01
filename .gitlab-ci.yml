@@ -5,13 +5,10 @@ stages:
 
 test:
   stage: test
-  only:
-    refs:
-      - master
-      - develop
   except:
-    - push
+    - pushes
     - tags
+    - branches
   script:
     - cd packages/backend
     - yarn
