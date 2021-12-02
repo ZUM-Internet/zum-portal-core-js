@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.1
+
+- Prettier와 같이 사용할 때 충돌하는 옵션 수정
+  - `vue/max-attributes-per-line`
+
 ## 1.3.0
 
 - Vue 세부 룰 추가 정의
