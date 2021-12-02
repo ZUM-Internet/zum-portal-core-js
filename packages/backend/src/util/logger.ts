@@ -1,6 +1,7 @@
+/* eslint-disable no-console */
 const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
 
-function getTimestamp() {
+export function getTimestamp() {
   return `${new Date(Date.now() - timezoneOffset)
     .toISOString()
     ?.replace(/[a-zA-Z]/g, ' ')

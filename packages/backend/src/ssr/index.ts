@@ -1,3 +1,3 @@
-export * from './BundleRendering';
-export * from './RenderingUserAgent';
+export * from './bundleRendering';
+export * from './renderingUserAgent';
 export * from './cookieJar';
