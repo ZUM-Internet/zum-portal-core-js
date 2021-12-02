@@ -75,7 +75,6 @@ npm i -D prettier eslint-config-prettier eslint-plugin-prettier
 ```json
 // .prettierrc
 {
-  "parser": "typescript",
   "singleQuote": true,
   "printWidth": 110,
   "tabWidth": 2,
@@ -96,7 +95,7 @@ npm i -D prettier eslint-config-prettier eslint-plugin-prettier
 4-3. eslint설정의 extends옵션 마지막에 `plugin:prettier/recommended` 추가
 
 ```diff
-// .eslintrc.js
+// TypeScript
 module.exports = {
   parserOptions: {
     project: './tsconfig.json',
@@ -105,6 +104,17 @@ module.exports = {
 + extends: [
 +   '@zum-portal-core/eslint-config-zum',
 +   'plugin:prettier/recommended'
++ ],
+};
+```
+
+```diff
+// Vue
+module.exports = {
+- extends: ['@zum-portal-core/eslint-config-zum'],
++ extends: [
++  '@zum-portal-core/eslint-config-zum/vue',
++  'plugin:prettier/recommended',
 + ],
 };
 ```

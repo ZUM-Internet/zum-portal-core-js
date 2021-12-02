@@ -75,7 +75,8 @@ module.exports = {
     'vue/max-attributes-per-line': [
       'error',
       {
-        singleline: { max: 1 },
+        // prettier와 충돌이 발생하기 때문에 싱글라인인 경우에는 제한을 제거한다
+        singleline: { max: 30 },
         multiline: { max: 1 },
       },
     ],
