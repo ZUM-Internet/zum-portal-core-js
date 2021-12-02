@@ -163,8 +163,8 @@ module.exports = {
       },
     ],
 
-    // 커스텀 이벤트 이름은 케밥 케이스로 사용해야 한다
-    'vue/custom-event-name-casing': ['error', 'kebab-case'],
+    // 커스텀 이벤트 이름은 카멜 케이스로 사용해야 한다
+    'vue/custom-event-name-casing': ['error', 'camelCase'],
 
     // 2줄 이상의 프로퍼티 다음에는 한 줄 비워야 한다
     'vue/new-line-between-multi-line-property': ['error', { minLineOfMultilineProperty: 2 }],
