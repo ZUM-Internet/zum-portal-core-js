@@ -71,26 +71,23 @@ export abstract class BaseAppContainer {
   }
 
   private registerStaticMiddleware() {
-    this.app.useStaticAssets(this.STATIC_PATH).use(
-      '/static',
-      express.static(this.STATIC_PATH, {
-        cacheControl: true,
-        maxAge: '1h',
+    this.app
+      .useStaticAssets(this.STATIC_PATH, {
+        maxAge: '1d',
         etag: false,
-        setHeaders(res, path) {
-          if (path.endsWith('.js') || path.endsWith('.css')) {
-            res.setHeader('Cache-Control', 'public, max-age=31536000');
-          }
-        },
-      }),
-    );
-
-    // favicon, robots 등록. sitemap은 동적 생성할 가능성이 있어 제외함(직접등록)
-    ['favicon.ico', 'robots.txt'].forEach((filename) => {
-      this.app.use(`/${filename}`, (req: Request, res: Response) => {
-        res.sendFile(join(this.STATIC_PATH, filename));
-      });
-    });
+      })
+      .use(
+        '/static',
+        express.static(this.STATIC_PATH, {
+          maxAge: '1h',
+          etag: false,
+          setHeaders(res, path) {
+            if (path.endsWith('.js') || path.endsWith('.css')) {
+              res.setHeader('Cache-Control', 'public, max-age=31536000');
+            }
+          },
+        }),
+      );
 
     return this;
   }
