@@ -1,4 +1,4 @@
-const { join } = require("path");
+const { join } = require('path');
 
 const { INIT_CWD } = process.env;
 
@@ -7,24 +7,25 @@ const ZUM_OPTIONS = {
   resourcePath: join(INIT_CWD, '../resources'),
   outputPath: join(INIT_CWD, '../resources'),
   stubPath: join(INIT_CWD, '../resources', 'stub'),
-  publicPath: "/",
+  publicPath: '/',
+  packageJsonPath: join(process.cwd(), '../package.json'),
 };
 
-function getZumOptions () {
+function getZumOptions() {
   return { ...ZUM_OPTIONS };
 }
 
-function getVuePages () {
+function getVuePages() {
   const { frontSrcPath } = getZumOptions();
   return require(frontSrcPath + '/vue.page');
 }
 
-function setZumOptions (newOptions) {
+function setZumOptions(newOptions) {
   Object.entries(newOptions)
-        .filter(([ k ]) => ZUM_OPTIONS.hasOwnProperty(k))
-        .forEach(([k, v]) => {
-          ZUM_OPTIONS[k] = v;
-        });
+    .filter(([k]) => ZUM_OPTIONS.hasOwnProperty(k))
+    .forEach(([k, v]) => {
+      ZUM_OPTIONS[k] = v;
+    });
 }
 
 module.exports = {
@@ -32,4 +33,4 @@ module.exports = {
   getZumOptions,
   getVuePages,
   setZumOptions,
-}
+};
