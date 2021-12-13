@@ -1,12 +1,13 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const fs = require('fs');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-const {getZumOptions} = require('../options');
-const {stubPath} = getZumOptions();
+const { getZumOptions } = require('../options');
+
+const { stubPath } = getZumOptions();
 
 module.exports = {
-
   devServer: {
     port: 4000,
     open: true,
@@ -22,16 +23,14 @@ module.exports = {
      * @param app
      * @param server
      */
-    setup (app, server) {
-
+    setup(app, server) {
       /**** 기본 미들웨어 등록 ****/
       // cookie parser
       app.use(cookieParser());
       // body parser
       app.use(express.json());
-      app.use(express.urlencoded({extended: true}));
+      app.use(express.urlencoded({ extended: true }));
       /***************************/
-
 
       /**
        * /stub으로 요청된 데이터 처리
@@ -45,14 +44,12 @@ module.exports = {
         }
       });
 
-
       // app.js 등록
       const stubAppPath = path.join(stubPath, './app.js');
+
       if (fs.existsSync(stubAppPath)) {
         require(stubAppPath)(app);
       }
-
     },
-
-  }
+  },
 };

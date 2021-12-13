@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { join } = require('path');
 
 const { INIT_CWD } = process.env;
@@ -22,7 +23,7 @@ function getVuePages() {
 
 function setZumOptions(newOptions) {
   Object.entries(newOptions)
-    .filter(([k]) => ZUM_OPTIONS.hasOwnProperty(k))
+    .filter(([k]) => ({}.hasOwnProperty.call(ZUM_OPTIONS, k)))
     .forEach(([k, v]) => {
       ZUM_OPTIONS[k] = v;
     });

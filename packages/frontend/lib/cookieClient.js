@@ -1,4 +1,4 @@
-import Cookies from "js-cookie";
+import Cookies from 'js-cookie';
 
 const NUMBER_REGEXP = /^\d+$/;
 
@@ -13,13 +13,13 @@ export const cookieClient = {
   },
   set(key, value, options = {}) {
     // 개발중일때 domain option 제거
-    if(process.env.NODE_ENV !== 'production') {
-      if(options.domain) delete options.domain;
+    if (process.env.NODE_ENV !== 'production') {
+      if (options.domain) delete options.domain;
     }
 
     return Cookies.set(key, value, {
       ...options,
-      expires: options.expires || 30
+      expires: options.expires || 30,
     });
   },
 };

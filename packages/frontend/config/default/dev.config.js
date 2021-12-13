@@ -6,7 +6,6 @@ const apiPort = process.env.API_PORT || 8080;
 const proxyPath = process.env.PROXY_PATH || '/api';
 
 module.exports = {
-
   devServer: {
     host: host,
     port: port,
@@ -17,9 +16,8 @@ module.exports = {
       // 프록시 요청을 보낼 api의 시작 부분
       [proxyPath]: {
         // 프록시 요청을 보낼 서버의 주소
-        target: `http://${apiHost}:${apiPort}`
-      }
+        target: `http://${apiHost}:${apiPort}`,
+      },
     },
   },
-
 };

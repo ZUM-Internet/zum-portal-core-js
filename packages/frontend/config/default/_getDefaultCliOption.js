@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { DefinePlugin, ProvidePlugin } = require('webpack');
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const { getZumOptions, getVuePages } = require('../options');
-const { ProjectOptions } = require('@vue/cli-service');
 const { getPageConfig } = require('./_getPageConfig');
 
 /**
