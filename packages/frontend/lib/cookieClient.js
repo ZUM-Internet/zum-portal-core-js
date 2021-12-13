@@ -22,4 +22,7 @@ export const cookieClient = {
       expires: options.expires || 30,
     });
   },
+  remove(key, options) {
+    Cookies.remove(key, options);
+  },
 };
