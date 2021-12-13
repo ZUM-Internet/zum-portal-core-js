@@ -1,5 +1,6 @@
-const path = require("path");
-const { getZumOptions } = require("../options");
+/* eslint-disable @typescript-eslint/no-var-requires */
+const path = require('path');
+const { getZumOptions } = require('../options');
 
 const { resourcePath } = getZumOptions();
 
@@ -12,13 +13,12 @@ const { resourcePath } = getZumOptions();
  * @returns {*}
  */
 module.exports = {
-  getPageConfig (vuePages) {
-    const {ZUM_FRONT_MODE: mode, NODE_ENV: nodeEnv} = process.env;
+  getPageConfig(vuePages) {
+    const { ZUM_FRONT_MODE: mode, NODE_ENV: nodeEnv } = process.env;
 
     Object.entries(vuePages)
       .filter(([, v]) => v.template)
       .forEach(([key, page]) => {
-
         page.template = path.join(resourcePath, page.template);
 
         // SSR 모드인 경우 파일명 세팅 SSR 삽입
@@ -40,9 +40,8 @@ module.exports = {
         if (mode === 'publish') {
           page.template = path.join(resourcePath, page.publishTemplate);
         }
-
-      })
+      });
 
     return vuePages;
-  }
-}
+  },
+};

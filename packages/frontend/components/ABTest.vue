@@ -1,16 +1,16 @@
 <template>
   <div v-if="!disabled">
     <slot :name="group || defaultGroup" />
-</div>
+  </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'ABTest',
   props: {
-    disabled: {type: Boolean, default: () => false},
-    group: { type: String, required: false, },
-    defaultGroup: {type: String, default: () => 'A'}
+    disabled: { type: Boolean, default: () => false },
+    group: { type: String, required: false, default: null },
+    defaultGroup: { type: String, default: () => 'A' },
   },
-}
+};
 </script>
