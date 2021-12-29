@@ -33,6 +33,8 @@ export abstract class BaseAppContainer {
     this.STATIC_PATH = option.staticPath ?? join(this.RESOURCE_PATH, 'static');
     this.TEMPLATE_PATH = option.templatePath ?? join(this.RESOURCE_PATH, 'templates');
 
+    setYmlResourcePath(this.RESOURCE_PATH);
+
     this.app = await NestFactory.create<NestExpressApplication>(AppModule);
   }
 
@@ -113,8 +115,6 @@ export abstract class BaseAppContainer {
     await this.initialize({ AppModule, option });
 
     this.app.set('trust proxy', true);
-
-    setYmlResourcePath(this.RESOURCE_PATH);
 
     return this.registerWhatapAgent()
       .registerStaticMiddleware()

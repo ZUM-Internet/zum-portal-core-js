@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": false,
+    "experimentalDecorators": true,
+    "target": "esnext",
+    "outDir": "./lib",
+    "baseUrl": "./src",
+    "moduleResolution": "node",
+    "removeComments": true,
+    "esModuleInterop": true
+  }
+}
