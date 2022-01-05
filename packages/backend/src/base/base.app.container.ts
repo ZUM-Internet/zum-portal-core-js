@@ -9,6 +9,11 @@ import { NoCacheHtml, getVersion } from '../middleware';
 import { logger } from '../util';
 import { setYmlResourcePath } from './yml.configuration';
 
+// 와탭 에이전트 등록
+if (process.env.ENABLE_WHATAP === 'true') {
+  import('whatap').then(({ NodeAgent }) => NodeAgent as unknown).catch(logger.error.bind(logger));
+}
+
 interface AppSetupOption {
   resourcePath?: string;
   staticPath?: string;
@@ -36,14 +41,6 @@ export abstract class BaseAppContainer {
     setYmlResourcePath(this.RESOURCE_PATH);
 
     this.app = await NestFactory.create<NestExpressApplication>(AppModule);
-  }
-
-  private registerWhatapAgent() {
-    if (process.env.ENABLE_WHATAP === 'true') {
-      import('whatap').then(({ NodeAgent }) => NodeAgent as unknown).catch(logger.error.bind(logger));
-    }
-
-    return this;
   }
 
   private registerTemplateEngine(delimiter = '?') {
@@ -116,8 +113,7 @@ export abstract class BaseAppContainer {
 
     this.app.set('trust proxy', true);
 
-    return this.registerWhatapAgent()
-      .registerStaticMiddleware()
+    return this.registerStaticMiddleware()
       .registerTemplateEngine(option.ejsDelimiter)
       .registerParserMiddleware()
       .registerCustomMiddleware()
