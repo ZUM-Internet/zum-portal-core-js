@@ -8,7 +8,10 @@
     "prebuild": "rimraf dist",
     "build": "nest build",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "publish:major": "node ../../auto-publish/lib/index.js publish major --commit-prefix=backend",
+    "publish:minor": "node ../../auto-publish/lib/index.js publish minor --commit-prefix=backend",
+    "publish:patch": "node ../../auto-publish/lib/index.js publish patch --commit-prefix=backend"
   },
   "repository": {
     "type": "git",
