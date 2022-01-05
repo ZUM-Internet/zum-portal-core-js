@@ -11,7 +11,8 @@ import { setYmlResourcePath } from './yml.configuration';
 
 // 와탭 에이전트 등록
 if (process.env.ENABLE_WHATAP === 'true') {
-  import('whatap').then(({ NodeAgent }) => NodeAgent as unknown).catch(logger.error.bind(logger));
+  // eslint-disable-next-line
+  require('whatap').NodeAgent;
 }
 
 interface AppSetupOption {
