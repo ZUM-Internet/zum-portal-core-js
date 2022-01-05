@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1.1.3
+- fix: whatap 에이전트 등록 구문 import -> require로 변경 [b7f06cb](https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/commit/b7f06cbeec4585db67cbf8693991077ddd2b59bb) dogyeong
+
 ## 1.1.2
 - fix: whatap 등록 로직을 node 앱 초기화 이전으로 이동 [7e5900a](https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/commit/7e5900a94da1abd8d6fec86e9b18092cd8d6d1eb) dogyeong
 - chore: auto-publish 스크립트 적용 [f11e3a7](https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/commit/f11e3a77e17832972b08997a4b2608a1c1af91c2) dogyeong
