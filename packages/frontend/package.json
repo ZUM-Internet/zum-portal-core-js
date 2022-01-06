@@ -1,11 +1,16 @@
 {
   "name": "@zum-portal-core/frontend",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Vue.js 환경설정을 위한 코어 프로젝트",
   "author": "황준일 <junil@zuminternet.com>, 이도경 <dogyeong@zuminternet.com>, 천재민 <karl@zuminternet.com>, 위정훈 <wiii@zuminternet.com>",
   "repository": {
     "type": "git",
     "url": "https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project.git"
+  },
+  "scripts": {
+    "publish:major": "node ../../auto-publish/lib/index.js publish major --commit-prefix=frontend",
+    "publish:minor": "node ../../auto-publish/lib/index.js publish minor --commit-prefix=frontend",
+    "publish:patch": "node ../../auto-publish/lib/index.js publish patch --commit-prefix=frontend"
   },
   "engines": {
     "node": ">= 14.16.0"
