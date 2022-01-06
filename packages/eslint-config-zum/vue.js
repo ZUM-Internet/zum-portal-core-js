@@ -54,6 +54,20 @@ module.exports = {
       },
     ],
 
+    // 모든 태그는 내용이 없을 때 self-closing 형태로 사용해야 한다
+    'vue/html-self-closing': [
+      'error',
+      {
+        html: {
+          void: 'always',
+          normal: 'always',
+          component: 'always',
+        },
+        svg: 'always',
+        math: 'always',
+      },
+    ],
+
     // html 태그 괄호에 대한 룰
     // < 괄호 뒤에 공백이 없어야 한다
     // > 괄호 앞에 공백이 없어야 한다
