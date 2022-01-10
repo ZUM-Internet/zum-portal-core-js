@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 1.1.3
+- Chore: rollup으로 lib 번들링 [82f9814](https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/commit/82f981441c7c56f6378683fd904b363fcab715d0) dogyeong
+- refactor: lib 디렉토리 타입스크립트로 재작성 [060dccf](https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/commit/060dccf4b4eabf2cb7a057294d2c58598aa404e1) dogyeong
+- fix: eslint Vue env 제거 [5c0484e](https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/commit/5c0484ecdb86878b21be8dcea8eb0d55f6a07060) dogyeong
+
 ## 1.1.2
 - fix: page옵션에서 템플릿파일 경로 잘못 지정되는 버그 수정 [ff40376](https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/commit/ff4037646e8c62e67e0cf34e992bc4e5b9568d57) dogyeong
 
