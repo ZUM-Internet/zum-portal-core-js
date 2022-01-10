@@ -8,11 +8,11 @@
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": false,
-    "outDir": "../../lib",
-    "baseUrl": ".",
+    "outDir": "./lib",
+    "baseUrl": "./",
     "incremental": true,
     "moduleResolution": "node"
   },
-  "include": ["**/*.ts"],
+  "include": ["src/lib/**/*.ts"],
   "exclude": ["node_modules"]
 }

@@ -8,3 +8,4 @@ dist
 *.log
 coverage
 packages/frontend/lib
+.rollup.cache
