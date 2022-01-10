@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 1.1.4
+
 ## 1.1.3
 - fix: whatap 에이전트 등록 구문 import -> require로 변경 [b7f06cb](https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/commit/b7f06cbeec4585db67cbf8693991077ddd2b59bb) dogyeong
 
