@@ -1,10 +1,10 @@
 {
-  "name": "@zum-portal-core/banner",
+  "name": "@zum-front-core/banner",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "publishConfig": {
-    "registry": "http://ci-portal.zuminternet.com/nexus/repository/zum-portal-core-banner/"
+    "access": "public"
   },
   "dependencies": {
     "chalk": "^4.1.2"

@@ -8,7 +8,7 @@ import {
   Injectable,
   renderingUserAgent,
   Cache,
-} from '@zum-portal-core/backend';
+} from '@zum-front-core/backend';
 import { BundleRenderer, createBundleRenderer } from 'vue-server-renderer';
 import * as fs from 'fs';
 import * as path from 'path';
