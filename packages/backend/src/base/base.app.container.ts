@@ -117,7 +117,11 @@ export abstract class BaseAppContainer {
     return this;
   }
 
-  async setup(AppModule: any, option: AppSetupOption = {}, nestApplicationOptions: NestApplicationOptions = {}) {
+  async setup(
+    AppModule: any,
+    option: AppSetupOption = {},
+    nestApplicationOptions: NestApplicationOptions = {},
+  ) {
     await this.initialize({ AppModule, option, nestApplicationOptions });
 
     this.app.set('trust proxy', true);

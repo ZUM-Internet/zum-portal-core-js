@@ -1,6 +1,10 @@
 # CHANGELOG
 
+## 1.1.5
+- fix: adapter에서 axios.request 사용하도록 작업 완료 [23f4378](https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/commit/23f437872a8f67c91c41849492c69e2465719ebf) junil
+
 ## 1.1.4
+- feat: nest application options 를 주입할 수 있도록 작업 완료 [a1882af](https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/commit/a1882afa54135437393cf6a88e5bff34a8d5dad1) junil
 
 ## 1.1.3
 - fix: whatap 에이전트 등록 구문 import -> require로 변경 [b7f06cb](https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/commit/b7f06cbeec4585db67cbf8693991077ddd2b59bb) dogyeong

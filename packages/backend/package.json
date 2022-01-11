@@ -1,6 +1,6 @@
 {
   "name": "@zum-portal-core/backend",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "NestJS 백엔드 코어 프로젝트",
   "author": "황준일 <junil@zuminternet.com>, 이도경 <dogyeong@zuminternet.com>, 천재민 <karl@zuminternet.com>, 위정훈 <wiii@zuminternet.com>",
   "main": "dist/index.js",
