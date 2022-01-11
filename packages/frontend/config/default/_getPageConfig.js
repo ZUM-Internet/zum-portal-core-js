@@ -2,8 +2,6 @@
 const path = require('path');
 const { getZumOptions } = require('../options');
 
-const { resourcePath } = getZumOptions();
-
 /**
  * 멀티 페이지 설정 함수.
  *
@@ -15,6 +13,7 @@ const { resourcePath } = getZumOptions();
 module.exports = {
   getPageConfig(vuePages) {
     const { ZUM_FRONT_MODE: mode, NODE_ENV: nodeEnv } = process.env;
+    const { resourcePath } = getZumOptions();
 
     Object.entries(vuePages)
       .filter(([, v]) => v.template)

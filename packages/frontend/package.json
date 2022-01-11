@@ -1,11 +1,17 @@
 {
   "name": "@zum-portal-core/frontend",
-  "version": "1.1.1",
+  "version": "1.1.3",
   "description": "Vue.js 환경설정을 위한 코어 프로젝트",
   "author": "황준일 <junil@zuminternet.com>, 이도경 <dogyeong@zuminternet.com>, 천재민 <karl@zuminternet.com>, 위정훈 <wiii@zuminternet.com>",
   "repository": {
     "type": "git",
     "url": "https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project.git"
+  },
+  "scripts": {
+    "build:lib": "rollup -c rollup.config.ts --configPlugin typescript",
+    "publish:major": "node ../../auto-publish/lib/index.js publish major --commit-prefix=frontend",
+    "publish:minor": "node ../../auto-publish/lib/index.js publish minor --commit-prefix=frontend",
+    "publish:patch": "node ../../auto-publish/lib/index.js publish patch --commit-prefix=frontend"
   },
   "engines": {
     "node": ">= 14.16.0"
@@ -14,6 +20,7 @@
     "registry": "http://ci-portal.zuminternet.com/nexus/repository/zum-portal-core-frontend/"
   },
   "dependencies": {
+    "@babel/runtime": "^7.16.7",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-plugin-typescript": "~4.5.0",
@@ -36,6 +43,8 @@
     "vuex": "^3.4.0"
   },
   "devDependencies": {
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-typescript": "^8.3.0",
     "@types/js-cookie": "~2.2.7",
     "@types/rimraf": "^3.0.2",
     "@zum-portal-core/eslint-config-zum": "*",
@@ -44,6 +53,8 @@
     "eslint-plugin-prettier": "^4.0.0",
     "prettier": "^2.5.1",
     "rimraf": "~3.0.2",
+    "rollup": "^2.63.0",
+    "tslib": "^2.3.1",
     "typescript": "~4.4.3"
   }
 }
