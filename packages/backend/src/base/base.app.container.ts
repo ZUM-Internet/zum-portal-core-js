@@ -3,11 +3,17 @@ import { join } from 'path';
 import express, { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 import ejs from 'ejs';
 import { NestFactory } from '@nestjs/core';
-import { HttpStatus } from '@nestjs/common';
+import { HttpStatus, NestApplicationOptions } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { NoCacheHtml, getVersion } from '../middleware';
 import { logger } from '../util';
 import { setYmlResourcePath } from './yml.configuration';
+
+// 와탭 에이전트 등록
+if (process.env.ENABLE_WHATAP === 'true') {
+  // eslint-disable-next-line
+  require('whatap').NodeAgent;
+}
 
 interface AppSetupOption {
   resourcePath?: string;
@@ -28,22 +34,22 @@ export abstract class BaseAppContainer {
 
   private TEMPLATE_PATH: string;
 
-  private async initialize({ AppModule, option }: { AppModule: any; option: AppSetupOption }) {
+  private async initialize({
+    AppModule,
+    option,
+    nestApplicationOptions,
+  }: {
+    AppModule: any;
+    option: AppSetupOption;
+    nestApplicationOptions: NestApplicationOptions;
+  }) {
     this.RESOURCE_PATH = option.resourcePath ?? join(process.env.INIT_CWD, '../resources');
     this.STATIC_PATH = option.staticPath ?? join(this.RESOURCE_PATH, 'static');
     this.TEMPLATE_PATH = option.templatePath ?? join(this.RESOURCE_PATH, 'templates');
 
     setYmlResourcePath(this.RESOURCE_PATH);
 
-    this.app = await NestFactory.create<NestExpressApplication>(AppModule);
-  }
-
-  private registerWhatapAgent() {
-    if (process.env.ENABLE_WHATAP === 'true') {
-      import('whatap').then(({ NodeAgent }) => NodeAgent as unknown).catch(logger.error.bind(logger));
-    }
-
-    return this;
+    this.app = await NestFactory.create<NestExpressApplication>(AppModule, nestApplicationOptions);
   }
 
   private registerTemplateEngine(delimiter = '?') {
@@ -111,13 +117,12 @@ export abstract class BaseAppContainer {
     return this;
   }
 
-  async setup(AppModule: any, option: AppSetupOption = {}) {
-    await this.initialize({ AppModule, option });
+  async setup(AppModule: any, option: AppSetupOption = {}, nestApplicationOptions: NestApplicationOptions = {}) {
+    await this.initialize({ AppModule, option, nestApplicationOptions });
 
     this.app.set('trust proxy', true);
 
-    return this.registerWhatapAgent()
-      .registerStaticMiddleware()
+    return this.registerStaticMiddleware()
       .registerTemplateEngine(option.ejsDelimiter)
       .registerParserMiddleware()
       .registerCustomMiddleware()

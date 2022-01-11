@@ -1,6 +1,6 @@
 {
   "name": "@zum-portal-core/backend",
-  "version": "1.1.1",
+  "version": "1.1.4",
   "description": "NestJS 백엔드 코어 프로젝트",
   "author": "황준일 <junil@zuminternet.com>, 이도경 <dogyeong@zuminternet.com>, 천재민 <karl@zuminternet.com>, 위정훈 <wiii@zuminternet.com>",
   "main": "dist/index.js",
@@ -8,7 +8,10 @@
     "prebuild": "rimraf dist",
     "build": "nest build",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "publish:major": "node ../../auto-publish/lib/index.js publish major --commit-prefix=backend",
+    "publish:minor": "node ../../auto-publish/lib/index.js publish minor --commit-prefix=backend",
+    "publish:patch": "node ../../auto-publish/lib/index.js publish patch --commit-prefix=backend"
   },
   "repository": {
     "type": "git",
