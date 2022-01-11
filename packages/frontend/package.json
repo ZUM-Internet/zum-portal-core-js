@@ -5,13 +5,13 @@
   "author": "황준일 <junil@zuminternet.com>, 이도경 <dogyeong@zuminternet.com>, 천재민 <karl@zuminternet.com>, 위정훈 <wiii@zuminternet.com>",
   "repository": {
     "type": "git",
-    "url": "https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project.git"
+    "url": "https://github.com/zuminternet/zum-portal-core-js-project.git"
   },
   "engines": {
     "node": ">= 14.16.0"
   },
   "publishConfig": {
-    "registry": "http://ci-portal.zuminternet.com/nexus/repository/zum-portal-core-frontend/"
+    "access": "public"
   },
   "dependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
