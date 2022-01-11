@@ -1,16 +1,13 @@
 import { Test } from '@nestjs/testing';
 import axios from 'axios';
-import { ZumProvisionAdapter } from '../../index';
+import { ZumProvisionAdapter } from '../../base';
 import { mockAPI, API_URL, API_VERSION } from './mock-api';
 
 jest.mock('axios');
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-mockedAxios.get.mockImplementation(mockAPI);
-mockedAxios.post.mockImplementation(mockAPI);
-mockedAxios.put.mockImplementation(mockAPI);
-mockedAxios.delete.mockImplementation(mockAPI);
+mockedAxios.request.mockImplementation(mockAPI);
 
 describe('ZumProvisionAdapter', () => {
   let adapter: ZumProvisionAdapter;
