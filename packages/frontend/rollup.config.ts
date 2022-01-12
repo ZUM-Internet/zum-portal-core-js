@@ -8,7 +8,7 @@ export default [
       file: './lib/index.js',
       format: 'es',
     },
-    external: ['axios', 'js-cookie'],
+    external: ['axios/dist/axios', 'js-cookie'],
     plugins: [
       typescript({
         tsconfig: './tsconfig.lib.json',
