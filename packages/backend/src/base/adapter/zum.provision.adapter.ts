@@ -76,6 +76,7 @@ export class ZumProvisionAdapter {
 
     return Axios.request(
       deepmerge(option, {
+        method,
         timeout: option.timeout || 60000,
         headers: version ? { Accept: `application/vnd.zum.resource-${version}+json` } : {},
       }),
