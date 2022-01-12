@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1.1.4
+- fix: vue-cli ssr빌드 관련 오류로 인해 axios import구문 수정 [bd744e6](https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/commit/bd744e65beeb71203d9e64efda58bbe587b3de9c) dogyeong
+
 ## 1.1.3
 - Chore: rollup으로 lib 번들링 [82f9814](https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/commit/82f981441c7c56f6378683fd904b363fcab715d0) dogyeong
 - refactor: lib 디렉토리 타입스크립트로 재작성 [060dccf](https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/commit/060dccf4b4eabf2cb7a057294d2c58598aa404e1) dogyeong
