@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { ABTest } from "@zum-portal-core/frontend/components";
+import { ABTest } from "@zum-front-core/frontend/components";
 
 export default {
   name: 'App',

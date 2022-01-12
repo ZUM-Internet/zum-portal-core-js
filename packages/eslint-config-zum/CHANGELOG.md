@@ -17,10 +17,10 @@
 ## 1.2.0
 
 - vue용 eslint 룰 추가
-  - `@zum-portal-core/eslint-config-zum/vue`
+  - `@zum-front-core/eslint-config-zum/vue`
 - 의존성끼리 호환되도록 버전 정리
 
 ## 1.1.0
 
 - TypeScript용 eslint 룰 추가
-  - `@zum-portal-core/eslint-config-zum`
+  - `@zum-front-core/eslint-config-zum`

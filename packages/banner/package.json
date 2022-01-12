@@ -1,12 +1,12 @@
 {
-  "name": "@zum-portal-core/banner",
+  "name": "@zum-front-core/banner",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
-  "dependencies": {
-    "chalk": "^4.1.2"
-  },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2"
   }
 }

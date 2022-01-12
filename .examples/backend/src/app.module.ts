@@ -3,7 +3,7 @@ import {
   Module,
   ymlConfiguration,
   ZumCacheModule
-} from "@zum-portal-core/backend";
+} from "@zum-front-core/backend";
 import { HomeModule } from "./endpoint/views/home/home.module";
 import { AbtestModule } from "./endpoint/apis/abtest/abtest.module";
 import { ContentsModule } from "./endpoint/apis/contents/contents.module";

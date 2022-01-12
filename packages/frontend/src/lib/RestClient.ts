@@ -1,5 +1,5 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-
+import axios from 'axios/dist/axios';
+import { AxiosInstance, AxiosRequestConfig } from 'axios';
 type InterceptorOnFulfilled = (value: any) => any;
 type InterceptorOnRejected = (error: any) => any;
 

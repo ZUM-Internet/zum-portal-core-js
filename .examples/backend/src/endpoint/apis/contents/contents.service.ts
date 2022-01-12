@@ -4,7 +4,7 @@ import {
   ZumCache,
   ZumProvisionAdapter,
   CronExpression,
-} from '@zum-portal-core/backend';
+} from '@zum-front-core/backend';
 
 @Injectable()
 export class ContentsService {
