@@ -1,4 +1,4 @@
-import { Controller, Get } from "@zum-portal-core/backend";
+import { Controller, Get } from "@zum-front-core/backend";
 import {HomeService} from "./home.service";
 
 @Controller()

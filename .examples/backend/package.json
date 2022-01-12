@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "zum-front-core-js-backend-example",
   "version": "1.0.0",
   "main": "dist/index.js",
   "license": "MIT",
@@ -12,8 +12,8 @@
     "start:prod": "node dist/main"
   },
   "dependencies": {
-    "@zum-portal-core/backend": "*",
-    "@zum-portal-core/banner": "*"
+    "@zum-front-core/backend": "*",
+    "@zum-front-core/banner": "*"
   },
   "devDependencies": {
     "cross-env": "^7.0.3"

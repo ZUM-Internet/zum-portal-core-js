@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response} from "express";
-import { putVariantCookies } from "@zum-portal-core/backend";
+import { putVariantCookies } from "@zum-front-core/backend";
 
 
 export const setupVariants = (req: Request, res: Response, next: NextFunction) => {

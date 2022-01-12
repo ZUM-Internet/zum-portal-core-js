@@ -1,7 +1,7 @@
-import { ConfigService, NestExpressApplication, BaseAppContainer } from '@zum-portal-core/backend';
+import { ConfigService, NestExpressApplication, BaseAppContainer } from '@zum-front-core/backend';
 import { AppModule } from './app.module';
 import * as path from 'path';
-import '@zum-portal-core/banner';
+import '@zum-front-core/banner';
 
 class AppContainer extends BaseAppContainer {
   async listen(app: NestExpressApplication) {
