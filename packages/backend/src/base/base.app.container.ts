@@ -81,13 +81,13 @@ export abstract class BaseAppContainer {
   private registerStaticMiddleware() {
     this.app
       .useStaticAssets(this.STATIC_PATH, {
-        maxAge: '1d',
+        maxAge: '14d',
         etag: false,
       })
       .use(
         '/static',
         express.static(this.STATIC_PATH, {
-          maxAge: '1h',
+          maxAge: '14d',
           etag: false,
           setHeaders(res, path) {
             if (path.endsWith('.js') || path.endsWith('.css')) {
