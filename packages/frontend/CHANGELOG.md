@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 1.1.5
+- fix: axios를 웹팩에서 주입하는 파일과 동일한 파일을 사용하도록 수정 [156f7b0](https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/commit/156f7b0f891df90d797cb22c453234f3054a1ff7) dogyeong
+- chore: 의존성정리 [f34a218](https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/commit/f34a21891b6acedfd98f97ca0d9b502300f63022) dogyeong
+- chore: rollup 설정 수정 [508c9e3](https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/commit/508c9e339ac90274d4c495965b190616ff19d259) dogyeong
+- refactor: axios import 구문 수정 [afbbb41](https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/commit/afbbb41fff876a4629c5321654c732c6d46f9d55) dogyeong
+- fix: js-cookie import 방식 수정 [bb4fe49](https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/commit/bb4fe49fb22eb62580410a63a311fc5a529ee08b) dogyeong
+- chore: 빌드한 결과물 eslint 대상에서 제외 [881898a](https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/commit/881898a2a75ba03c894c69be16b78015d6c66cb0) dogyeong
+
 ## 1.1.4
 - fix: vue-cli ssr빌드 관련 오류로 인해 axios import구문 수정 [bd744e6](https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/commit/bd744e65beeb71203d9e64efda58bbe587b3de9c) dogyeong
 
