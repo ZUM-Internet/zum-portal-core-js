@@ -1,4 +1,4 @@
-import axios from 'axios/dist/axios';
+import * as axios from 'axios/dist/axios.min';
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
 type InterceptorOnFulfilled = (value: any) => any;
 type InterceptorOnRejected = (error: any) => any;

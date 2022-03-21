@@ -8,7 +8,7 @@
     "url": "https://github.com/zuminternet/zum-portal-core-js-project.git"
   },
   "scripts": {
-    "build:lib": "rollup -c rollup.config.ts --configPlugin typescript",
+    "build:lib": "rimraf lib && rollup -c rollup.config.ts --configPlugin typescript",
     "publish:major": "node ../../auto-publish/lib/index.js publish major --commit-prefix=frontend",
     "publish:minor": "node ../../auto-publish/lib/index.js publish minor --commit-prefix=frontend",
     "publish:patch": "node ../../auto-publish/lib/index.js publish patch --commit-prefix=frontend"
