@@ -66,10 +66,10 @@ class Publisher {
         const [major, minor, patch] = this.currentVersion.split('.').map((v) => parseInt(v, 10));
         switch (this.targetVersion) {
             case 'major':
-                this.nextVersion = `${major + 1}.${minor}.${patch}`;
+                this.nextVersion = `${major + 1}.0.0`;
                 break;
             case 'minor':
-                this.nextVersion = `${major}.${minor + 1}.${patch}`;
+                this.nextVersion = `${major}.${minor + 1}.0`;
                 break;
             case 'patch':
                 this.nextVersion = `${major}.${minor}.${patch + 1}`;
