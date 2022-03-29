@@ -1,8 +1,10 @@
+/// <reference lib="webworker" />
 import { FirebaseOptions, initializeApp } from 'firebase/app';
-import { getToken, getMessaging, onMessage, MessagePayload } from 'firebase/messaging';
-import { onBackgroundMessage } from 'firebase/messaging/sw';
+import { getAnalytics } from "firebase/analytics";
+import { getToken,getMessaging, onMessage, MessagePayload } from 'firebase/messaging';
+import { onBackgroundMessage as handleBackgroundMessage, getMessaging as getMessageInSW } from 'firebase/messaging/sw';
 
-export interface ClientRegisterOptions {
+export interface ForegroundMessageOptions {
   firebaseConfig: FirebaseOptions;
   vapidKey: string;
   onMessageHandler?: (payload: MessagePayload) => void;
@@ -11,18 +13,31 @@ export interface ClientRegisterOptions {
   onPermissionError?: (err: unknown) => void;
 }
 
-export interface ServiceWorkerRegisterOptions extends Pick<ClientRegisterOptions, 'firebaseConfig'> {
-  onBackgroundMessageHanlder?: (payload: MessagePayload) => void;
+export interface BackgroundMessageOptions {
+  onBackgroundMessageHandler?: (payload: MessagePayload) => void;
+  firebaseConfig:FirebaseOptions
 }
 
-const defaultMessageHandler = (payload: MessagePayload) => {
-  if (!{}.hasOwnProperty.call(window, 'Notification')) return;
+const defaultForegroundMessageHandler = (payload: MessagePayload) => {
+  if (!{}.hasOwnProperty.call(self, 'Notification')) return;
   if (Notification.permission !== 'granted') return;
   // eslint-disable-next-line no-new
   new Notification(payload.notification?.title || '');
 };
 
-const registerClient = (options: ClientRegisterOptions) => {
+const defaultBackgroundMessageHandler = (payload: MessagePayload) => {
+  if(!payload.notification) return;
+
+  const {title = '', body} = payload.notification;
+  const notificationOptions = {
+    body,
+  };
+
+  // type refactor needed
+  (self as unknown as ServiceWorkerGlobalScope).registration.showNotification(title, notificationOptions);
+}
+
+const onForegroundMessage = (options: ForegroundMessageOptions) => {
   const {
     firebaseConfig,
     vapidKey,
@@ -32,9 +47,10 @@ const registerClient = (options: ClientRegisterOptions) => {
     onPermissionGranted,
   } = options;
 
-  const firebaseApp = initializeApp(firebaseConfig);
-
+  const firebaseApp = initializeApp(firebaseConfig)
   const messaging = getMessaging(firebaseApp);
+  getAnalytics(firebaseApp);
+
 
   getToken(messaging, { vapidKey })
     .then((currentToken) => {
@@ -49,16 +65,20 @@ const registerClient = (options: ClientRegisterOptions) => {
     })
     .catch(onPermissionError);
 
-  onMessage(messaging, onMessageHandler || defaultMessageHandler);
+  onMessage(messaging, onMessageHandler || defaultForegroundMessageHandler);
 };
 
-const registerServiceWorker = (options: ServiceWorkerRegisterOptions) => {
-  const { firebaseConfig, onBackgroundMessageHanlder } = options;
-  const messaging = getMessaging(initializeApp(firebaseConfig));
-  onBackgroundMessage(messaging, onBackgroundMessageHanlder || defaultMessageHandler);
+const onBackgroundMessage = (options: BackgroundMessageOptions) => {
+  const { firebaseConfig, onBackgroundMessageHandler } = options;
+
+  const firebaseApp = initializeApp(firebaseConfig);
+  const messaging = getMessageInSW(firebaseApp);
+  getAnalytics(firebaseApp);
+
+  handleBackgroundMessage(messaging, onBackgroundMessageHandler || defaultBackgroundMessageHandler);
 };
 
 export const ZumWebPush = {
-  registerClient,
-  registerServiceWorker,
+  onForegroundMessage,
+  onBackgroundMessage
 };
