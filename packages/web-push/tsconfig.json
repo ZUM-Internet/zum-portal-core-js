@@ -13,7 +13,8 @@
     "skipLibCheck": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "strict": true
+    "strict": true,
+    "lib": ["WebWorker"]
   },
   "include": ["./src"],
   "exclude": ["./rollup.config.ts"]
