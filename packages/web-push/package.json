@@ -1,6 +1,6 @@
 {
   "name": "@zum-front-core/web-push",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "license": "MIT",
@@ -8,7 +8,9 @@
     "type": "git",
     "url": "https://github.com/zuminternet/zum-portal-core-js-project.git"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "rimraf dist && rollup -c rollup.config.ts --configPlugin typescript",
     "publish:major": "node ../../auto-publish/lib/index.js publish major --commit-prefix=web-push",
