@@ -1,5 +1,3 @@
-/* eslint-disable no-new */
-/* eslint-disable no-restricted-globals */
 import { FirebaseOptions, initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 import { getToken, getMessaging, onMessage, MessagePayload } from 'firebase/messaging';

@@ -10,6 +10,8 @@
   "plugins": ["@typescript-eslint", "prettier"],
   "extends": ["@zum-front-core/eslint-config-zum", "plugin:prettier/recommended"],
   "rules": {
-    "prefer-promise-reject-errors": 0
+    "prefer-promise-reject-errors": 0,
+    "no-restricted-globals": 0,
+    "no-new": 0
   }
 }
