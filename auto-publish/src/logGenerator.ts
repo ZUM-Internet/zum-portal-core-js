@@ -18,6 +18,11 @@ export class LogGenerator {
     private tagPrefix: string,
   ) {}
 
+  private gitFetchAll() {
+    // 로컬에 없는 태그들 fetch
+    execSync('git fetch --all');
+  }
+
   private parseGitLogs() {
     const options = {
       repo: this.packagePath,
@@ -105,6 +110,8 @@ export class LogGenerator {
   }
 
   public async execute() {
+    this.gitFetchAll();
+
     this.parseGitLogs();
 
     await this.parseTagInfo();
