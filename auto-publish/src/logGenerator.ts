@@ -9,8 +9,7 @@ export class LogGenerator {
 
   private tags: [string, number][];
 
-  private readonly gitlabUrl =
-    'https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/commit/';
+  private readonly repoUrl = 'https://github.com/zuminternet/zum-portal-core-js-project';
 
   constructor(
     private packagePath: string,
@@ -80,7 +79,7 @@ export class LogGenerator {
         .replace(/\s{2,}/g, ' ')
         .trim();
 
-      changeLog.push(`- ${commitSubject} [${abbrevHash}](${this.gitlabUrl}${hash}) ${authorName}`);
+      changeLog.push(`- ${commitSubject} [${abbrevHash}](${this.repoUrl}/commit/${hash}) ${authorName}`);
     });
 
     return changeLog;
