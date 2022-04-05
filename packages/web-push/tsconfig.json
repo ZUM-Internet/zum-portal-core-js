@@ -6,7 +6,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "esnext",
+    "target": "es2015",
     "outDir": "./dist",
     "baseUrl": "./src",
     "incremental": true,
