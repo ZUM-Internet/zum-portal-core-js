@@ -73,7 +73,6 @@ const onBackgroundMessage = (options: BackgroundMessageOptions) => {
 
   const firebaseApp = initializeApp(firebaseConfig);
   const messaging = getMessageInSW(firebaseApp);
-  getAnalytics(firebaseApp);
 
   handleBackgroundMessage(messaging, onBackgroundMessageHandler || defaultBackgroundMessageHandler);
 };
