@@ -13,12 +13,15 @@ class LogGenerator {
     tagPrefix;
     logs;
     tags;
-    gitlabUrl = 'https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/commit/';
+    repoUrl = 'https://github.com/zuminternet/zum-portal-core-js-project';
     constructor(packagePath, nextVersion, commitPrefix, tagPrefix) {
         this.packagePath = packagePath;
         this.nextVersion = nextVersion;
         this.commitPrefix = commitPrefix;
         this.tagPrefix = tagPrefix;
+    }
+    gitFetchAll() {
+        (0, child_process_1.execSync)('git fetch --all');
     }
     parseGitLogs() {
         const options = {
@@ -60,7 +63,7 @@ class LogGenerator {
                 .replace(`[${this.commitPrefix}]`, '')
                 .replace(/\s{2,}/g, ' ')
                 .trim();
-            changeLog.push(`- ${commitSubject} [${abbrevHash}](${this.gitlabUrl}${hash}) ${authorName}`);
+            changeLog.push(`- ${commitSubject} [${abbrevHash}](${this.repoUrl}/commit/${hash}) ${authorName}`);
         });
         return changeLog;
     }
@@ -77,6 +80,7 @@ class LogGenerator {
         return ['# CHANGELOG', ...contents].join('\n');
     }
     async execute() {
+        this.gitFetchAll();
         this.parseGitLogs();
         await this.parseTagInfo();
         return this.generateChangeLog();
