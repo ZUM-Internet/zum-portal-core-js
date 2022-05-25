@@ -75,7 +75,28 @@ module.exports = () => {
         .use(ProvidePlugin, [{ Axios: 'axios/dist/axios.min.js' }])
         .end()
         .plugin('define')
-        .use(DefinePlugin, [{ 'process.env': JSON.stringify({ ...process.env, APP_VERSION }) }])
+        .use(DefinePlugin, [{
+          'process.env.API_HOST': JSON.stringify(process.env.API_HOST),
+          'process.env.API_PORT': JSON.stringify(process.env.API_PORT),
+          'process.env.DEV_HOST': JSON.stringify(process.env.DEV_HOST),
+          'process.env.DEV_PORT': JSON.stringify(process.env.DEV_PORT),
+          'process.env.HOST': JSON.stringify(process.env.HOST),
+          'process.env.INIT_CWD': JSON.stringify(process.env.INIT_CWD),
+          'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+          'process.env.PORT': JSON.stringify(process.env.PORT),
+          'process.env.PROXY_PATH': JSON.stringify(process.env.PROXY_PATH),
+          'process.env.SSL': JSON.stringify(process.env.SSL),
+          'process.env.SSR_PROXY': JSON.stringify(process.env.SSR_PROXY),
+          'process.env.VITE_APP_VERSION': JSON.stringify(process.env.VITE_APP_VERSION),
+          'process.env.VITE_MODE': JSON.stringify(process.env.VITE_MODE),
+          'process.env.VUE_ENV': JSON.stringify(process.env.VUE_ENV),
+          'process.env.ZUM_BACK_MODE': JSON.stringify(process.env.ZUM_BACK_MODE),
+          'process.env.ZUM_FRONT_MODE': JSON.stringify(process.env.ZUM_FRONT_MODE),
+          'process.env.npm_lifecycle_event': JSON.stringify(process.env.npm_lifecycle_event),
+          'process.env.npm_package_version': JSON.stringify(process.env.npm_package_version),
+          'process.env.publicPath': JSON.stringify(process.env.publicPath),
+          'process.env.APP_VERSION': JSON.stringify(APP_VERSION),
+        }])
         .end();
     },
   };
