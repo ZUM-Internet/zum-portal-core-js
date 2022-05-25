@@ -72,7 +72,6 @@ module.exports = () => {
       const safeEnvNames = [
         'API_HOST',
         'API_PORT',
-        'APP_VERSION',
         'DEV_HOST',
         'DEV_PORT',
         'HOST',
