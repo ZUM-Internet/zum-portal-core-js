@@ -68,6 +68,40 @@ module.exports = () => {
 
       const { version: APP_VERSION } = require(packageJsonPath);
 
+      /** 프론트엔드에서 사용되고 있는 환경변수 이름목록 */
+      const safeEnvNames = [
+        'API_HOST',
+        'API_PORT',
+        'APP_VERSION',
+        'DEV_HOST',
+        'DEV_PORT',
+        'HOST',
+        'INIT_CWD',
+        'NODE_ENV',
+        'PORT',
+        'PROXY_PATH',
+        'SSL',
+        'SSR_PROXY',
+        'VITE_APP_VERSION',
+        'VITE_MODE',
+        'VUE_ENV',
+        'ZUM_BACK_MODE',
+        'ZUM_FRONT_MODE',
+        'npm_lifecycle_event',
+        'npm_package_version',
+        'publicPath',
+      ];
+
+      /** 실제로 사용되고 있는 값만 추출하여 객체 생성 */
+      const safeEnv = safeEnvNames.reduce((env, name) => {
+        return {
+          ...env,
+          [name]: JSON.stringify(process.env[name]),
+        };
+      }, {
+        APP_VERSION: JSON.stringify(APP_VERSION),
+      });
+
       return config.output
         .jsonpFunction('zumPortalJsonp')
         .end()
@@ -76,26 +110,11 @@ module.exports = () => {
         .end()
         .plugin('define')
         .use(DefinePlugin, [{
-          'process.env.API_HOST': JSON.stringify(process.env.API_HOST),
-          'process.env.API_PORT': JSON.stringify(process.env.API_PORT),
-          'process.env.DEV_HOST': JSON.stringify(process.env.DEV_HOST),
-          'process.env.DEV_PORT': JSON.stringify(process.env.DEV_PORT),
-          'process.env.HOST': JSON.stringify(process.env.HOST),
-          'process.env.INIT_CWD': JSON.stringify(process.env.INIT_CWD),
-          'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-          'process.env.PORT': JSON.stringify(process.env.PORT),
-          'process.env.PROXY_PATH': JSON.stringify(process.env.PROXY_PATH),
-          'process.env.SSL': JSON.stringify(process.env.SSL),
-          'process.env.SSR_PROXY': JSON.stringify(process.env.SSR_PROXY),
-          'process.env.VITE_APP_VERSION': JSON.stringify(process.env.VITE_APP_VERSION),
-          'process.env.VITE_MODE': JSON.stringify(process.env.VITE_MODE),
-          'process.env.VUE_ENV': JSON.stringify(process.env.VUE_ENV),
-          'process.env.ZUM_BACK_MODE': JSON.stringify(process.env.ZUM_BACK_MODE),
-          'process.env.ZUM_FRONT_MODE': JSON.stringify(process.env.ZUM_FRONT_MODE),
-          'process.env.npm_lifecycle_event': JSON.stringify(process.env.npm_lifecycle_event),
-          'process.env.npm_package_version': JSON.stringify(process.env.npm_package_version),
-          'process.env.publicPath': JSON.stringify(process.env.publicPath),
-          'process.env.APP_VERSION': JSON.stringify(APP_VERSION),
+          ...Object.fromEntries(
+            Object.entries(safeEnv)
+              .map(([name, value]) => [`process.env.${name}`, value])
+          ),
+          'process.env': safeEnv,
         }])
         .end();
     },
