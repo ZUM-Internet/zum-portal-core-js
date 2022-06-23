@@ -68,6 +68,39 @@ module.exports = () => {
 
       const { version: APP_VERSION } = require(packageJsonPath);
 
+      /** 프론트엔드에서 사용되고 있는 환경변수 이름목록 */
+      const safeEnvNames = [
+        'API_HOST',
+        'API_PORT',
+        'DEV_HOST',
+        'DEV_PORT',
+        'HOST',
+        'INIT_CWD',
+        'NODE_ENV',
+        'PORT',
+        'PROXY_PATH',
+        'SSL',
+        'SSR_PROXY',
+        'VITE_APP_VERSION',
+        'VITE_MODE',
+        'VUE_ENV',
+        'ZUM_BACK_MODE',
+        'ZUM_FRONT_MODE',
+        'npm_lifecycle_event',
+        'npm_package_version',
+        'publicPath',
+      ];
+
+      /** 실제로 사용되고 있는 값만 추출하여 객체 생성 */
+      const safeEnv = safeEnvNames.reduce((env, name) => {
+        return {
+          ...env,
+          [name]: JSON.stringify(process.env[name]),
+        };
+      }, {
+        APP_VERSION: JSON.stringify(APP_VERSION),
+      });
+
       return config.output
         .jsonpFunction('zumPortalJsonp')
         .end()
@@ -75,7 +108,13 @@ module.exports = () => {
         .use(ProvidePlugin, [{ Axios: 'axios/dist/axios.min.js' }])
         .end()
         .plugin('define')
-        .use(DefinePlugin, [{ 'process.env': JSON.stringify({ ...process.env, APP_VERSION }) }])
+        .use(DefinePlugin, [{
+          ...Object.fromEntries(
+            Object.entries(safeEnv)
+              .map(([name, value]) => [`process.env.${name}`, value])
+          ),
+          'process.env': safeEnv,
+        }])
         .end();
     },
   };

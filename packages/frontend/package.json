@@ -1,6 +1,6 @@
 {
   "name": "@zum-front-core/frontend",
-  "version": "1.1.5",
+  "version": "2.0.0",
   "description": "Vue.js 환경설정을 위한 코어 프로젝트",
   "author": "황준일 <junil@zuminternet.com>, 이도경 <dogyeong@zuminternet.com>, 천재민 <karl@zuminternet.com>, 위정훈 <wiii@zuminternet.com>",
   "repository": {
@@ -26,7 +26,7 @@
     "@vue/cli-plugin-typescript": "~4.5.0",
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
-    "axios": "~0.21.1",
+    "axios": ">=0.22.x <=0.27.x",
     "cookie-parser": "~1.4.4",
     "core-js": "^3.6.5",
     "deepmerge": "~4.2.2",
