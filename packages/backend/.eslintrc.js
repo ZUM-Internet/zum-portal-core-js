@@ -9,7 +9,7 @@ module.exports = {
     tsconfigRootDir: __dirname,
   },
   plugins: ['@typescript-eslint', 'prettier'],
-  extends: ['@zum-front-core/eslint-config-zum', 'plugin:prettier/recommended'],
+  extends: ['@zum-front-end/eslint-config-zum', 'plugin:prettier/recommended'],
   rules: {
     'prefer-promise-reject-errors': 0,
   },

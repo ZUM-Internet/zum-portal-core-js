@@ -1,4 +1,4 @@
-# @zum-front-core/backend
+# @zum-front-end/backend
 
 - `BFF(Backend For Frontend)`개발을 할 때 공통적으로 필요한 기능들을 모아놓은 패키지
 - `TypeScript` + `Nest.js` + `Express` 기반으로 개발
@@ -9,7 +9,7 @@
 - 각 프로젝트에서는 BaseAppContainer를 상속받아서 구현한다
 
 ```ts
-import { BaseAppContainer, NestExpressApplication } from '@zum-front-core/backend';
+import { BaseAppContainer, NestExpressApplication } from '@zum-front-end/backend';
 import { AppModule } from './app.module';
 
 class AppContainer extends BaseAppContainer {
@@ -42,7 +42,7 @@ new AppContainer().setup(AppModule);
 - 메소드를 주기적으로 호출하는 cron작업과, 메소드의 반환값을 캐싱하는 기능을 제공하는 데코레이터
 
 ```ts
-import { ZumCache } from '@zum-front-core/backend';
+import { ZumCache } from '@zum-front-end/backend';
 
 export class ApiService {
   @ZumCache({
@@ -80,7 +80,7 @@ export class ApiService {
 - `axios` 기반으로 작성
 
 ```ts
-import { ZumProvisionAdapter } from '@zum-front-core/backend';
+import { ZumProvisionAdapter } from '@zum-front-end/backend';
 
 type ResponseType = any;
 
@@ -119,7 +119,7 @@ export class ApiService {
 - vue ssr을 수행하는 모듈
 
 ```ts
-import { bundleRendering, createCookieJar, renderingUserAgent } from '@zum-front-core/backend';
+import { bundleRendering, createCookieJar, renderingUserAgent } from '@zum-front-end/backend';
 import { BundleRenderer, createBundleRenderer } from 'vue-server-renderer';
 import * as fs from 'fs';
 
@@ -158,7 +158,7 @@ const ssrHtml = await bundleRendering(renderer, {
 유틸함수 모음. 현재는 logger만 쓰고 있음
 
 ```ts
-import { logger } from '@zum-front-core/backend';
+import { logger } from '@zum-front-end/backend';
 
 logger.info();
 logger.debug();

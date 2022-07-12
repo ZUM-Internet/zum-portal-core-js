@@ -11,10 +11,10 @@
 # eslint, typescript를 같이 설치해줍니다
 
 # yarn
-yarn add @zum-front-core/eslint-config-zum eslint@^7.2.0 typescript -D
+yarn add @zum-front-end/eslint-config-zum eslint@^7.2.0 typescript -D
 
 # npm
-npm i -D @zum-front-core/eslint-config-zum eslint@^7.2.0 typescript
+npm i -D @zum-front-end/eslint-config-zum eslint@^7.2.0 typescript
 ```
 
 ### 2. eslint 설정 파일 생성
@@ -28,14 +28,14 @@ module.exports = {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname, // 모노레포에서 tsconfig파일을 못 찾는 경우 tsconfigRootDir 지정
   },
-  extends: ['@zum-front-core/eslint-config-zum'],
+  extends: ['@zum-front-end/eslint-config-zum'],
 };
 ```
 
 ```js
 // Vue
 module.exports = {
-  extends: ['@zum-front-core/eslint-config-zum/vue'],
+  extends: ['@zum-front-end/eslint-config-zum/vue'],
 };
 ```
 
@@ -56,7 +56,7 @@ module.exports = {
   parserOptions: {
     project: './tsconfig.json',
   },
-  extends: ['@zum-front-core/eslint-config-zum'],
+  extends: ['@zum-front-end/eslint-config-zum'],
 };
 ```
 
@@ -100,9 +100,9 @@ module.exports = {
   parserOptions: {
     project: './tsconfig.json',
   },
-- extends: ['@zum-front-core/eslint-config-zum'],
+- extends: ['@zum-front-end/eslint-config-zum'],
 + extends: [
-+   '@zum-front-core/eslint-config-zum',
++   '@zum-front-end/eslint-config-zum',
 +   'plugin:prettier/recommended'
 + ],
 };
@@ -111,9 +111,9 @@ module.exports = {
 ```diff
 // Vue
 module.exports = {
-- extends: ['@zum-front-core/eslint-config-zum'],
+- extends: ['@zum-front-end/eslint-config-zum'],
 + extends: [
-+  '@zum-front-core/eslint-config-zum/vue',
++  '@zum-front-end/eslint-config-zum/vue',
 +  'plugin:prettier/recommended',
 + ],
 };

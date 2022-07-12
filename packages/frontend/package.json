@@ -1,5 +1,5 @@
 {
-  "name": "@zum-front-core/frontend",
+  "name": "@zum-front-end/frontend",
   "version": "2.0.0",
   "description": "Vue.js 환경설정을 위한 코어 프로젝트",
   "author": "황준일 <junil@zuminternet.com>, 이도경 <dogyeong@zuminternet.com>, 천재민 <karl@zuminternet.com>, 위정훈 <wiii@zuminternet.com>",
@@ -47,7 +47,7 @@
     "@rollup/plugin-typescript": "^8.3.0",
     "@types/js-cookie": "~2.2.7",
     "@types/rimraf": "^3.0.2",
-    "@zum-front-core/eslint-config-zum": "*",
+    "@zum-front-end/eslint-config-zum": "*",
     "eslint": "^7.2.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",

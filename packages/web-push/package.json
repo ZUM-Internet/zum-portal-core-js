@@ -1,5 +1,5 @@
 {
-  "name": "@zum-front-core/web-push",
+  "name": "@zum-front-end/web-push",
   "version": "0.0.14",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.3.0",
-    "@zum-front-core/eslint-config-zum": "*",
+    "@zum-front-end/eslint-config-zum": "*",
     "eslint": "^7.2.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",

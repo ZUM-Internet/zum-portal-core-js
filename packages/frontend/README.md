@@ -1,4 +1,4 @@
-# @zum-front-core/frontend
+# @zum-front-end/frontend
 
 프론트엔드 개발을 하면서 공통적으로 사용되는 옵션, 라이브러리들을 모아놓은 패키지. 크게 두 가지로 나눌 수 있다
 
@@ -22,7 +22,7 @@
 
 ```js
 // vue.config.js
-const { modeConfigurer } = require('@zum-front-core/frontend/config');
+const { modeConfigurer } = require('@zum-front-end/frontend/config');
 
 const options = {
   /* options */
@@ -116,7 +116,7 @@ config.output
 ### 기본 사용법
 
 ```js
-import { RestClient, cookieClient } from '@zum-front-core/lib';
+import { RestClient, cookieClient } from '@zum-front-end/lib';
 
 /* RestClient */
 const rest = new RestClient('/api');
