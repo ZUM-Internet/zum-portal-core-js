@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 2.0.0
+
+- chore: 환경변수가 번들링 된 파일에 포함되어 노출되는 보안문제 수정 [49b45c8](https://github.com/zuminternet/zum-portal-core-js-project/commit/49b45c83a614fc285f7d949a3cb91baa4117a6ca) ygchoi
+- chore: process.env의 구조 분해 할당 호환성 문제 수정 [45741fd](https://github.com/zuminternet/zum-portal-core-js-project/commit/45741fd7f97fc751b2aa65ec715db72d188277c7) ygchoi
+- chore: 환경변수 기본값 중복 제거 [d4de6ed](https://github.com/zuminternet/zum-portal-core-js-project/commit/d4de6ed5e8cfcb427971a61ab82f13fe9fd2ff83) ygchoi
+- chore: axios 번들링 이슈 관련 버전 범위 재지정 [d94af8f](https://github.com/zuminternet/zum-portal-core-js-project/commit/d94af8f55a5b41630b29e89b78eee626aaabcc7b) ygchoi
+
 ## 1.1.5
 
 - fix: axios를 웹팩에서 주입하는 파일과 동일한 파일을 사용하도록 수정 [156f7b0](https://git.zuminternet.com/zum-portal-framework/zum-portal-core-js-project/commit/156f7b0f891df90d797cb22c453234f3054a1ff7) dogyeong
