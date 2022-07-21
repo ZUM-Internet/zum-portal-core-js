@@ -1,5 +1,5 @@
 {
-  "name": "@zum-front-core/eslint-config-zum",
+  "name": "@zum-front-end/eslint-config-zum",
   "version": "1.4.0",
   "main": "index.js",
   "license": "MIT",

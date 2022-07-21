@@ -1,6 +1,6 @@
 const path = require('path');
-const { modeConfigurer } = require('@zum-front-core/frontend/config');
-require('@zum-front-core/banner'); // 배너출력
+const { modeConfigurer } = require('@zum-front-end/frontend/config');
+require('@zum-front-end/banner'); // 배너출력
 
 /**
  * 커스텀 Vue CLI 옵션

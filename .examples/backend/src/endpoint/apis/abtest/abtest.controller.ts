@@ -1,4 +1,4 @@
-import {Controller, Get, Res} from "@zum-front-core/backend";
+import {Controller, Get, Res} from "@zum-front-end/backend";
 import {Response} from "express";
 
 @Controller()
