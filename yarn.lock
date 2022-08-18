@@ -2937,7 +2937,7 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@zum-front-end/eslint-config-zum@link:packages/eslint-config-zum":
+"@zum-front-core/eslint-config-zum@link:packages/eslint-config-zum":
   version "1.4.0"
   dependencies:
     "@typescript-eslint/eslint-plugin" "^4.29.3"
