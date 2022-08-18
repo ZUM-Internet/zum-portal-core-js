@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
-const merge = require('deepmerge');
+const { merge } = require('webpack-merge');
 const { sync } = require('rimraf');
 const { getVuePages, getZumOptions, setZumOptions } = require('./options'); // 쉘 파일 제거 명령 수행 라이브러리
 const getDefaultCliOption = require('./default/_getDefaultCliOption'); // 웹팩 기본 설정 획득
@@ -41,7 +41,7 @@ function modeConfigurer(projectConfigurer) {
   if (env === 'development') {
     const requiredConfig = require(`./default/${zumFrontMode}.config.js`);
 
-    return merge.all([
+    return merge([
       defaultOption,
       requiredConfig,
       projectConfigurer,
@@ -56,7 +56,7 @@ function modeConfigurer(projectConfigurer) {
     ]);
   }
 
-  return merge.all([
+  return merge([
     defaultOption,
     projectConfigurer,
     {
