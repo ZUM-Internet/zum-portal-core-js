@@ -2,7 +2,7 @@
   "name": "@zum-front-end/frontend",
   "version": "2.0.0",
   "description": "Vue.js 환경설정을 위한 코어 프로젝트",
-  "author": "황준일 <junil@zuminternet.com>, 이도경 <dogyeong@zuminternet.com>, 천재민 <karl@zuminternet.com>, 위정훈 <wiii@zuminternet.com>",
+  "author": "최영근 <ygchoi@zuminternet.com>, 박상우 <sanoo@zuminternet.com>, 김선규 <skkim@zuminternet.com>, 천재민 <karl@zuminternet.com>, 위정훈 <wiii@zuminternet.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/zuminternet/zum-portal-core-js-project.git"
