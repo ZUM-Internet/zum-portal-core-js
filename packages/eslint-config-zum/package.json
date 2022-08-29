@@ -3,7 +3,7 @@
   "version": "1.4.0",
   "main": "index.js",
   "license": "MIT",
-  "author": "dogyeong <dogyeong@zuminternet.com>",
+  "author": "최영근 <ygchoi@zuminternet.com>, 박상우 <sanoo@zuminternet.com>, 김선규 <skkim@zuminternet.com>, 천재민 <karl@zuminternet.com>, 위정훈 <wiii@zuminternet.com>",
   "publishConfig": {
     "access": "public"
   },

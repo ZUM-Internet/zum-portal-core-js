@@ -2,7 +2,7 @@
   "name": "@zum-front-end/backend",
   "version": "1.2.0",
   "description": "NestJS 백엔드 코어 프로젝트",
-  "author": "황준일 <junil@zuminternet.com>, 이도경 <dogyeong@zuminternet.com>, 천재민 <karl@zuminternet.com>, 위정훈 <wiii@zuminternet.com>",
+  "author": "최영근 <ygchoi@zuminternet.com>, 박상우 <sanoo@zuminternet.com>, 김선규 <skkim@zuminternet.com>, 천재민 <karl@zuminternet.com>, 위정훈 <wiii@zuminternet.com>",
   "main": "dist/index.js",
   "scripts": {
     "prebuild": "rimraf dist",
